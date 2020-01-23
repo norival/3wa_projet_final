@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%; /*pour mettre en base 10 */
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: inherit;
+}
+
+.wrapper {
+    padding: 25px;
+}
+
+.hidden {
+    display: none;
+}
+
+.sticky {
+    position: fixed;
+}
