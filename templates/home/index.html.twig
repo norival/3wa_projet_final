@@ -8,7 +8,8 @@
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/exo-2" type="text/css"/> 
 {% endblock %}
 {% block body %}
-    {{ parent() }}
+{{ parent() }}
+<header>
     <nav class="glow wrapper hidden">
         <ul>
             <li><a href="{{ path('home', {'_fragment': 'home'}) }}">Skills</a></li>
@@ -18,7 +19,36 @@
             <li><a href="{{ path('home', {'_fragment': 'contact'}) }}">Contact</a></li>
         </ul>
     </nav>
+</header>
+<main>
     <section id="presentation" class="wrapper">
+    <!-- <div class="grid-container"></div> -->
+        <!-- <canvas width="100vw" height="100vh" class="lines"></canvas> -->
+        <!-- <svg class="lines" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"> -->
+        <!-- <svg class="hidden lines" xmlns="http://www.w3.org/2000/svg"> -->
+        <!--     <!-1- <rect x="0%" y="0%" width="10%" height="10%" stroke="#fa004f" fill="#fa004f"/> -1-> -->
+        <!--     <!-1- <line x1="100" y1="100" x2="100" y2="500" stroke="#fa004f" stroke-width="4" stroke-linejoin="round"/> -1-> -->
+        <!--     <!-1- <line x1="100" y1="500" x2="200" y2="700" stroke="#fa004f" stroke-width="4" stroke-linejoin="round"/> -1-> -->
+        <!--     <!-1- <line x1="200" y1="700" x2="200" y2="100" stroke="#fa004f" stroke-width="4" stroke-linejoin="round"/> -1-> -->
+        <!--     <!-1- <rect x="92" y="92" width="16" height="16" stroke="#fa004f" fill="#fa004f"/> -1-> -->
+        <!--     <!-1- <polyline -1-> -->
+        <!--     <!-1-     points=" -1-> -->
+        <!--     <!-1-         0,0 -1-> -->
+        <!--     <!-1-         0,500 -1-> -->
+        <!--     <!-1-         150,750 -1-> -->
+        <!--     <!-1-     " -1-> -->
+        <!--     <!-1-     fill="none" -1-> -->
+        <!--     <!-1-     stroke="#fa004f" -1-> -->
+        <!--     <!-1-     stroke-width="5" -1-> -->
+        <!--     <!-1-     stroke-linejoin="round" -1-> -->
+        <!--     <defs> -->
+        <!--     <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"> -->
+        <!--     <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="8"/> -->
+        <!--     </pattern> -->
+        <!--     </defs> -->
+        <!--     <rect width="100%" height="100%" fill="url(#grid)" /> -->
+
+        <!-- </svg> -->
         <div class="neon glow">
             <h1>Xavier Laviron</h1>
             <p>Full-stack web developer</p>
@@ -27,93 +57,107 @@
     <section class="resume">
         <section id="skills" class="fullHeight wrapper">
             <h2>Skills</h2>
-            <article id="web">
-                <h3>Web</h3>
-                <ul>
-                    <li>HTML/CSS</li>
-                    <li>Javascript</li>
-                    <li>PHP</li>
-                    <li>SQL</li>
-                    <li>Symfony</li>
-                    <li>Bootstrap</li>
-                    <li>Bulma</li>
-                    <li>jQuery</li>
-                    <li>Wordpress</li>
-                </ul>
-            </article>
-            <article id="technical">
-                <h3>Technical</h3>
-                <ul>
-                    <li>Git/Github/Gitlab</li>
-                    <li>Travis CI</li>
-                    <li>Webpack</li>
-                    <li>GNU/Linux</li>
-                    <li>Bash</li>
-                    <li>Apache/Nginx</li>
-                    <li>R</li>
-                    <li>Python</li>
-                    <li>LaTeX</li>
-                </ul>
-            </article>
-            <article id="other">
-                <h3>Other</h3>
-                <ul>
-                    <li>Fluent in English</li>
-                    <li>Data Analysis</li>
-                    <li>Curious and autodidact</li>
-                </ul>
-            </article>
+            <div class="flex-big">
+                <article id="web">
+                    <h3>Web</h3>
+                    <ul>
+                        <li>HTML/CSS</li>
+                        <li>Javascript</li>
+                        <li>PHP</li>
+                        <li>SQL</li>
+                        <li>Symfony</li>
+                        <li>Bootstrap</li>
+                        <li>Bulma</li>
+                        <li>jQuery</li>
+                        <li>Wordpress</li>
+                    </ul>
+                </article>
+                <article id="technical">
+                    <h3>Technical</h3>
+                    <ul>
+                        <li>Git/Github/Gitlab</li>
+                        <li>Travis CI</li>
+                        <li>Webpack</li>
+                        <li>GNU/Linux</li>
+                        <li>Bash</li>
+                        <li>Apache/Nginx</li>
+                        <li>R</li>
+                        <li>Python</li>
+                        <li>LaTeX</li>
+                    </ul>
+                </article>
+                <article id="other">
+                    <h3>Other</h3>
+                    <ul>
+                        <li>Fluent in English</li>
+                        <li>Data Analysis</li>
+                        <li>Curious and autodidact</li>
+                    </ul>
+                </article>
+            </div>
         </section>
         <section id="curriculum" class="fullHeight wrapper">
             <h2>Training</h2>
-            <article>
-                <h3>2019</h3>
-                <p><strong>3W Academy</strong></p>
-                <p><em>Grenoble</em></p>
-                <p>Intensive training in Web development</p>
-            </article>
-            <article>
-                <h3>2017</h3>
-                <p><strong>MSc. Biology, Evolution and Ecology</strong></p>
-                <p><em>Dijon</em></p>
-                <p>Training in theoretical ecology, data analysis and modelization</p>
-            </article>
-            <article>
-                <h3>2013</h3>
-                <p><strong>Technical degree in Biology</strong></p>
-                <p><em>Dijon</em></p>
-                <p>Training in various analytical biology methods</p>
-            </article>
+            <div class="flex-big">
+                <article>
+                    <h3>2019</h3>
+                    <p><strong>3W Academy</strong></p>
+                    <p><em>Grenoble</em></p>
+                    <p>Intensive training in Web development</p>
+                </article>
+                <article>
+                    <h3>2017</h3>
+                    <p><strong>MSc. Biology, Evolution and Ecology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Training in theoretical ecology, data analysis and modelization</p>
+                </article>
+                <article>
+                    <h3>2013</h3>
+                    <p><strong>Technical degree in Biology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Training in various analytical biology methods</p>
+                </article>
+            </div>
         </section>
         <section id="experiences" class="fullHeight wrapper">
             <h2>Experiences</h2>
-            <article>
-                <h3>2017-2019</h3>
-                <p><strong>PhD in ecology and data analysis</strong></p>
-                <p><em>Grenoble</em></p>
-                <p>Ecological studies on multivariate species distribution models and remote-sensing data</p>
-            </article>
-            <article>
-                <h3>2017</h3>
-                <p><strong>6 months internship in agroecology</strong></p>
-                <p><em>Dijon</em></p>
-                <p>Multivariate modeling on weed populations</p>
-            </article>
+            <div class="flex-big">
+                <article>
+                    <h3>2017-2019</h3>
+                    <p><strong>PhD in ecology and data analysis</strong></p>
+                    <p><em>Grenoble</em></p>
+                    <p>Ecological studies on multivariate species distribution models and remote-sensing data</p>
+                </article>
+                <article>
+                    <h3>2017</h3>
+                    <p><strong>6 months internship in agroecology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Multivariate modeling on weed populations</p>
+                </article>
+            </div>
         </section>
         <section id="realisations" class="fullHeight wrapper">
             <h2>Realisations</h2>
+            <div class="flex-big">
             <article>
                 <h3>theiaR</h3>
                 <p><em>2019</em></p>
                 <p>R library to automate search and download of remote-sensing data from Theia, a publicly available database</p>
             </article>
+            </div>
         </section>
         <section id="contact" class="fullHeight wrapper">
             <h2>Contact</h2>
-            <img class="profile" src="{{ asset('build/P1060516_crop.JPG') }}" alt="Xavier Laviron" title="Xavier Laviron">
-            <a class="button" href="{{ path('contact') }}">Contact me!</a>
+            <article class="item">
+                <img class="profile" src="{{ asset('build/P1060516_crop.JPG') }}" alt="Xavier Laviron" title="Xavier Laviron">
+                <a class="button" href="{{ path('contact') }}">Get in touch!</a>
+            </article>
         </section>
     </section>
+</main>
+<footer>
+&copy 2020 Xavier Laviron
+</footer>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

@@ -9,17 +9,18 @@ endif
 set shortmess=aoO
 badd +16 src/Controller/HomeController.php
 badd +1 templates/home/index.html.twig
-badd +6 templates/base.html.twig
+badd +16 templates/base.html.twig
 badd +77 webpack.config.js
-badd +1 assets/js/app.js
-badd +11 assets/js/home.js
+badd +12 assets/js/app.js
+badd +36 assets/js/home.js
 badd +3 assets/js/greet.js
-badd +30 assets/css/app.scss
+badd +15 assets/css/app.scss
 badd +17 src/Controller/CvController.php
 badd +3 config/packages/assets.yaml
-badd +29 assets/css/home.scss
+badd +331 assets/css/home.scss
 badd +1 assets/css/_nav.scss
-badd +2 assets/css/fonts.css
+badd +3 assets/css/fonts.css
+badd +29 assets/images/line.svg
 argglobal
 %argdel
 $argadd src/Controller/HomeController.php
@@ -30,6 +31,10 @@ wincmd _ | wincmd |
 vsplit
 1wincmd h
 wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
 set nosplitbelow
 set nosplitright
 wincmd t
@@ -38,7 +43,10 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
+exe '2resize ' . ((&lines * 33 + 35) / 70)
 exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
+exe '3resize ' . ((&lines * 33 + 35) / 70)
+exe 'vert 3resize ' . ((&columns * 119 + 119) / 239)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -48,12 +56,12 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 113 - ((46 * winheight(0) + 33) / 67)
+let s:l = 149 - ((52 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-113
-normal! 024|
+149
+normal! 029|
 wincmd w
 argglobal
 if bufexists("assets/css/home.scss") | buffer assets/css/home.scss | else | edit assets/css/home.scss | endif
@@ -65,17 +73,44 @@ setlocal fdl=1
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 120 - ((34 * winheight(0) + 33) / 67)
+let s:l = 371 - ((5 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-120
-normal! 021|
+371
+normal! 018|
 wincmd w
-2wincmd w
+argglobal
+if bufexists("assets/css/home.scss") | buffer assets/css/home.scss | else | edit assets/css/home.scss | endif
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=1
+setlocal fen
+328
+normal! zo
+363
+normal! zo
+369
+normal! zo
+376
+normal! zo
+let s:l = 380 - ((15 * winheight(0) + 16) / 33)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+380
+normal! 0
+wincmd w
 exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
+exe '2resize ' . ((&lines * 33 + 35) / 70)
 exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
-tabedit assets/js/app.js
+exe '3resize ' . ((&lines * 33 + 35) / 70)
+exe 'vert 3resize ' . ((&columns * 119 + 119) / 239)
+tabedit templates/home/index.html.twig
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -95,33 +130,33 @@ setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=1
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 12 - ((11 * winheight(0) + 33) / 67)
+let s:l = 13 - ((12 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-12
-normal! 0
+13
+normal! 06|
 wincmd w
 argglobal
-if bufexists("assets/css/app.scss") | buffer assets/css/app.scss | else | edit assets/css/app.scss | endif
+if bufexists("assets/css/home.scss") | buffer assets/css/home.scss | else | edit assets/css/home.scss | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=0
+setlocal fdl=1
 setlocal fml=1
 setlocal fdn=1
 setlocal fen
-let s:l = 21 - ((20 * winheight(0) + 33) / 67)
+let s:l = 328 - ((32 * winheight(0) + 33) / 67)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
-normal! 0
+328
+normal! 05|
 wincmd w
 exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
 exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
