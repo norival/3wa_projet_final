@@ -21,10 +21,20 @@ class ContentController extends AbstractController
         // get entity manager
         $em = $this->getDoctrine()->getManager();
 
+        // get content from db
         $content = $em->getRepository(Content::class)->findOneBy(['route' => $route]);
+
+        // not found exception if the page does not exist
+        if (!$content) {
+            throw $this->createNotFoundException('This page does not exist');
+        }
+
+        dump($content->getContent());
 
         return $this->render("content/$route.html.twig", [
             'controller_name' => 'ContentController',
+            'content'         => $content,
+            'resume'          => $content->getContent()['resume'],
         ]);
     }
 }

@@ -17,26 +17,64 @@ class ContentFixtures extends Fixture
         $content->setRoute('cv');
         $content->setCreatedAt(date_create());
         $content->setContent([
-            'Experiences' => [
-                [
-                    'title'   => 'First experience',
-                    'content' => 'First experience content',
+            'title'       => 'Xavier Laviron',
+            'subtitle'    => 'Fullstack web developer',
+            'resume'      => [
+                'skills' => [
+                    'Web' => [
+                        'php',
+                        'mysql',
+                        'html',
+                    ],
+                    'Technical' => [
+                        'R',
+                        'LaTeX',
+                    ],
                 ],
-                [
-                    'title'   => 'Second experience',
-                    'content' => 'Second experience content',
+                'experiences' => [
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First experience',
+                        'place'   => 'First experience place',
+                        'content' => 'First experience content',
+                    ],
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First experience',
+                        'place'   => 'First experience place',
+                        'content' => 'First experience content',
+                    ],
+                ],
+                'training' => [
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First training',
+                        'place'   => 'First training place',
+                        'content' => 'First training content',
+                    ],
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First training',
+                        'place'   => 'First training place',
+                        'content' => 'First training content',
+                    ],
+                ],
+                'realisations' => [
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First project',
+                        'content' => 'First project content',
+                    ],
+                    [
+                        'date'    => '2019',
+                        'title'   => 'First project',
+                        'content' => 'First project content',
+                    ],
+                ],
+                'contact' => [
+                    'mail' => 'xavier@norival.dev',
                 ],
             ],
-            'Training' => [
-                [
-                    'title'   => 'First training',
-                    'content' => 'First training content',
-                ],
-                [
-                    'title'   => 'Second training',
-                    'content' => 'Second training content',
-                ],
-            ]
         ]);
         $manager->persist($content);
 
