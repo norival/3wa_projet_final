@@ -7,6 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.scss';
+import '../css/utils.scss';
 import '../css/fonts.css';
 import 'normalize.css';
 // import 'bulma';

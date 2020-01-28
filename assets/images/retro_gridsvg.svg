@@ -29,7 +29,7 @@
     <path
        id="path7887"
        opacity=".99"
-       fill="#303030"
+       fill="#5fddfc"
        d="m1920 840h-1920v1080h1920z" />
   </g>
   <g
@@ -44,13 +44,13 @@
   </g>
   <g
      id="g7927"
-     fill="#366"
+     fill="#5fddfc"
      transform="translate(0 27.638)">
     <path
        id="path7895"
        style="block-progression:tb;text-indent:0;text-transform:none"
        opacity=".99"
-       color="#000000"
+       color="#5fddfc"
        d="m0 875.71v8.6445h1920v-8.6445z" />
     <path
        id="path7897"
@@ -146,7 +146,7 @@
   <g
      id="g8013"
      fill-rule="evenodd"
-     fill="#366"
+     fill="#5fddfc"
      transform="translate(0,-840)">
     <path
        id="path7929"
