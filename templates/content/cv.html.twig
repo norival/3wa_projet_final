@@ -1,0 +1,137 @@
+{% extends 'content/index.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('home') }}
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/beon" type="text/css"/> 
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/hi" type="text/css"/> 
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/exo-2" type="text/css"/> 
+{% endblock %}
+{% block body %}
+{{ parent() }}
+<header>
+    <nav class="neonText wrapper hidden">
+        <ul>
+            <li><a href="{{ path('home', {'_fragment': 'home'}) }}">Skills</a></li>
+            <li><a href="{{ path('home', {'_fragment': 'curriculum'}) }}">Course</a></li>
+            <li><a href="{{ path('home', {'_fragment': 'experiences'}) }}">Experiences</a></li>
+            <li><a href="{{ path('home', {'_fragment': 'realisations'}) }}">Realisations</a></li>
+            <li><a href="{{ path('home', {'_fragment': 'contact'}) }}">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section id="presentation" class="wrapper">
+        <div class="neonBox neonText">
+            <h1>Xavier Laviron</h1>
+            <p>Full-stack web developer</p>
+        </div>
+    </section>
+    <section class="resume">
+        <section id="skills" class="fullHeight wrapper">
+            <h2>Skills</h2>
+            <div class="flex-big">
+                <article class="item" id="web">
+                    <h3>Web</h3>
+                    <ul>
+                        <li>HTML/CSS</li>
+                        <li>Javascript</li>
+                        <li>PHP</li>
+                        <li>SQL</li>
+                        <li>Symfony</li>
+                        <li>Bootstrap</li>
+                        <li>Bulma</li>
+                        <li>jQuery</li>
+                        <li>Wordpress</li>
+                    </ul>
+                </article>
+                <article class="item" id="technical">
+                    <h3>Technical</h3>
+                    <ul>
+                        <li>Git/Github/Gitlab</li>
+                        <li>Travis CI</li>
+                        <li>Webpack</li>
+                        <li>GNU/Linux</li>
+                        <li>Bash</li>
+                        <li>Apache/Nginx</li>
+                        <li>R</li>
+                        <li>Python</li>
+                        <li>LaTeX</li>
+                    </ul>
+                </article>
+                <article class="item" id="other">
+                    <h3>Other</h3>
+                    <ul>
+                        <li>Fluent in English</li>
+                        <li>Data Analysis</li>
+                        <li>Curious and autodidact</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+        <section id="curriculum" class="fullHeight wrapper">
+            <h2>Training</h2>
+            <div class="flex-big">
+                <article class="item">
+                    <h3>2019</h3>
+                    <p><strong>3W Academy</strong></p>
+                    <p><em>Grenoble</em></p>
+                    <p>Intensive training in Web development</p>
+                </article>
+                <article class="item">
+                    <h3>2017</h3>
+                    <p><strong>MSc. Biology, Evolution and Ecology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Training in theoretical ecology, data analysis and modelization</p>
+                </article>
+                <article class="item">
+                    <h3>2013</h3>
+                    <p><strong>Technical degree in Biology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Training in various analytical biology methods</p>
+                </article>
+            </div>
+        </section>
+        <section id="experiences" class="fullHeight wrapper">
+            <h2>Experiences</h2>
+            <div class="flex-big">
+                <article class="item">
+                    <h3>2017-2019</h3>
+                    <p><strong>PhD in ecology and data analysis</strong></p>
+                    <p><em>Grenoble</em></p>
+                    <p>Ecological studies on multivariate species distribution models and remote-sensing data</p>
+                </article>
+                <article class="item">
+                    <h3>2017</h3>
+                    <p><strong>6 months internship in agroecology</strong></p>
+                    <p><em>Dijon</em></p>
+                    <p>Multivariate modeling on weed populations</p>
+                </article>
+            </div>
+        </section>
+        <section id="realisations" class="fullHeight wrapper">
+            <h2>Realisations</h2>
+            <div class="flex-big">
+            <article class="item">
+                <h3>theiaR</h3>
+                <p><em>2019</em></p>
+                <p>R library to automate search and download of remote-sensing data from Theia, a publicly available database</p>
+            </article>
+            </div>
+        </section>
+        <section id="contact" class="fullHeight wrapper">
+            <h2>Contact</h2>
+            <article class="item">
+                <img class="profile" src="{{ asset('build/P1060516_crop.JPG') }}" alt="Xavier Laviron" title="Xavier Laviron">
+            </article>
+        </section>
+    </section>
+</main>
+<footer>
+&copy 2020 Xavier Laviron
+</footer>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('home') }}
+{% endblock %}
