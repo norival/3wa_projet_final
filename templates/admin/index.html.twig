@@ -1,6 +1,25 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
+    <main>
+    <nav id="admin-navigation">
+        <ul>
+            <li>
+                Content
+                <ul id="content-list">
+                </ul>
+            </li>
+            <li>Assets</li>
+            <li>Users</li>
+            <li>Stats</li>
+        </ul>
+    </nav>
+    <div id="admin-main">
+        <p>Welcome to your Admin home page!</p>
+    </div>
+    </main>
+{% endblock %}
+{% block javascripts %}
     {{ parent() }}
-    <p>Coucou</p>
+    {{ encore_entry_script_tags('admin') }}
 {% endblock %}
