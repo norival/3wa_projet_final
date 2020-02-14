@@ -1,3 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+# content_routes:
+#     resource: 'content_route_loader::loadRoutes'
+#     type: service

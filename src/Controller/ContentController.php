@@ -36,13 +36,23 @@ class ContentController extends AbstractController
             throw $this->createNotFoundException('This page does not exist');
         }
 
+        $content2 = new Content();
+        $content2->getContent();
+        $content2->setTitle('title');
+        $content2->setRoute('newroute');
+        $content2->setCreatedAt(\date_create());
+
+        $form = $this->createForm(ContentType::class, $content2);
+
+        dump($form->createView());
+
         return $this->render("content/$route.html.twig", [
             'content' => $content->getContent(),
         ]);
     }
 
     /**
-     * @Route("/admin/page/{route}", name="content_admin")
+     * @Route("/admin/content/{route}", name="content_admin")
      *
      * @param  Request $request
      * @param  string $route
@@ -51,10 +61,29 @@ class ContentController extends AbstractController
     public function showAdmin(Request $request, string $route)
     {
         $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
+        /* dump($content); */
 
-        return $this->render("content/admin.html.twig", [
-            'content' => $content,
-            'route'   => $route,
+        return new JsonResponse($content->getContent());
+        /* return $this->render("content/admin.html.twig", [ */
+        /*     'content' => $content, */
+        /*     'route'   => $route, */
+        /* ]); */
+    }
+
+    /**
+     * @Route("/admin/content/form/{route}", name="content_get_form", methods={"GET"})
+     *
+     * @param  Request $request
+     * @param  string $route
+     * @return Response
+     */
+    public function getForm(Request $request, string $route)
+    {
+        $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
+        $form = $this->createForm(ContentType::class, $content);
+
+        return $this->render("content/{$route}_form.html.twig", [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -73,7 +102,6 @@ class ContentController extends AbstractController
         \dump($content);
     }
 
-
     /**
      * @Route("/admin/list-content", name="content_list", methods={"GET"})
      *
@@ -91,5 +119,10 @@ class ContentController extends AbstractController
         }
 
         return new JsonResponse($titles);
+    }
+
+    public function extra($parameter)
+    {
+        return new Response($parameter);
     }
 }

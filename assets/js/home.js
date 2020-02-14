@@ -1,6 +1,6 @@
 'use strict';
 
-import ScrollMagic from 'scrollmagic';
+// import ScrollMagic from 'scrollmagic';
 
 import '../css/home.scss';
 

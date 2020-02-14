@@ -3,9 +3,13 @@
 // import Vue from 'vue';
 // import Admin from './components/Admin';
 import {Admin} from './admin/Admin';
+// import {Router} from './router/Router';
+import '../css/admin.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
     const admin = new Admin();
+
+    // const router = new Router();
 
     admin.start();
     // console.log(admin.getMessage());

@@ -1,0 +1,12 @@
+{{ form_label(form.content) }}
+{{ form_errors(form.content) }}
+
+<ul>
+    {% for emailField in form.content %}
+        <li>
+                {{ form_errors(emailField) }}
+                {{ form_widget(emailField) }}
+            </li>
+    {% endfor %}
+</ul>
+</li></ul>

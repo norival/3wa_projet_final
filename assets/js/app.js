@@ -12,11 +12,11 @@ import '../css/fonts.css';
 import 'normalize.css';
 // import 'bulma';
 
-import getNiceMessage from './greet';
+// import getNiceMessage from './greet';
 
-import ScrollMagic from 'scrollmagic';
+// import ScrollMagic from 'scrollmagic';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-import $ from 'jquery';
+// import $ from 'jquery';
 
-console.log(getNiceMessage(5));
+// console.log(getNiceMessage(5));

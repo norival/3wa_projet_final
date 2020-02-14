@@ -3,13 +3,16 @@ import {Navigation} from './Navigation';
 export class Admin {
     constructor()
     {
-        this.navigation = new Navigation();
-        this.element    = document.getElementById('admin-main');
+        // get the admin output: where I will write stuff
+        this.output = document.getElementById('admin-main');
+
+        // instantiate objects
+        this.navigation = new Navigation(this.output);
     }
 
     async start()
     {
-        this.navigation.render();
+        // set the event listeners
     }
 
     getMessage()
