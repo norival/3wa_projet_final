@@ -70,18 +70,6 @@ class Content
         return $this;
     }
 
-    public function getRoute(): ?string
-    {
-        return $this->route;
-    }
-
-    public function setRoute(string $route): self
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
     public function getContent(): ?array
     {
         return $this->content;
