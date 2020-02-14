@@ -13,89 +13,47 @@ class ContentFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
         $content = new Content();
-        $content->setTitle('CV');
-        $content->setRoute('cv');
         $content->setCreatedAt(date_create());
+        $content->setName('latex');
+        $content->setType('skill');
         $content->setContent([
-            'informations' => [
-                'title'    => 'Xavier Laviron',
-                'subtitle' => 'Fullstack web developer',
-            ],
-            'skills' => [
-                'Web' => [
-                    'php',
-                    'mysql',
-                    'html',
-                ],
-                'Technical' => [
-                    'R',
-                    'LaTeX',
-                ],
-            ],
-            'experiences' => [
-                [
-                    'date'    => '2019',
-                    'title'   => 'First experience',
-                    'place'   => 'First experience place',
-                    'content' => 'First experience content',
-                ],
-                [
-                    'date'    => '2019',
-                    'title'   => 'First experience',
-                    'place'   => 'First experience place',
-                    'content' => 'First experience content',
-                ],
-            ],
-            'training' => [
-                [
-                    'date'    => '2019',
-                    'title'   => 'First training',
-                    'place'   => 'First training place',
-                    'content' => 'First training content',
-                ],
-                [
-                    'date'    => '2019',
-                    'title'   => 'First training',
-                    'place'   => 'First training place',
-                    'content' => 'First training content',
-                ],
-            ],
-            'realisations' => [
-                [
-                    'date'    => '2019',
-                    'title'   => 'First project',
-                    'content' => 'First project content',
-                ],
-                [
-                    'date'    => '2019',
-                    'title'   => 'First project',
-                    'content' => 'First project content',
-                ],
-            ],
-            'contact' => [
-                'mail' => 'xavier@norival.dev',
-            ],
+            'name'    => 'LaTeX',
+            'level'   => 'expert',
+            'section' => 'technical',
         ]);
         $manager->persist($content);
 
         $content = new Content();
-        $content->setTitle('Projects');
-        $content->setRoute('projects');
         $content->setCreatedAt(date_create());
+        $content->setName('php');
+        $content->setType('skill');
         $content->setContent([
-            'informations' => [
-                'title'   => 'My projects',
-            ],
-            'projects' => [
-                [
-                    'title'   => 'First project',
-                    'content' => 'First project',
-                ],
-                [
-                    'title'   => 'Second project',
-                    'content' => 'Second project',
-                ],
-            ],
+            'name'    => 'PHP',
+            'level'   => 'beginner',
+            'section' => 'technical',
+        ]);
+        $manager->persist($content);
+
+        $content = new Content();
+        $content->setCreatedAt(date_create());
+        $content->setName('phd');
+        $content->setType('experience');
+        $content->setContent([
+            'name'        => 'PhD in Ecology',
+            'description' => 'A PhD in Ecology is boring',
+            'year_start'  => '2017',
+            'year_end'    => '2019',
+        ]);
+        $manager->persist($content);
+
+        $content = new Content();
+        $content->setCreatedAt(date_create());
+        $content->setName('misc');
+        $content->setType('book');
+        $content->setContent([
+            'name'        => 'My book',
+            'description' => 'My book about writing a book',
+            'year'        => '2017',
         ]);
         $manager->persist($content);
 
