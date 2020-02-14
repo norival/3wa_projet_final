@@ -23,15 +23,15 @@
 <main>
     <section id="presentation" class="wrapper">
         <div class="neonBox neonText">
-            <h1>{{ content.content.title }}</h1>
-            <p>{{ content.content.subtitle }}</p>
+            <h1>{{ content.informations.title }}</h1>
+            <p>{{ content.informations.subtitle }}</p>
         </div>
     </section>
     <section class="resume">
         <section id="skills" class="fullHeight wrapper">
             <h2>Skills</h2>
             <div class="flex-big">
-                {% for skill, list in resume.skills %}
+                {% for skill, list in content.skills %}
                     <article class="item" id="web">
                         <h3>{{ skill }}</h3>
                         {% for item in list %}
@@ -44,7 +44,7 @@
         <section id="curriculum" class="fullHeight wrapper">
             <h2>Training</h2>
             <div class="flex-big">
-                {% for training in resume.training %}
+                {% for training in content.training %}
                     <article class="item">
                         <h3>{{ training.date }}</h3>
                         <p><strong>{{ training.title }}</strong></p>
@@ -57,7 +57,7 @@
         <section id="experiences" class="fullHeight wrapper">
             <h2>Experiences</h2>
             <div class="flex-big">
-                {% for experience in resume.experiences %}
+                {% for experience in content.experiences %}
                     <article class="item">
                         <h3>{{ experience.date }}</h3>
                         <p><strong>{{ experience.title }}</strong></p>
@@ -70,7 +70,7 @@
         <section id="realisations" class="fullHeight wrapper">
             <h2>Realisations</h2>
             <div class="flex-big">
-                {% for realisation in resume.realisations %}
+                {% for realisation in content.realisations %}
                     <article class="item">
                         <h3>{{ realisation.title }}</h3>
                         <p><em>{{ realisation.title }}</em></p>
@@ -83,7 +83,7 @@
             <h2>Contact</h2>
             <article>
                 <img class="profile" src="{{ asset('build/P1060516_crop.JPG') }}" alt="Xavier Laviron" title="Xavier Laviron">
-                <p>{{ resume.contact.mail }}</p>
+                <p>{{ content.contact.mail }}</p>
             </article>
         </section>
     </section>

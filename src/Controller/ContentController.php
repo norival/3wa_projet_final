@@ -36,11 +36,8 @@ class ContentController extends AbstractController
             throw $this->createNotFoundException('This page does not exist');
         }
 
-        dump($content->getContent());
-
         return $this->render("content/$route.html.twig", [
-            'content'         => $content,
-            'resume'          => $content->getContent()['resume'],
+            'content' => $content->getContent(),
         ]);
     }
 

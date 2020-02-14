@@ -17,63 +17,63 @@ class ContentFixtures extends Fixture
         $content->setRoute('cv');
         $content->setCreatedAt(date_create());
         $content->setContent([
-            'title'       => 'Xavier Laviron',
-            'subtitle'    => 'Fullstack web developer',
-            'resume'      => [
-                'skills' => [
-                    'Web' => [
-                        'php',
-                        'mysql',
-                        'html',
-                    ],
-                    'Technical' => [
-                        'R',
-                        'LaTeX',
-                    ],
+            'informations' => [
+                'title'    => 'Xavier Laviron',
+                'subtitle' => 'Fullstack web developer',
+            ],
+            'skills' => [
+                'Web' => [
+                    'php',
+                    'mysql',
+                    'html',
                 ],
-                'experiences' => [
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First experience',
-                        'place'   => 'First experience place',
-                        'content' => 'First experience content',
-                    ],
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First experience',
-                        'place'   => 'First experience place',
-                        'content' => 'First experience content',
-                    ],
+                'Technical' => [
+                    'R',
+                    'LaTeX',
                 ],
-                'training' => [
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First training',
-                        'place'   => 'First training place',
-                        'content' => 'First training content',
-                    ],
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First training',
-                        'place'   => 'First training place',
-                        'content' => 'First training content',
-                    ],
+            ],
+            'experiences' => [
+                [
+                    'date'    => '2019',
+                    'title'   => 'First experience',
+                    'place'   => 'First experience place',
+                    'content' => 'First experience content',
                 ],
-                'realisations' => [
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First project',
-                        'content' => 'First project content',
-                    ],
-                    [
-                        'date'    => '2019',
-                        'title'   => 'First project',
-                        'content' => 'First project content',
-                    ],
+                [
+                    'date'    => '2019',
+                    'title'   => 'First experience',
+                    'place'   => 'First experience place',
+                    'content' => 'First experience content',
                 ],
-                'contact' => [
-                    'mail' => 'xavier@norival.dev',
+            ],
+            'training' => [
+                [
+                    'date'    => '2019',
+                    'title'   => 'First training',
+                    'place'   => 'First training place',
+                    'content' => 'First training content',
                 ],
+                [
+                    'date'    => '2019',
+                    'title'   => 'First training',
+                    'place'   => 'First training place',
+                    'content' => 'First training content',
+                ],
+            ],
+            'realisations' => [
+                [
+                    'date'    => '2019',
+                    'title'   => 'First project',
+                    'content' => 'First project content',
+                ],
+                [
+                    'date'    => '2019',
+                    'title'   => 'First project',
+                    'content' => 'First project content',
+                ],
+            ],
+            'contact' => [
+                'mail' => 'xavier@norival.dev',
             ],
         ]);
         $manager->persist($content);
@@ -83,7 +83,10 @@ class ContentFixtures extends Fixture
         $content->setRoute('projects');
         $content->setCreatedAt(date_create());
         $content->setContent([
-            'Projects' => [
+            'informations' => [
+                'title'   => 'My projects',
+            ],
+            'projects' => [
                 [
                     'title'   => 'First project',
                     'content' => 'First project',
