@@ -23,6 +23,7 @@ class ViewController extends AbstractController
         dump($content);
 
         return $this->render("view/$name.html.twig", [
+            'title'   => $view->getTitle(),
             'content' => $content,
         ]);
     }
