@@ -11,16 +11,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ViewController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
-     * @Route("/{locale}/{name}", name="view")
+     * @Route("/{locale}/{name}", name="view", requirements={"locale"="[a-z]{2}"})
      */
-    public function index(EntityManagerInterface $em, string $locale, string $name)
+    public function index(string $locale, string $name)
     {
         // get the view from the db
-        $view = $em->getRepository(View::class)->findOneBy(['name' => $name]);
+        $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
 
         // get the content needed to render the view from the db
-        $content = $em->getRepository(Content::class)->findBy([
+        $content = $this->em->getRepository(Content::class)->findBy([
             'type' => $view->getContentType(),
         ]);
 
