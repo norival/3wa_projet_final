@@ -7,6 +7,7 @@ use App\Entity\View;
 use App\Model\ViewModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ViewController extends AbstractController
@@ -41,4 +42,24 @@ class ViewController extends AbstractController
             'viewModel' => $viewModel,
         ]);
     }
+
+    /**
+     * @Route("/admin/list-view", name="view_list", methods={"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function list()
+    {
+        $views = $this->em->getRepository(View::class)->findAll();
+
+        foreach ($views as $view) {
+            $titles[] = [
+                'name'  => $view->getName(),
+                'title' => $view->getTitle(),
+            ];
+        }
+
+        return new JsonResponse($titles);
+    }
+
 }
