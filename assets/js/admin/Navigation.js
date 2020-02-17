@@ -15,7 +15,7 @@ export class Navigation {
         this.contentList.addEventListener('click', this.onClickContent.bind(this));
 
         // get content information from database and build content list
-        fetch('admin/list-content')
+        fetch('admin/list-view')
             .then(response => response.json())
             .then(contentList => {
                 contentList.forEach((content) => {
@@ -24,7 +24,7 @@ export class Navigation {
                     let a  = document.createElement('a');
                     a.href = '#';
                     a.text = content.title;
-                    a.dataset.route = content.route;
+                    a.dataset.name = content.name;
                     li.appendChild(a);
 
                     // append element to list
