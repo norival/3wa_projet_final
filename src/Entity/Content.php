@@ -105,4 +105,14 @@ class Content
 
         return $this;
     }
+
+    public function __get(string $name)
+    {
+        return $this->content[$name];
+    }
+
+    public function __isset(string $name)
+    {
+        return array_key_exists($name, $this->content);
+    }
 }
