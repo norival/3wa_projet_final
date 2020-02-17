@@ -13,9 +13,13 @@ class ViewFixtures extends Fixture
         // $product = new Product();
         $view = new View();
         $view->setName('cv');
+        $view->setTitle('Xavier Laviron');
         $view->setCreatedAt(date_create());
         $view->setContentType([
+            'cv_header',
             'skill',
+            'training',
+            'realisation',
             'experience',
         ]);
         $manager->persist($view);
