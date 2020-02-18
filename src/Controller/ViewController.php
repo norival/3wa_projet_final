@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use App\Entity\View;
+use App\Form\ViewType;
 use App\Model\ViewModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,4 +63,27 @@ class ViewController extends AbstractController
         return new JsonResponse($titles);
     }
 
+    /**
+     * getForm
+     *
+     * Get the view form to render it in the javascript admin
+     *
+     * @Route("/admin/view/form/{name}", name="view_get_form", methods={"GET"})
+     *
+     * @param  string $name
+     * @return Response
+     */
+    public function getForm(string $name)
+    {
+        // get the view object
+        $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
+
+        // create a form
+        $form = $this->createForm(ViewType::class, $view);
+
+        // render the form from template and send the response
+        return $this->render("view/form.html.twig", [
+            'form' => $form->createView(),
+        ]);
+    }
 }
