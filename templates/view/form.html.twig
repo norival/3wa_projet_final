@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+<fieldset>
+    <h3>Informations</h3>
+    <ul>
+        <li>{{ form_row(form.name) }}</li>
+        <li>{{ form_row(form.title) }}</li>
+    </ul>
+</fieldset>
+<fieldset>
+    <h3>Content types</h3>
+    <ul>
+        {% for contentType in form.content_type %}
+            <li>
+                {{ form_row(contentType) }}
+            </li>
+        {% endfor %}
+    </ul>
+    <ul>
+        <li><button>Add content type</button></li>
+    </ul>
+</fieldset>
+<ul>
+    <li><button>Save</button></li>
+    <li><button>Cancel</button></li>
+</ul>
+{{ form_end(form, { 'render_rest': false }) }}
