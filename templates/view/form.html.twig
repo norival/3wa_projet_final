@@ -8,19 +8,19 @@
 </fieldset>
 <fieldset>
     <h3>Content types</h3>
-    <ul>
+    <ul id="contentTypeList">
         {% for contentType in form.content_type %}
             <li>
-                {{ form_row(contentType) }}
+                {{ form_row(contentType) }} <button></button>
             </li>
         {% endfor %}
     </ul>
     <ul>
-        <li><button>Add content type</button></li>
+        <li><button id="addContentType">Add content type</button></li>
     </ul>
 </fieldset>
 <ul>
-    <li><button>Save</button></li>
-    <li><button>Cancel</button></li>
+    <li><button id="submitButton">Save</button></li>
+    <li><button id="cancelButton">Cancel</button></li>
 </ul>
 {{ form_end(form, { 'render_rest': false }) }}

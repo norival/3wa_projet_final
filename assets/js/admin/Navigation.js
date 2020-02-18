@@ -1,4 +1,5 @@
 // import {Form} from './Form';
+import {ViewForm} from './ViewForm';
 
 export class Navigation {
     constructor(adminOutput)
@@ -40,8 +41,12 @@ export class Navigation {
      */
     onClickView(event)
     {
+        const viewForm = new ViewForm();
+
         fetch('/admin/view/form/' + event.target.dataset.name)
             .then(response => response.text())
-            .then(text     => this.adminOutput.innerHTML = text);
+            .then(form     => {
+                viewForm.bind(form, this.adminOutput);
+            });
     }
 }
