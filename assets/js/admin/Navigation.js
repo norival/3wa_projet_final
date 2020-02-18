@@ -1,51 +1,47 @@
-import {Form} from './Form';
+// import {Form} from './Form';
 
 export class Navigation {
     constructor(adminOutput)
     {
         // get the DOM elements
         this.nav  = document.getElementById('admin-navigation');
-        this.contentList = document.getElementById('content-list');
+        this.viewList = document.getElementById('view-list');
         this.adminOutput = adminOutput;
 
         // empty contentList
-        this.contentList.innerHTML = '';
+        this.viewList.innerHTML = '';
 
         // add event listener on content list
-        this.contentList.addEventListener('click', this.onClickContent.bind(this));
+        this.viewList.addEventListener('click', this.onClickView.bind(this));
 
         // get content information from database and build content list
         fetch('admin/list-view')
             .then(response => response.json())
-            .then(contentList => {
-                contentList.forEach((content) => {
+            .then(viewList => {
+                viewList.forEach((view) => {
                     // create list item
                     let li = document.createElement('li');
                     let a  = document.createElement('a');
                     a.href = '#';
-                    a.text = content.title;
-                    a.dataset.name = content.name;
+                    a.text = view.title;
+                    a.dataset.name = view.name;
                     li.appendChild(a);
 
                     // append element to list
-                    this.contentList.appendChild(li);
+                    this.viewList.appendChild(li);
                 });
             });
     }
 
-    onClickContent(event)
+    /**
+     * Handle click on navigation item
+     *
+     * @returns {undefined}
+     */
+    onClickView(event)
     {
-        // this method query the website to get the content of the selected
-        // page and then build a form
-        // const form = new Form();
-
-        fetch('/admin/content/form/' + event.target.dataset.route)
+        fetch('/admin/view/form/' + event.target.dataset.name)
             .then(response => response.text())
-            .then(text => {
-                this.adminOutput.innerHTML = text;
-            });
-            // .then(response => response.json())
-            // .then(content  => form.build(content))
-            // .then(form     => this.adminOutput.appendChild(form.form));
+            .then(text     => this.adminOutput.innerHTML = text);
     }
 }
