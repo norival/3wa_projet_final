@@ -42,7 +42,7 @@ export class ViewForm {
 
     build(data)
     {
-        console.log(data);
+        // console.log(data);
         let informations = this.createInformationFields('Informations', {
             'name':  data.name,
             'title': data.title
@@ -115,6 +115,7 @@ export class ViewForm {
 
     onClickAddContentType(event)
     {
+        // TODO Add a new content_type on the server
         event.preventDefault();
         let li    = document.createElement('li');
         let input = document.createElement('input');

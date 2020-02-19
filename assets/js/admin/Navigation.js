@@ -1,12 +1,14 @@
 // import {Form} from './Form';
+import {Content} from './Content';
 import {ViewForm} from './ViewForm';
 
 export class Navigation {
     constructor(adminOutput)
     {
         // get the DOM elements
-        this.nav  = document.getElementById('admin-navigation');
-        this.viewList = document.getElementById('view-list');
+        this.nav         = document.getElementById('admin-navigation');
+        this.viewList    = document.getElementById('view-list');
+        this.content     = document.getElementById('content');
         this.adminOutput = adminOutput;
 
         // empty contentList
@@ -14,6 +16,7 @@ export class Navigation {
 
         // add event listener on content list
         this.viewList.addEventListener('click', this.onClickView.bind(this));
+        this.content.addEventListener('click', this.onClickContent.bind(this));
 
         // get content information from database and build content list
         fetch('admin/list-view')
@@ -32,6 +35,19 @@ export class Navigation {
                     this.viewList.appendChild(li);
                 });
             });
+    }
+
+    /**
+     * Handle click on Content menu entry
+     *
+     * @returns {undefined}
+     */
+    onClickContent(event)
+    {
+        event.preventDefault();
+
+        const content = new Content(this.adminOutput);
+        content.list();
     }
 
     /**
