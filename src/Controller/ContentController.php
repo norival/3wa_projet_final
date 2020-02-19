@@ -103,22 +103,20 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/admin/list-content", name="content_list", methods={"GET"})
+     * @Route("/admin/content", name="content_list", methods={"GET"})
      *
      * @return JsonResponse
      */
     public function list()
     {
-        $contents = $this->em->getRepository(Content::class)->findAll();
+        // TODO get only one column from db
+        $content = $this->em->getRepository(Content::class)->findAll();
 
-        foreach ($contents as $content) {
-            $titles[] = [
-                'title' => $content->getTitle(),
-                'route' => $content->getRoute(),
-            ];
+        foreach ($content as $item) {
+            $names[] = $item->getName();
         }
 
-        return new JsonResponse($titles);
+        return new JsonResponse($names);
     }
 
     public function extra($parameter)
