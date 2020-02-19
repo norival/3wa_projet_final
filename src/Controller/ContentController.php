@@ -8,7 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ContentController extends AbstractController
 {
@@ -94,10 +96,30 @@ class ContentController extends AbstractController
         $content = $this->em->getRepository(Content::class)->findAll();
 
         foreach ($content as $item) {
-            $names[] = $item->getName();
+            $data[] = [
+                'name' => $item->getName(),
+                'type' => $item->getType(),
+                'id'   => $item->getId(),
+            ];
         }
 
-        return new JsonResponse($names);
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/admin/content/{id}", name="content_get", methods={"GET"}, requirements={"id"="\d+"})
+     *
+     * @return Response
+     */
+    public function getById(SerializerInterface $serializer, $id)
+    {
+        // TODO get only one column from db
+        $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
+        \dump($content);
+
+        $json = $serializer->serialize($content, 'json');
+
+        return new Response($json);
     }
 
     public function extra($parameter)
