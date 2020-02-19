@@ -52,25 +52,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/admin/content/{route}", name="content_admin")
-     *
-     * @param  Request $request
-     * @param  string $route
-     * @return Response
-     */
-    public function showAdmin(Request $request, string $route)
-    {
-        $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
-        /* dump($content); */
-
-        return new JsonResponse($content->getContent());
-        /* return $this->render("content/admin.html.twig", [ */
-        /*     'content' => $content, */
-        /*     'route'   => $route, */
-        /* ]); */
-    }
-
-    /**
      * @Route("/admin/content/form/{route}", name="content_get_form", methods={"GET"})
      *
      * @param  Request $request
