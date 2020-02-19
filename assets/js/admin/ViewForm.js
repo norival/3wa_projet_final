@@ -1,3 +1,5 @@
+import {Utils} from '../utils/Utils';
+
 export class ViewForm {
     constructor(parentElement)
     {
@@ -128,6 +130,8 @@ export class ViewForm {
     {
         // TODO: cancel
         event.preventDefault();
+
+        Utils.clear(this.parentElement);
     }
 
     onClickSubmit(event)
@@ -146,7 +150,6 @@ export class ViewForm {
             }
             data[key] = element;
         });
-        console.log(data);
 
         fetch('admin/view/' + this.form.dataset.viewName, {
                 method: 'PUT',
