@@ -1,14 +1,104 @@
 export class ViewForm {
-    constructor()
+    constructor(parentElement)
     {
-        this.form = document.createElement('div');
-        this.form.id = 'viewForm';
+        this.form                  = document.createElement('form');
+        this.form.id               = 'viewForm';
+        this.form.dataset.viewName = 'cv';
+        this.parentElement         = parentElement;
     }
 
-    bind(form, parent)
+    createInformationFields(title, infos)
     {
-        this.form.innerHTML = form;
-        parent.appendChild(this.form);
+        let fieldset = document.createElement('fieldset');
+        let h3 = document.createElement('h3');
+        h3.innerHTML = title;
+
+        fieldset.appendChild(h3);
+
+        let ul = document.createElement('ul');
+        for (const key in infos) {
+            let li = document.createElement('li');
+
+            let input = document.createElement('input');
+            let label = document.createElement('label');
+
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', key);
+            input.value = infos[key];
+            label.innerHTML = key;
+            label.setAttribute('for', key);
+
+            li.appendChild(label);
+            li.appendChild(input);
+            ul.appendChild(li);
+        }
+
+        fieldset.appendChild(ul);
+
+        return fieldset;
+    }
+
+    build(data)
+    {
+        console.log(data);
+        let informations = this.createInformationFields('Informations', {
+            'name':  data.name,
+            'title': data.title
+        });
+        this.form.appendChild(informations);
+
+        let fieldset = document.createElement('fieldset');
+        let h3 = document.createElement('h3');
+        h3.innerHTML = 'Content types';
+        fieldset.appendChild(h3);
+
+        let ul = document.createElement('ul');
+        ul.id = 'contentTypeList';
+        data.contentType.forEach((value) => {
+            let li = document.createElement('li');
+            let input = document.createElement('input');
+            let button = document.createElement('button');
+
+            input.setAttribute('name', 'contentType');
+            input.setAttribute('type', 'text');
+            input.value = value;
+
+            button.innerHTML = 'Remove';
+
+            li.appendChild(input);
+            li.appendChild(button);
+
+            ul.appendChild(li);
+        });
+        fieldset.appendChild(ul);
+        let button = document.createElement('button');
+
+        button.innerHTML = 'Add content type';
+        button.id = 'addContentType';
+        fieldset.appendChild(button);
+
+        this.form.appendChild(fieldset);
+
+        ul = document.createElement('ul');
+        let li = document.createElement('li');
+        button = document.createElement('button');
+        button.innerHTML = 'Save';
+        button.id = 'submitButton';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        li = document.createElement('li');
+        button = document.createElement('button')
+        button.innerHTML = 'Cancel';
+        button.id = 'cancelButton';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        this.form.appendChild(ul);
+
+        this.parentElement.appendChild(this.form);
 
         document
             .getElementById('addContentType')
@@ -23,18 +113,15 @@ export class ViewForm {
 
     onClickAddContentType(event)
     {
-        // TODO: handle click on addContentType button
         event.preventDefault();
         let li    = document.createElement('li');
         let input = document.createElement('input');
 
         input.setAttribute('type', 'text');
-        input.setAttribute('name', 'view[content_type][]');
+        input.setAttribute('name', 'contentType');
 
         li.appendChild(input);
         document.getElementById('contentTypeList').appendChild(li);
-
-        console.log('caca');
     }
 
     onClickCancel(event)
@@ -45,7 +132,35 @@ export class ViewForm {
 
     onClickSubmit(event)
     {
-        // TODO: submit the form
+        // TODO Validation du formulaire
         event.preventDefault();
+
+        const formData = new FormData(this.form);
+        const data = {};
+
+        data['content_type'] = [];
+        formData.forEach((element, key) => {
+            if (key === 'contentType') {
+                data['content_type'].push(element);
+                return;
+            }
+            data[key] = element;
+        });
+        console.log(data);
+
+        fetch('admin/view/' + this.form.dataset.viewName, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                console.log(JSON.parse(json))
+            })
     }
 }

@@ -41,12 +41,12 @@ export class Navigation {
      */
     onClickView(event)
     {
-        const viewForm = new ViewForm();
+        const viewForm = new ViewForm(this.adminOutput);
 
         fetch('/admin/view/form/' + event.target.dataset.name)
-            .then(response => response.text())
-            .then(form     => {
-                viewForm.bind(form, this.adminOutput);
-            });
+            .then(response => response.json())
+            .then(json => {
+                viewForm.build(JSON.parse(json));
+            })
     }
 }
