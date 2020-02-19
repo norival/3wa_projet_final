@@ -13,14 +13,7 @@ class AdminController extends AbstractController
      */
     public function index()
     {
-        // get entity manager
-        $em = $this->getDoctrine()->getManager();
-
-        $content = $em->getRepository(Content::class)->findAll();
-        dump($content);
         return $this->render('admin/index.html.twig', [
-            'content'         => $content,
-            'controller_name' => 'AdminController',
         ]);
     }
 }
