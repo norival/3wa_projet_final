@@ -30,7 +30,8 @@ class ViewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => View::class,
+            'data_class'      => View::class,
+            'csrf_protection' => false,
         ]);
     }
 }
