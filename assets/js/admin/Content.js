@@ -45,13 +45,118 @@ export class Content {
             return 0;
         }
 
-        console.log(event.target.dataset.contentId);
-
         fetch('/admin/content/' + event.target.dataset.contentId)
             .then(response => response.json())
             .then(data => {
                 // TODO build a form in a modal window
-                console.log(data);
+                this.buildForm(data);
             })
+    }
+
+    onClickSubmit(event)
+    {
+        // TODO submit the form
+    }
+
+    onClickCancel(event)
+    {
+        // TODO cancel and clear form
+    }
+
+    buildForm(data)
+    {
+        const form = document.createElement('form');
+
+        let fieldset = document.createElement('fieldset');
+        let h3 = document.createElement('h3');
+
+        h3.innerHTML = 'Informations';
+        fieldset.appendChild(h3);
+
+        let ul = document.createElement('ul');
+
+        let li    = document.createElement('li');
+        let input = document.createElement('input');
+        let label = document.createElement('label');
+
+        label.setAttribute('for', 'name');
+        label.innerHTML = 'Name';
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'name');
+        input.value = data.name;
+
+        li.appendChild(label);
+        li.appendChild(input);
+        ul.appendChild(li);
+
+        li    = document.createElement('li');
+        input = document.createElement('input');
+        label = document.createElement('label');
+
+        label.setAttribute('for', 'type');
+        label.innerHTML = 'Type';
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'type');
+        input.value = data.type;
+
+        li.appendChild(label);
+        li.appendChild(input);
+        ul.appendChild(li);
+
+        fieldset.appendChild(ul);
+
+        form.appendChild(fieldset);
+
+
+        fieldset = document.createElement('fieldset');
+        h3 = document.createElement('h3');
+
+        h3.innerHTML = 'Content';
+        fieldset.appendChild(h3);
+
+        ul = document.createElement('ul');
+
+        for (let property in data.content) {
+            let li    = document.createElement('li');
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+
+            label.innerHTML = property;
+            label.setAttribute('for', property);
+
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', property);
+            input.value = data.content[property];
+            
+            li.appendChild(label);
+            li.appendChild(input);
+
+            ul.appendChild(li);
+        }
+
+        fieldset.appendChild(ul);
+        form.appendChild(fieldset);
+
+        let button = document.createElement('button');
+        ul = document.createElement('ul');
+        li = document.createElement('li');
+
+        button.innerHTML = 'Save';
+        button.id = 'submitButton';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        button = document.createElement('button');
+        li = document.createElement('li');
+
+        button.innerHTML = 'Cancel';
+        button.id = 'cancelButton';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        form.appendChild(ul);
+        this.parentElement.appendChild(form);
     }
 }
