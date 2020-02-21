@@ -64,7 +64,7 @@ export class Content {
         // TODO submit the form
         event.preventDefault();
 
-        const formData = new FormData(document.getElementById('contentForm'));
+        const formData = new FormData(document.querySelector('#contentForm form'));
         const data     = {};
 
         data['content'] = {}
@@ -100,16 +100,17 @@ export class Content {
 
     onClickCancel(event)
     {
-        // TODO cancel and clear form
         event.preventDefault();
 
-        Utils.clear(this.parentElement);
+        this.parentElement.removeChild(document.getElementById('contentForm'));
     }
 
     buildForm(data)
     {
+        const div  = document.createElement('div');
         const form = document.createElement('form');
-        form.id = 'contentForm';
+
+        div.id  = 'contentForm';
 
         let fieldset = document.createElement('fieldset');
         let h3 = document.createElement('h3');
@@ -208,7 +209,8 @@ export class Content {
         input.value = data.id;
 
         form.appendChild(input);
+        div.appendChild(form);
 
-        this.parentElement.appendChild(form);
+        this.parentElement.appendChild(div);
     }
 }
