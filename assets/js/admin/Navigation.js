@@ -1,4 +1,5 @@
 // import {Form} from './Form';
+import {Assets} from './Assets';
 import {Content} from './Content';
 import {ViewForm} from './ViewForm';
 
@@ -9,6 +10,7 @@ export class Navigation {
         this.nav         = document.getElementById('admin-navigation');
         this.viewList    = document.getElementById('view-list');
         this.content     = document.getElementById('content');
+        this.assetsLink  = document.getElementById('assets');
         this.adminOutput = adminOutput;
 
         // empty contentList
@@ -17,6 +19,7 @@ export class Navigation {
         // add event listener on content list
         this.viewList.addEventListener('click', this.onClickView.bind(this));
         this.content.addEventListener('click', this.onClickContent.bind(this));
+        this.assetsLink.addEventListener('click', this.onClickAssets.bind(this));
 
         // get content information from database and build content list
         fetch('admin/list-view')
@@ -35,6 +38,14 @@ export class Navigation {
                     this.viewList.appendChild(li);
                 });
             });
+    }
+
+    onClickAssets(event)
+    {
+        event.preventDefault();
+
+        const assets = new Assets(this.adminOutput);
+        assets.list();
     }
 
     /**
