@@ -67,7 +67,7 @@ export class Content {
         const formData = new FormData(document.querySelector('#contentForm form'));
         const data     = {};
 
-        data['content'] = {}
+        data['content'] = {};
         formData.forEach((element, key) => {
             if (key.match(/^content_/g)) {
                 data['content'][key.substring(8)] = element;
@@ -95,6 +95,7 @@ export class Content {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
                 console.log(json)
+                this.clearForm();
             })
     }
 
@@ -102,7 +103,7 @@ export class Content {
     {
         event.preventDefault();
 
-        this.parentElement.removeChild(document.getElementById('contentForm'));
+        this.clearForm();
     }
 
     buildForm(data)
@@ -212,5 +213,10 @@ export class Content {
         div.appendChild(form);
 
         this.parentElement.appendChild(div);
+    }
+
+    clearForm()
+    {
+        this.parentElement.removeChild(document.getElementById('contentForm'));
     }
 }
