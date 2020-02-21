@@ -165,6 +165,12 @@ export class ViewForm {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
                 console.log(JSON.parse(json))
+                this.clearForm();
             })
+    }
+
+    clearForm()
+    {
+        this.parentElement.removeChild(document.getElementById('viewForm'));
     }
 }
