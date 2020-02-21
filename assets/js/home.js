@@ -26,12 +26,4 @@ import '../css/home.scss';
 // }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('caca');
-
-    // document.addEventListener('scroll', onScrollDocument);
-    let canvas = document.querySelector('.lines');
-    let ctx = canvas.getContext('2d');
-
-    ctx.fillStyle = 'orange';
-    ctx.fillRect(10, 10, 100, 50);
 })
