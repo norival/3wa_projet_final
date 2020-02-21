@@ -50,22 +50,66 @@ export class Content {
             .then(data => {
                 // TODO build a form in a modal window
                 this.buildForm(data);
+                document
+                    .getElementById('submitButton')
+                    .addEventListener('click', this.onClickSubmit.bind(this));
+                document
+                    .getElementById('cancelButton')
+                    .addEventListener('click', this.onClickCancel.bind(this));
             })
     }
 
     onClickSubmit(event)
     {
         // TODO submit the form
+        event.preventDefault();
+
+        const formData = new FormData(document.getElementById('contentForm'));
+        const data     = {};
+
+        data['content'] = {}
+        formData.forEach((element, key) => {
+            if (key.match(/^content_/g)) {
+                data['content'][key.substring(8)] = element;
+                return;
+            }
+
+            if (key === 'contentId') {
+                // do not send contentId hidden field
+                return;
+            }
+
+            data[key] = element;
+        });
+
+        fetch('admin/content/' + document.querySelector('#contentForm [name="contentId"]').value, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                console.log(json)
+            })
     }
 
     onClickCancel(event)
     {
         // TODO cancel and clear form
+        event.preventDefault();
+
+        Utils.clear(this.parentElement);
     }
 
     buildForm(data)
     {
         const form = document.createElement('form');
+        form.id = 'contentForm';
 
         let fieldset = document.createElement('fieldset');
         let h3 = document.createElement('h3');
@@ -122,10 +166,10 @@ export class Content {
             let input = document.createElement('input');
 
             label.innerHTML = property;
-            label.setAttribute('for', property);
+            label.setAttribute('for', `content_${property}`);
 
             input.setAttribute('type', 'text');
-            input.setAttribute('name', property);
+            input.setAttribute('name', `content_${property}`);
             input.value = data.content[property];
             
             li.appendChild(label);
