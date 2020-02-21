@@ -22,7 +22,7 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/{route}", name="content")
+     * @Route("/content/{route}", name="content")
      *
      * @param  Request $request
      * @param  string $route
