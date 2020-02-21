@@ -157,6 +157,14 @@ export class Content {
         ul.appendChild(li);
 
         form.appendChild(ul);
+
+        input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'contentId');
+        input.value = data.id;
+
+        form.appendChild(input);
+
         this.parentElement.appendChild(form);
     }
 }
