@@ -99,8 +99,6 @@ class ViewController extends AbstractController
         $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
         $form = $this->createForm(ViewType::class, $view);
 
-        /* $data = json_decode($request->getContent(), true); */
-        dump(json_decode($request->getContent(), true));
         $data = json_decode($request->getContent(), true);
         $form->submit($data, false);
 
