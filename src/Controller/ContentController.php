@@ -71,21 +71,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/{route}", name="content_update", methods={"POST"})
-     *
-     * @param  Request $request
-     * @param  string $route
-     * @return Response
-     */
-    public function update(Request $request, string $route)
-    {
-        $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
-        $form = $this->createForm(ContentType::class, $content);
-
-        \dump($content);
-    }
-
-    /**
      * @Route("/admin/content", name="content_list", methods={"GET"})
      *
      * @return JsonResponse
@@ -122,8 +107,27 @@ class ContentController extends AbstractController
         return new Response($json);
     }
 
-    public function extra($parameter)
+    /**
+     * @Route("/admin/content/{id}", name="content_update", methods={"PUT"}, requirements={"id"="\d+"})
+     *
+     * @return Response
+     */
+    public function update(Request $request, $id)
     {
-        return new Response($parameter);
+        $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
+        $form = $this->createForm(ContentType::class, $content);
+
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data, false);
+
+        if ($form->isValid()) {
+            // TODO if object has not been modified, do not change updated_at field
+            $content->setUpdatedAt(date_create());
+
+            $this->em->persist($content);
+            $this->em->flush();
+        }
+
+        return new JsonResponse(json_encode('data received'));
     }
 }
