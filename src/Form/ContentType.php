@@ -14,11 +14,11 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class)
-            ->add('route', TextType::class)
-            /* ->add('content', CollectionType::class, [ */
-            /*     'entry_type' => CollectionType::class, */
-            /* ]) */
+            ->add('name', TextType::class)
+            ->add('type', TextType::class)
+            ->add('content', CollectionType::class, [
+                'entry_type' => TextType::class,
+            ])
             ->add('created_at')
             ->add('updated_at')
         ;
@@ -27,7 +27,8 @@ class ContentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Content::class,
+            'csrf_protection' => false,
+            'data_class'      => Content::class,
         ]);
     }
 }
