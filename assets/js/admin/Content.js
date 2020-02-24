@@ -20,21 +20,49 @@ export class Content {
             .then(data => {
                 Utils.clear(this.parentElement);
 
-                const ul = document.createElement('ul');
+                const table = document.createElement('table');
+                const tbody = document.createElement('tbody');
+
+                const thead = document.createElement('thead');
+                let th      = document.createElement('th');
+
+                th.innerHTML = 'Name';
+                thead.appendChild(th);
+
+                th = document.createElement('th');
+                th.innerHTML = 'Type';
+                thead.appendChild(th);
+
+                table.appendChild(thead);
+
                 data.forEach(element => {
-                    let li = document.createElement('li');
+                    let tr = document.createElement('tr');
+                    let td = document.createElement('td');
                     let a  = document.createElement('a');
 
-                    a.text              = `${element.name} (${element.type})`;
+                    a.text              = element.name;
                     a.href              = '#';
                     a.dataset.contentId = element.id;
 
-                    li.appendChild(a)
-                    ul.appendChild(li);
-                });
-                ul.addEventListener('click', this.onClickContent.bind(this));
+                    td.appendChild(a)
+                    tr.appendChild(td);
 
-                this.parentElement.appendChild(ul);
+                    td = document.createElement('td');
+                    a  = document.createElement('a');
+
+                    a.text              = element.type;
+                    a.href              = '#';
+                    a.dataset.contentId = element.id;
+
+                    td.appendChild(a)
+                    tr.appendChild(td);
+
+                    tbody.appendChild(tr);
+                });
+
+                table.addEventListener('click', this.onClickContent.bind(this));
+                table.appendChild(tbody);
+                this.parentElement.appendChild(table);
             })
     }
 

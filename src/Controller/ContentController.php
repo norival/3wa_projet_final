@@ -82,9 +82,10 @@ class ContentController extends AbstractController
 
         foreach ($content as $item) {
             $data[] = [
-                'name' => $item->getName(),
-                'type' => $item->getType(),
-                'id'   => $item->getId(),
+                'name'       => $item->getName(),
+                'type'       => $item->getType(),
+                'id'         => $item->getId(),
+                'created_at' => $item->getCreatedAt(),
             ];
         }
 
