@@ -3,7 +3,6 @@ import {Assets} from './Assets';
 import {Content} from './Content';
 import {Utils} from '../utils/Utils';
 import {View} from './View';
-import {ViewForm} from './ViewForm';
 
 export class Navigation {
     constructor(adminOutput)
@@ -14,7 +13,7 @@ export class Navigation {
         this.content     = document.getElementById('content');
         this.assetsLink  = document.getElementById('assets');
         this.adminOutput = adminOutput;
-        this.view        = new View(this.adminOutput);
+        this.view        = new View();
 
         // empty contentList
         this.viewList.innerHTML = '';
@@ -56,14 +55,10 @@ export class Navigation {
      */
     onClickView(event)
     {
+        event.preventDefault();
+
         Utils.clear(this.adminOutput);
 
-        const viewForm = new ViewForm(this.adminOutput);
-
-        fetch('/admin/view/form/' + event.target.dataset.name)
-            .then(response => response.json())
-            .then(json => {
-                viewForm.build(JSON.parse(json));
-            })
+        this.view.buildForm(this.adminOutput);
     }
 }
