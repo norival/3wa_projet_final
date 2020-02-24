@@ -1,6 +1,7 @@
 // import {Form} from './Form';
 import {Assets} from './Assets';
 import {Content} from './Content';
+import {Utils} from '../utils/Utils';
 import {ViewForm} from './ViewForm';
 
 export class Navigation {
@@ -68,6 +69,8 @@ export class Navigation {
      */
     onClickView(event)
     {
+        Utils.clear(this.adminOutput);
+
         const viewForm = new ViewForm(this.adminOutput);
 
         fetch('/admin/view/form/' + event.target.dataset.name)
