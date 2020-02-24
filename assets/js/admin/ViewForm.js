@@ -64,11 +64,15 @@ export class ViewForm {
             input.setAttribute('name', 'contentType');
             input.setAttribute('type', 'text');
             input.value = value;
+            input.dataset.contentType = value;
 
             button.innerHTML = 'Remove';
+            button.addEventListener('click', this.onClickRemoveButton.bind(this));
+            button.dataset.contentType = value;
 
             li.appendChild(input);
             li.appendChild(button);
+            li.dataset.contentType = value;
 
             ul.appendChild(li);
         });
@@ -133,6 +137,13 @@ export class ViewForm {
         event.preventDefault();
 
         Utils.clear(this.parentElement);
+    }
+
+    onClickRemoveButton(event)
+    {
+        event.preventDefault();
+
+        document.querySelector(`li[data-content-type="${event.target.dataset.contentType}"]`).remove();
     }
 
     onClickSubmit(event)
