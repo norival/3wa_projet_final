@@ -1,24 +1,26 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-    <main>
-    <nav id="admin-navigation">
-        <ul>
-            <li>
-                Views
-                <ul id="view-list">
-                </ul>
-            </li>
-            <li><a href="#" id="content">Content</a></li>
-            <li><a id="assets" href="#">Assets</a></li>
-            <li>Users</li>
-            <li>Stats</li>
-        </ul>
-    </nav>
-    <div id="admin-main">
-        <p>Welcome to your Admin home page!</p>
+<main>
+    <div class="adminContainer">
+        <nav id="admin-navigation">
+            <ul>
+                <li>
+                    Views
+                    <ul id="view-list">
+                    </ul>
+                </li>
+                <li><a href="#" id="content">Content</a></li>
+                <li><a id="assets" href="#">Assets</a></li>
+                <li>Users</li>
+                <li>Stats</li>
+            </ul>
+        </nav>
+        <div id="admin-main">
+            <p>Welcome to your Admin home page!</p>
+        </div>
     </div>
-    </main>
+</main>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

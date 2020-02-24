@@ -39,7 +39,6 @@ export class View {
             .then(json => {
                 // viewForm.build(JSON.parse(json));
                 const data = JSON.parse(json);
-                console.log(data);
 
                 let fieldset = document.createElement('fieldset');
                 let h3       = document.createElement('h3');
