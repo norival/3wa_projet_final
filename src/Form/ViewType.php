@@ -18,6 +18,7 @@ class ViewType extends AbstractType
             ->add('title', TextType::class)
             ->add('content_type', CollectionType::class, [
                 'entry_type' => TextType::class,
+                'allow_add'  => true,
                 'entry_options' => [
                     'label' => false,
                 ],
