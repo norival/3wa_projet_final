@@ -2,6 +2,7 @@
 import {Assets} from './Assets';
 import {Content} from './Content';
 import {Utils} from '../utils/Utils';
+import {View} from './View';
 import {ViewForm} from './ViewForm';
 
 export class Navigation {
@@ -13,6 +14,7 @@ export class Navigation {
         this.content     = document.getElementById('content');
         this.assetsLink  = document.getElementById('assets');
         this.adminOutput = adminOutput;
+        this.view        = new View(this.adminOutput);
 
         // empty contentList
         this.viewList.innerHTML = '';
@@ -23,22 +25,7 @@ export class Navigation {
         this.assetsLink.addEventListener('click', this.onClickAssets.bind(this));
 
         // get content information from database and build content list
-        fetch('admin/list-view')
-            .then(response => response.json())
-            .then(viewList => {
-                viewList.forEach((view) => {
-                    // create list item
-                    let li = document.createElement('li');
-                    let a  = document.createElement('a');
-                    a.href = '#';
-                    a.text = view.title;
-                    a.dataset.name = view.name;
-                    li.appendChild(a);
-
-                    // append element to list
-                    this.viewList.appendChild(li);
-                });
-            });
+        this.view.list(this.viewList);
     }
 
     onClickAssets(event)
