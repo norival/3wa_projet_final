@@ -12,6 +12,9 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->redirectToRoute('content', ['route' => 'cv']);
+        return $this->redirectToRoute('view', [
+            'locale' => 'fr',
+            'name'   => 'cv',
+        ]);
     }
 }
