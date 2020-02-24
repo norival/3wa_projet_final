@@ -1,5 +1,8 @@
 import {Utils} from '../utils/Utils';
 
+// TODO completion for new content_type fields
+// TODO create a new view
+
 export class ViewForm {
     constructor(parentElement)
     {
@@ -7,6 +10,8 @@ export class ViewForm {
         this.form.id               = 'viewForm';
         this.form.dataset.viewName = 'cv';
         this.parentElement         = parentElement;
+
+        this.contentTypeCounter = 0;
     }
 
     createInformationFields(title, infos)
@@ -75,6 +80,8 @@ export class ViewForm {
             li.dataset.contentType = value;
 
             ul.appendChild(li);
+
+            this.contentTypeCounter++;
         });
         fieldset.appendChild(ul);
         let button = document.createElement('button');
@@ -119,21 +126,29 @@ export class ViewForm {
 
     onClickAddContentType(event)
     {
-        // TODO Add a new content_type on the server
         event.preventDefault();
-        let li    = document.createElement('li');
-        let input = document.createElement('input');
+        let li     = document.createElement('li');
+        let input  = document.createElement('input');
+        let button = document.createElement('button');
 
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'contentType');
 
+        button.innerHTML = 'Remove';
+
+        li.dataset.contentType     = `contentType-${++this.contentTypeCounter}`;
+        button.dataset.contentType = `contentType-${this.contentTypeCounter}`;
+
         li.appendChild(input);
+        li.appendChild(button);
+
+        button.addEventListener('click', this.onClickRemoveButton.bind(this));
+
         document.getElementById('contentTypeList').appendChild(li);
     }
 
     onClickCancel(event)
     {
-        // TODO: cancel
         event.preventDefault();
 
         Utils.clear(this.parentElement);

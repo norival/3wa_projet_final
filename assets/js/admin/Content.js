@@ -1,5 +1,7 @@
 import {Utils} from '../utils/Utils';
 
+// TODO add a new content
+
 export class Content {
     constructor(parentElement)
     {
@@ -48,7 +50,6 @@ export class Content {
         fetch('/admin/content/' + event.target.dataset.contentId)
             .then(response => response.json())
             .then(data => {
-                // TODO build a form in a modal window
                 this.buildForm(data);
                 document
                     .getElementById('submitButton')
@@ -61,7 +62,6 @@ export class Content {
 
     onClickSubmit(event)
     {
-        // TODO submit the form
         event.preventDefault();
 
         const formData = new FormData(document.querySelector('#contentForm form'));
