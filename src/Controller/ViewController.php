@@ -57,6 +57,7 @@ class ViewController extends AbstractController
 
         foreach ($views as $view) {
             $titles[] = [
+                'id'    => $view->getId(),
                 'name'  => $view->getName(),
                 'title' => $view->getTitle(),
             ];
@@ -89,14 +90,14 @@ class ViewController extends AbstractController
      *
      * Update a view
      *
-     * @Route("/admin/view/{name}", name="view_update", methods={"PUT", "PATCH"})
+     * @Route("/admin/view/{id}", name="view_update", methods={"PUT", "PATCH"})
      *
-     * @param  string $name
+     * @param  string $id
      * @return Response
      */
-    public function update(Request $request, string $name)
+    public function update(Request $request, string $id)
     {
-        $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
+        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
         $form = $this->createForm(ViewType::class, $view);
 
         $data = json_decode($request->getContent(), true);
