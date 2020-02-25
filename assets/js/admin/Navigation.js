@@ -9,22 +9,19 @@ export class Navigation {
     {
         // get the DOM elements
         this.nav         = document.getElementById('admin-navigation');
-        this.viewList    = document.getElementById('view-list');
-        this.content     = document.getElementById('content');
+        this.viewLink    = document.getElementById('views');
+        this.contentLink = document.getElementById('content');
         this.assetsLink  = document.getElementById('assets');
         this.adminOutput = adminOutput;
-        this.view        = new View();
-
-        // empty contentList
-        this.viewList.innerHTML = '';
+        this.view        = new View(this.adminOutput);
 
         // add event listener on content list
-        this.viewList.addEventListener('click', this.onClickView.bind(this));
-        this.content.addEventListener('click', this.onClickContent.bind(this));
+        this.viewLink.addEventListener('click', this.onClickView.bind(this));
+        this.contentLink.addEventListener('click', this.onClickContent.bind(this));
         this.assetsLink.addEventListener('click', this.onClickAssets.bind(this));
 
         // get content information from database and build content list
-        this.view.list(this.viewList);
+        // this.view.list(this.viewList);
     }
 
     onClickAssets(event)
@@ -59,6 +56,8 @@ export class Navigation {
 
         Utils.clear(this.adminOutput);
 
-        this.view.buildForm(this.adminOutput);
+        this.view.home(this.adminOutput);
+
+        // this.view.buildForm(this.adminOutput);
     }
 }

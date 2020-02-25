@@ -1,12 +1,13 @@
 import {Utils} from '../utils/Utils';
 
 export class View {
-    constructor()
+    constructor(outputElement)
     {
+        this.outputElement = outputElement;
         this.form          = null;
     }
 
-    list(output)
+    list()
     {
         fetch('admin/list-view')
             .then(response => response.json())
@@ -21,12 +22,32 @@ export class View {
                     a.dataset.name = view.name;
                     a.dataset.id   = view.id
 
+                    a.addEventListener('click', this.onClickView.bind(this));
+
                     li.appendChild(a);
 
                     // append element to list
-                    output.appendChild(li);
+                    this.outputElement.appendChild(li);
                 });
+
             });
+    }
+
+    home(outputElement)
+    {
+        const a = document.createElement('a');
+        const h3 = document.createElement('h3');
+
+        h3.innerHTML = 'List of views';
+        outputElement.appendChild(h3);
+
+        a.classList.add('button');
+        a.text = 'New';
+        a.href = '#';
+        a.addEventListener('click', this.onClickNewView.bind(this));
+        outputElement.appendChild(a);
+
+        this.list(outputElement);
     }
 
     buildForm(outputElement)
@@ -212,5 +233,17 @@ export class View {
                 console.log(JSON.parse(json))
                 this.form.remove();
             })
+    }
+
+    onClickView(event)
+    {
+        event.preventDefault();
+
+        this.buildForm(this.outputElement);
+    }
+
+    onClickNewView(event)
+    {
+        event.preventDefault();
     }
 }
