@@ -73,7 +73,7 @@ class ViewController extends AbstractController
             ];
         }
 
-        return new JsonResponse($titles);
+        return new JsonResponse(\json_encode($titles));
     }
 
     /**
@@ -90,7 +90,7 @@ class ViewController extends AbstractController
     {
         // get the view object
         $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
-        $json = $serializer->serialize($view, 'json');
+        $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
 
         return new JsonResponse($json);
     }

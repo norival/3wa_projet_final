@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ViewRepository")
@@ -15,36 +16,43 @@ class View
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"form"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"form"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"form"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"form"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"form"})
      */
     private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="views")
+     * @Groups({"form"})
      */
     private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true)
+     * @Groups({"form"})
      */
     private $viewContents;
 

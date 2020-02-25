@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ViewContentRepository")
@@ -13,6 +14,7 @@ class ViewContent
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"form"})
      */
     private $id;
 
@@ -25,6 +27,7 @@ class ViewContent
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="viewContents")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"form"})
      */
     private $content;
 
