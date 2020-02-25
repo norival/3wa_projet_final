@@ -19,32 +19,28 @@ class ViewAssetRepository extends ServiceEntityRepository
         parent::__construct($registry, ViewAsset::class);
     }
 
-    // /**
-    //  * @return ViewAsset[] Returns an array of ViewAsset objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /* SELECT v.id, a.name, a.description, a.source */
+    /* FROM view AS v */
+    /* INNER JOIN view_asset AS va ON v.id = va.view_id */
+    /* INNER JOIN asset AS a ON a.id = va.asset_id */
+    /* WHERE v.name = 'cv' */
+    public function findByViewIdJoined($viewId)
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $em = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?ViewAsset
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $em->createQuery(
+            'SELECT
+                a.id,
+                a.name,
+                a.description,
+                a.file_type,
+                a.source,
+                a.created_at
+            FROM App\Entity\ViewAsset va
+            INNER JOIN va.asset a
+            WHERE va.view = :viewId'
+            )->setParameter('viewId', $viewId);
+
+        return $query->getArrayResult();
     }
-    */
 }

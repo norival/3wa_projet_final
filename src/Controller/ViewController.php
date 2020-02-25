@@ -4,12 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use App\Entity\View;
+use App\Entity\ViewAsset;
+use App\Entity\ViewContent;
 use App\Form\ViewType;
+use App\Model\AssetModel;
+use App\Model\ContentModel;
 use App\Model\ViewModel;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,22 +33,26 @@ class ViewController extends AbstractController
      */
     public function index(string $locale, string $name)
     {
+        /* TODO: the join returns an array with the content. It whould be better if it returned
+         * an array of Content objects (for the templates). If it is not possible, try to implement
+         * custom filter/function for twig
+         */
+
         // get the view from the db
         $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
 
-        // get the content needed to render the view from the db
-        $content = $this->em->getRepository(Content::class)->findBy([
-            'type' => $view->getContentType(),
-        ]);
-
-        // create a new ViewModel which is used in the template
-        $viewModel = new ViewModel();
-        // bind content to the ViewModel
-        $viewModel->bindContent($content);
+        // use models to simplify templating
+        $contentModel = new ContentModel(
+            $this->em->getRepository(ViewContent::class)->findByViewIdJoined($view->getId())
+        );
+        $assetModel = new AssetModel(
+            $this->em->getRepository(ViewAsset::class)->findByViewIdJoined($view->getId())
+        );
 
         return $this->render("view/$name.html.twig", [
-            'title'     => $view->getTitle(),
-            'viewModel' => $viewModel,
+            'title'        => $view->getTitle(),
+            'contentModel' => $contentModel,
+            'assetModel'   => $assetModel,
         ]);
     }
 

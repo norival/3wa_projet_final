@@ -23,8 +23,8 @@
 <main>
     <section id="presentation" class="wrapper">
         <div class="neonBox neonText">
-            <h1>{{ viewModel.cv_header[0].title }}</h1>
-            <p>{{ viewModel.cv_header[0].subtitle }}</p>
+            <h1>{{ contentModel.cv_header[0].content.title }}</h1>
+            <p>{{ contentModel.cv_header[0].content.subtitle }}</p>
         </div>
     </section>
     <section class="resume">
@@ -34,9 +34,9 @@
                 <article class="item" id="web">
                     <h3>Web</h3>
                     <ul>
-                        {% for item in viewModel.skill %}
-                            {% if item.section == 'web' %}
-                                <li>{{ item.name }}</li>
+                        {% for item in contentModel.skill %}
+                            {% if item.content.section == 'web' %}
+                                <li>{{ item.content.name }}</li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -44,9 +44,9 @@
                 <article class="item" id="web">
                     <h3>Technical</h3>
                     <ul>
-                        {% for item in viewModel.skill %}
-                            {% if item.section == 'technical' %}
-                                <li>{{ item.name }}</li>
+                        {% for item in contentModel.skill %}
+                            {% if item.content.section == 'technical' %}
+                                <li>{{ item.content.name }}</li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -54,9 +54,9 @@
                 <article class="item" id="web">
                     <h3>Other</h3>
                     <ul>
-                        {% for item in viewModel.skill %}
-                            {% if item.section == 'other' %}
-                                <li>{{ item.name }}</li>
+                        {% for item in contentModel.skill %}
+                            {% if item.content.section == 'other' %}
+                                <li>{{ item.content.name }}</li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -66,12 +66,12 @@
         <section id="curriculum" class="fullHeight wrapper">
             <h2>Training</h2>
             <div class="flex-big">
-                {% for training in viewModel.training|sort((a, b) => a.year <= b.year)  %}
+                {% for training in contentModel.training|sort((a, b) => a.content.year <= b.content.year)  %}
                     <article class="item">
-                        <h3>{{ training.year }}</h3>
-                        <p><strong>{{ training.name }}</strong></p>
-                        <p><em>{{ training.place }}</em></p>
-                        <p>{{ training.description }}</p>
+                        <h3>{{ training.content.year }}</h3>
+                        <p><strong>{{ training.content.name }}</strong></p>
+                        <p><em>{{ training.content.place }}</em></p>
+                        <p>{{ training.content.description }}</p>
                     </article>
                 {% endfor %}
             </div>
@@ -79,14 +79,14 @@
         <section id="experiences" class="fullHeight wrapper">
             <h2>Experiences</h2>
             <div class="flex-big">
-                {% for experience in viewModel.experience|sort((a, b) => a.year_end <= b.year_end) %}
+                {% for experience in contentModel.experience|sort((a, b) => a.content.year_end <= b.content.year_end) %}
                     <article class="item">
                         <h3>
-                            {{ experience.year_start }}{% if experience.year_end %}-{{ experience.year_end }} {% endif %}
+                            {{ experience.content.year_start }}{% if experience.content.year_end %}-{{ experience.content.year_end }} {% endif %}
                         </h3>
-                        <p><strong>{{ experience.name }}</strong></p>
-                        <p><em>{{ experience.place }}</em></p>
-                        <p>{{ experience.description }}</p>
+                        <p><strong>{{ experience.content.name }}</strong></p>
+                        <p><em>{{ experience.content.place }}</em></p>
+                        <p>{{ experience.content.description }}</p>
                     </article>
                 {% endfor %}
             </div>
@@ -94,11 +94,11 @@
         <section id="realisations" class="fullHeight wrapper">
             <h2>Realisations</h2>
             <div class="flex-big">
-                {% for realisation in viewModel.realisation %}
+                {% for realisation in contentModel.realisation %}
                     <article class="item">
-                        <h3>{{ realisation.name }}</h3>
-                        <p><em>{{ realisation.year }}</em></p>
-                        <p>{{ realisation.description }}</p>
+                        <h3>{{ realisation.content.name }}</h3>
+                        <p><em>{{ realisation.content.year }}</em></p>
+                        <p>{{ realisation.content.description }}</p>
                     </article>
                 {% endfor %}
             </div>

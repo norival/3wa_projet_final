@@ -19,32 +19,23 @@ class ViewContentRepository extends ServiceEntityRepository
         parent::__construct($registry, ViewContent::class);
     }
 
-    // /**
-    //  * @return ViewContent[] Returns an array of ViewContent objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByViewIdJoined($viewId)
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $em = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?ViewContent
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $em->createQuery(
+            'SELECT
+                c.id,
+                c.name,
+                c.type,
+                c.content,
+                c.created_at,
+                c.updated_at
+            FROM App\Entity\ViewContent vc
+            INNER JOIN vc.content c
+            WHERE vc.view = :viewId'
+            )->setParameter('viewId', $viewId);
+
+        return $query->getResult();
     }
-    */
 }
