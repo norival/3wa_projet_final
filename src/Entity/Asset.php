@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,21 @@ class Asset
      * @ORM\Column(type="datetime")
      */
     private $created_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="assets")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewAsset", mappedBy="asset")
+     */
+    private $viewAssets;
+
+    public function __construct()
+    {
+        $this->viewAssets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +119,49 @@ class Asset
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ViewAsset[]
+     */
+    public function getViewAssets(): Collection
+    {
+        return $this->viewAssets;
+    }
+
+    public function addViewAsset(ViewAsset $viewAsset): self
+    {
+        if (!$this->viewAssets->contains($viewAsset)) {
+            $this->viewAssets[] = $viewAsset;
+            $viewAsset->setAsset($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewAsset(ViewAsset $viewAsset): self
+    {
+        if ($this->viewAssets->contains($viewAsset)) {
+            $this->viewAssets->removeElement($viewAsset);
+            // set the owning side to null (unless already changed)
+            if ($viewAsset->getAsset() === $this) {
+                $viewAsset->setAsset(null);
+            }
+        }
 
         return $this;
     }

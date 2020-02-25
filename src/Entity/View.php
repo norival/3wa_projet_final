@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,11 +24,6 @@ class View
     private $name;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    private $content_type = [];
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -41,6 +38,27 @@ class View
      */
     private $title;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="views")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true)
+     */
+    private $viewContents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewAsset", mappedBy="view", orphanRemoval=true)
+     */
+    private $viewAssets;
+
+    public function __construct()
+    {
+        $this->viewContents = new ArrayCollection();
+        $this->viewAssets = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,18 +72,6 @@ class View
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getContentType(): ?array
-    {
-        return $this->content_type;
-    }
-
-    public function setContentType(array $content_type): self
-    {
-        $this->content_type = $content_type;
 
         return $this;
     }
@@ -102,6 +108,80 @@ class View
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ViewContent[]
+     */
+    public function getViewContents(): Collection
+    {
+        return $this->viewContents;
+    }
+
+    public function addViewContent(ViewContent $viewContent): self
+    {
+        if (!$this->viewContents->contains($viewContent)) {
+            $this->viewContents[] = $viewContent;
+            $viewContent->setView($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewContent(ViewContent $viewContent): self
+    {
+        if ($this->viewContents->contains($viewContent)) {
+            $this->viewContents->removeElement($viewContent);
+            // set the owning side to null (unless already changed)
+            if ($viewContent->getView() === $this) {
+                $viewContent->setView(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ViewAsset[]
+     */
+    public function getViewAssets(): Collection
+    {
+        return $this->viewAssets;
+    }
+
+    public function addViewAsset(ViewAsset $viewAsset): self
+    {
+        if (!$this->viewAssets->contains($viewAsset)) {
+            $this->viewAssets[] = $viewAsset;
+            $viewAsset->setView($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewAsset(ViewAsset $viewAsset): self
+    {
+        if ($this->viewAssets->contains($viewAsset)) {
+            $this->viewAssets->removeElement($viewAsset);
+            // set the owning side to null (unless already changed)
+            if ($viewAsset->getView() === $this) {
+                $viewAsset->setView(null);
+            }
+        }
 
         return $this;
     }

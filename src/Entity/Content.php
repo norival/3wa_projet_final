@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class Content
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="content")
+     */
+    private $viewContents;
+
+    public function __construct()
+    {
+        $this->viewContents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +126,36 @@ class Content
     public function __isset(string $name)
     {
         return array_key_exists($name, $this->content);
+    }
+
+    /**
+     * @return Collection|ViewContent[]
+     */
+    public function getViewContents(): Collection
+    {
+        return $this->viewContents;
+    }
+
+    public function addViewContent(ViewContent $viewContent): self
+    {
+        if (!$this->viewContents->contains($viewContent)) {
+            $this->viewContents[] = $viewContent;
+            $viewContent->setContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeViewContent(ViewContent $viewContent): self
+    {
+        if ($this->viewContents->contains($viewContent)) {
+            $this->viewContents->removeElement($viewContent);
+            // set the owning side to null (unless already changed)
+            if ($viewContent->getContent() === $this) {
+                $viewContent->setContent(null);
+            }
+        }
+
+        return $this;
     }
 }
