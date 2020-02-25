@@ -32,6 +32,7 @@ class ViewContentFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
+            ContentFixtures::class,
             ViewFixtures::class,
         );
     }
