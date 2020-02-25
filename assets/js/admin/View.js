@@ -11,7 +11,9 @@ export class View {
     {
         fetch('admin/list-view')
             .then(response => response.json())
-            .then(viewList => {
+            .then(json => {
+                const viewList = JSON.parse(json);
+
                 viewList.forEach((view) => {
                     // create list item
                     let li = document.createElement('li');
@@ -36,10 +38,10 @@ export class View {
     home(outputElement)
     {
         const a = document.createElement('a');
-        const h3 = document.createElement('h3');
+        const h2 = document.createElement('h2');
 
-        h3.innerHTML = 'List of views';
-        outputElement.appendChild(h3);
+        h2.innerHTML = 'List of views';
+        outputElement.appendChild(h2);
 
         a.classList.add('button');
         a.text = 'New';
@@ -52,20 +54,25 @@ export class View {
 
     buildForm(outputElement)
     {
-        this.form = document.createElement('form');
+        this.viewDiv             = document.createElement('div');
+        this.form                = document.createElement('form');
         this.form.dataset.viewId = event.target.dataset.id;
 
         fetch('/admin/view/form/' + event.target.dataset.name)
             .then(response => response.json())
             .then(json => {
-                // viewForm.build(JSON.parse(json));
                 const data = JSON.parse(json);
+                console.log(data);
+
+                let h3 = document.createElement('h3');
+                h3.innerHTML = `View: ${data.name}`;
+                this.viewDiv.appendChild(h3);
 
                 let fieldset = document.createElement('fieldset');
-                let h3       = document.createElement('h3');
-                h3.innerHTML = 'Informations';
+                let h4       = document.createElement('h4');
+                h4.innerHTML = 'Informations';
 
-                fieldset.appendChild(h3);
+                fieldset.appendChild(h4);
 
                 let ul = document.createElement('ul');
                 const infos = {'name': data.name, 'title': data.title}
@@ -90,71 +97,73 @@ export class View {
 
                 this.form.appendChild(fieldset);
 
-                fieldset = document.createElement('fieldset');
-                h3       = document.createElement('h3');
+                const table = document.createElement('table');
+                const thead = document.createElement('thead');
+                const tbody = document.createElement('tbody');
 
-                h3.innerHTML = 'Content types';
-                fieldset.appendChild(h3);
+                let tr = document.createElement('tr');
+                let th = document.createElement('th');
 
-                ul = document.createElement('ul');
+                th.innerHTML = 'Name';
+                tr.appendChild(th);
 
-                ul.id = 'contentTypeList';
+                thead.appendChild(tr);
+                table.appendChild(thead);
 
-                data.contentType.forEach((value) => {
-                    let li = document.createElement('li');
-                    let input = document.createElement('input');
-                    let button = document.createElement('button');
+                data.viewContents.forEach((value) => {
+                    let tr = document.createElement('tr');
+                    let td = document.createElement('td');
+                    let a  = document.createElement('a');
 
-                    input.setAttribute('name', 'contentType');
-                    input.setAttribute('type', 'text');
-                    input.value = value;
-                    input.dataset.contentType = value;
+                    a.href              = '#';
+                    a.text              = value.content.name;
+                    a.dataset.contentId = value.content.id;
 
-                    button.innerHTML = 'Remove';
-                    button.addEventListener('click', this.onClickRemoveButton.bind(this));
-                    button.dataset.contentType = value;
-
-                    li.appendChild(input);
-                    li.appendChild(button);
-                    li.dataset.contentType = value;
-
-                    ul.appendChild(li);
-
-                    this.contentTypeCounter++;
+                    td.appendChild(a)
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
                 });
-                fieldset.appendChild(ul);
-                let button = document.createElement('button');
 
-                button.innerHTML = 'Add content type';
-                button.id = 'addContentType';
-                fieldset.appendChild(button);
+                table.appendChild(tbody);
+                this.viewDiv.appendChild(this.form);
 
-                this.form.appendChild(fieldset);
+                h3 = document.createElement('h3');
+                h3.innerHTML = 'Content list';
+                this.viewDiv.appendChild(h3);
+
+                this.viewDiv.appendChild(table);
 
                 ul = document.createElement('ul');
+                ul.id = 'buttonList';
+
                 let li = document.createElement('li');
-                button = document.createElement('button');
+
+                let button       = document.createElement('button');
+                button.id        = 'addContent';
+                button.innerHTML = 'Add content';
+                li.appendChild(button);
+                ul.appendChild(li);
+
+                li               = document.createElement('li');
+                button           = document.createElement('button');
                 button.innerHTML = 'Save';
-                button.id = 'submitButton';
-
+                button.id        = 'submitButton';
                 li.appendChild(button);
                 ul.appendChild(li);
 
-                li = document.createElement('li');
-                button = document.createElement('button')
+                li               = document.createElement('li');
+                button           = document.createElement('button');
                 button.innerHTML = 'Cancel';
-                button.id = 'cancelButton';
-
+                button.id        = 'cancelButton';
                 li.appendChild(button);
                 ul.appendChild(li);
 
-                this.form.appendChild(ul);
-
-                outputElement.appendChild(this.form);
+                this.viewDiv.appendChild(ul);
+                outputElement.appendChild(this.viewDiv);
 
                 document
-                    .getElementById('addContentType')
-                    .addEventListener('click', this.onClickAddContentType.bind(this));
+                    .getElementById('addContent')
+                    .addEventListener('click', this.onClickAddContent.bind(this));
                 document
                     .getElementById('submitButton')
                     .addEventListener('click', this.onClickSubmit.bind(this));
@@ -164,7 +173,7 @@ export class View {
             })
     }
 
-    onClickAddContentType(event)
+    onClickAddContent(event)
     {
         event.preventDefault();
         let li     = document.createElement('li');
@@ -191,7 +200,7 @@ export class View {
     {
         event.preventDefault();
 
-        this.form.remove();
+        this.viewDiv.remove();
     }
 
     onClickRemoveButton(event)
