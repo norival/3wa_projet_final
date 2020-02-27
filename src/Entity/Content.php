@@ -16,23 +16,25 @@ class Content
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form"})
+     * @Groups({"form", "content_form"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form"})
+     * @Groups({"form", "content_form"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"content_form"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="array")
+     * @Groups({"content_form"})
      */
     private $content = [];
 

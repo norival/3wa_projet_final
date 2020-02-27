@@ -103,7 +103,9 @@ class ContentController extends AbstractController
         $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
         \dump($content);
 
-        $json = $serializer->serialize($content, 'json');
+        $json = $serializer->serialize($content, 'json', [
+            'groups' => 'content_form',
+        ]);
 
         return new Response($json);
     }
