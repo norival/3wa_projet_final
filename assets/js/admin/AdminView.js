@@ -1,3 +1,5 @@
+import {Utils} from '../utils/Utils';
+
 export class AdminView {
     constructor()
     {
@@ -72,30 +74,27 @@ export class AdminView {
 
     renderViewList(viewList)
     {
-        // promise.then(viewList => {
-            const ul = this.createElement('ul', null, 'viewList');
+        Utils.clear(this.element);
 
-            viewList.forEach((view) => {
-                // create list item
-                let li = this.createElement('li');
-                let a  = this.createElement('a');
+        const ul = this.createElement('ul', null, 'viewList');
 
-                a.href         = '#';
-                a.text         = view.title;
-                a.dataset.name = view.name;
-                a.dataset.id   = view.id
+        viewList.forEach((view) => {
+            // create list item
+            let li = this.createElement('li');
+            let a  = this.createElement('a');
 
-                // TODO add event listener
-                // a.addEventListener('click', this.onClickView.bind(this));
+            a.href         = '#';
+            a.text         = view.title;
+            a.dataset.name = view.name;
+            a.dataset.id   = view.id
 
-                li.appendChild(a);
+            li.appendChild(a);
 
-                // append element to list
-                ul.appendChild(li);
-            });
+            // append element to list
+            ul.appendChild(li);
+        });
 
-            this.element.appendChild(ul);
-        // });
+        this.element.appendChild(ul);
     }
 
     renderViewForm(viewData)
