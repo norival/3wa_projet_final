@@ -3,9 +3,9 @@ import {Utils} from '../utils/Utils';
 // TODO add a new content
 
 export class Content {
-    constructor(parentElement)
+    constructor(outputElement)
     {
-        this.parentElement = parentElement;
+        this.outputElement = outputElement;
     }
 
     /**
@@ -18,7 +18,7 @@ export class Content {
         fetch('/admin/content')
             .then(response => response.json())
             .then(data => {
-                Utils.clear(this.parentElement);
+                Utils.clear(this.outputElement);
 
                 const table = document.createElement('table');
                 const tbody = document.createElement('tbody');
@@ -62,7 +62,7 @@ export class Content {
 
                 table.addEventListener('click', this.onClickContent.bind(this));
                 table.appendChild(tbody);
-                this.parentElement.appendChild(table);
+                this.outputElement.appendChild(table);
             })
     }
 
@@ -240,11 +240,11 @@ export class Content {
         form.appendChild(input);
         div.appendChild(form);
 
-        this.parentElement.appendChild(div);
+        this.outputElement.appendChild(div);
     }
 
     clearForm()
     {
-        this.parentElement.removeChild(document.getElementById('contentForm'));
+        this.outputElement.removeChild(document.getElementById('contentForm'));
     }
 }
