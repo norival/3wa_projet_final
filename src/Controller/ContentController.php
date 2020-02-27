@@ -89,7 +89,7 @@ class ContentController extends AbstractController
             ];
         }
 
-        return new JsonResponse($data);
+        return new JsonResponse(\json_encode($data));
     }
 
     /**
