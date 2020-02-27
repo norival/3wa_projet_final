@@ -203,6 +203,56 @@ export class AdminView {
         this.getElement('#cancelButton').addEventListener('click', this.onClickCancel);
     }
 
+    renderContentList(contentList)
+    {
+        Utils.clear(this.element);
+
+        const table = this.createElement('table');
+        const tbody = this.createElement('tbody');
+
+        const thead = this.createElement('thead');
+        let th      = this.createElement('th');
+
+        th.innerHTML = 'Name';
+        thead.appendChild(th);
+
+        th = this.createElement('th');
+        th.innerHTML = 'Type';
+        thead.appendChild(th);
+
+        table.appendChild(thead);
+
+        contentList.forEach(element => {
+            let tr = this.createElement('tr');
+            let td = this.createElement('td');
+            let a  = this.createElement('a');
+
+            a.text              = element.name;
+            a.href              = '#';
+            a.dataset.contentId = element.id;
+
+            td.appendChild(a)
+            tr.appendChild(td);
+
+            td = this.createElement('td');
+            a  = this.createElement('a');
+
+            a.text              = element.type;
+            a.href              = '#';
+            a.dataset.contentId = element.id;
+
+            td.appendChild(a)
+            tr.appendChild(td);
+
+            tbody.appendChild(tr);
+        });
+
+        // TODO add event listeners for click events
+        // table.addEventListener('click', this.onClickContent.bind(this));
+        table.appendChild(tbody);
+        this.element.appendChild(table);
+    }
+
 
     /***************************************************************************
      * Methods to bind event Listeners
@@ -233,6 +283,15 @@ export class AdminView {
             event.preventDefault();
 
             handler(event.target.dataset.viewId, this.getViewFormData());
+        });
+    }
+
+    bindListContent(handler)
+    {
+        this.getElement('#content').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
         });
     }
 

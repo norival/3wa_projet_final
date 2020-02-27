@@ -7,10 +7,12 @@ export class AdminController {
 
         // bind event handlers for view events
         this.view.bindListViews(this.handleListViews);
+        this.view.bindListContent(this.handleListContent);
 
         // bind event handlers for model events
         this.model.bindViewListChanged(this.onViewListChanged);
         this.model.bindViewDataChanged(this.onViewDataChanged);
+        this.model.bindContentDataChanged(this.onContentDataChanged);
     }
 
     handleListViews = async () => {
@@ -27,11 +29,20 @@ export class AdminController {
         this.model.submitViewForm(viewId, formData);
     }
 
+    handleListContent = async () => {
+        await this.model.listContent();
+        // this.view.bindClickContent(this.handleClickContent);
+    }
+
     onViewListChanged = (promise) => {
         this.view.renderViewList(promise);
     }
 
     onViewDataChanged = (viewData) => {
         this.view.renderViewForm(viewData);
+    }
+
+    onContentDataChanged = (contentData) => {
+        this.view.renderContentList(contentData);
     }
 }

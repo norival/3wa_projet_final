@@ -33,7 +33,6 @@ export class AdminModel {
 
     submitViewForm(viewId, formData)
     {
-        // TODO submit the form
         console.log(formData);
 
         fetch('admin/view/' + viewId, {
@@ -54,6 +53,16 @@ export class AdminModel {
             })
     }
 
+    async listContent()
+    {
+        await fetch('admin/content')
+            .then(response => response.json())
+            .then(json => JSON.parse(json))
+            .then(contentList => {
+                this.onContentDataChanged(contentList);
+            })
+    }
+
     bindViewListChanged(callback)
     {
         /*
@@ -65,5 +74,10 @@ export class AdminModel {
     bindViewDataChanged(callback)
     {
         this.onViewDataChanged = callback;
+    }
+
+    bindContentDataChanged(callback)
+    {
+        this.onContentDataChanged = callback;
     }
 }
