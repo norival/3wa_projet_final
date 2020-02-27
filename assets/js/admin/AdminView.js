@@ -42,6 +42,29 @@ export class AdminView {
         return document.querySelector(selector);
     }
 
+    getViewFormData()
+    {
+        const contentList = this.getElement('#contentList');
+        const data        = {};
+        const formData    = new FormData(this.getElement('#viewForm'));
+
+        formData.forEach((element, key) => {
+            data[key] = element;
+        });
+
+        data['content'] = [];
+        Array.from(contentList.rows).forEach((tr, row_ind) => {
+            if (row_ind === 0) {
+                return 0;
+            }
+            Array.from(tr.cells).forEach((cell) => {
+                data['content'].push(cell.dataset.contentId);
+            })
+        });
+
+        return data;
+    }
+
 
     /***************************************************************************
      * Methods to render views
@@ -78,7 +101,7 @@ export class AdminView {
     renderViewForm(viewData)
     {
         const viewDiv = this.createElement('div');
-        const form    = this.createElement('form');
+        const form    = this.createElement('form', null, 'viewForm');
 
         let h3       = this.createElement('h3');
         h3.innerHTML = `View: ${viewData.name}`;
@@ -112,7 +135,7 @@ export class AdminView {
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
-        const table = this.createElement('table');
+        const table = this.createElement('table', null, 'contentList');
         const thead = this.createElement('thead');
         const tbody = this.createElement('tbody');
 
@@ -130,9 +153,10 @@ export class AdminView {
             let td = this.createElement('td');
             let a  = this.createElement('a');
 
-            a.href              = '#';
-            a.text              = value.content.name;
-            a.dataset.contentId = value.content.id;
+            a.href               = '#';
+            a.text               = value.content.name;
+            a.dataset.contentId  = value.content.id;
+            td.dataset.contentId = value.content.id;
 
             td.appendChild(a)
             tr.appendChild(td);
@@ -140,6 +164,8 @@ export class AdminView {
         });
 
         table.appendChild(tbody);
+
+        form.dataset.viewId = viewData.id;
         viewDiv.appendChild(form);
 
         h3           = this.createElement('h3');
@@ -160,6 +186,7 @@ export class AdminView {
         li               = this.createElement('li');
         button           = this.createElement('button', null, 'submitButton');
         button.innerHTML = 'Save';
+        button.dataset.viewId = viewData.id;
         li.appendChild(button);
         ul.appendChild(li);
 
@@ -207,12 +234,10 @@ export class AdminView {
 
     bindClickSubmitView(handler)
     {
-        console.log('hello');
         this.getElement('#submitButton').addEventListener('click', event => {
             event.preventDefault();
-            const formData = 'submit the form';
 
-            handler(formData);
+            handler(event.target.dataset.viewId, this.getViewFormData());
         });
     }
 }

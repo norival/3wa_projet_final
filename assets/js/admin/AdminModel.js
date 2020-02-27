@@ -31,10 +31,27 @@ export class AdminModel {
         return this;
     }
 
-    submitViewForm(formData)
+    submitViewForm(viewId, formData)
     {
         // TODO submit the form
         console.log(formData);
+
+        fetch('admin/view/' + viewId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                console.log(json)
+                console.log('data sent')
+                // this.form.remove();
+            })
     }
 
     bindViewListChanged(callback)

@@ -23,8 +23,8 @@ export class AdminController {
         this.view.bindClickSubmitView(this.handleClickSubmitView);
     }
 
-    handleClickSubmitView = (formData) => {
-        this.model.submitViewForm(formData);
+    handleClickSubmitView = (viewId, formData) => {
+        this.model.submitViewForm(viewId, formData);
     }
 
     onViewListChanged = (promise) => {
