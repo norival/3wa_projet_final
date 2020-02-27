@@ -207,7 +207,7 @@ export class AdminView {
     {
         Utils.clear(this.element);
 
-        const table = this.createElement('table');
+        const table = this.createElement('table', null, 'contentList');
         const tbody = this.createElement('tbody');
 
         const thead = this.createElement('thead');
@@ -253,6 +253,111 @@ export class AdminView {
         this.element.appendChild(table);
     }
 
+    renderContentForm(contentData)
+    {
+        const div  = this.createElement('div', null, 'contentForm');
+        const form = this.createElement('form');
+
+        let fieldset = this.createElement('fieldset');
+        let h3 = this.createElement('h3');
+
+        h3.innerHTML = 'Informations';
+        fieldset.appendChild(h3);
+
+        let ul = this.createElement('ul');
+
+        let li    = this.createElement('li');
+        let input = this.createElement('input');
+        let label = this.createElement('label');
+
+        label.setAttribute('for', 'name');
+        label.innerHTML = 'Name';
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'name');
+        input.value = contentData.name;
+
+        li.appendChild(label);
+        li.appendChild(input);
+        ul.appendChild(li);
+
+        li    = this.createElement('li');
+        input = this.createElement('input');
+        label = this.createElement('label');
+
+        label.setAttribute('for', 'type');
+        label.innerHTML = 'Type';
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'type');
+        input.value = contentData.type;
+
+        li.appendChild(label);
+        li.appendChild(input);
+        ul.appendChild(li);
+
+        fieldset.appendChild(ul);
+
+        form.appendChild(fieldset);
+
+        fieldset = this.createElement('fieldset');
+        h3 = this.createElement('h3');
+
+        h3.innerHTML = 'Content';
+        fieldset.appendChild(h3);
+
+        ul = this.createElement('ul');
+
+        for (let property in contentData.content) {
+            let li    = this.createElement('li');
+            let label = this.createElement('label');
+            let input = this.createElement('input');
+
+            label.innerHTML = property;
+            label.setAttribute('for', `content_${property}`);
+
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', `content_${property}`);
+            input.value = contentData.content[property];
+            
+            li.appendChild(label);
+            li.appendChild(input);
+
+            ul.appendChild(li);
+        }
+
+        fieldset.appendChild(ul);
+        form.appendChild(fieldset);
+
+        let button = this.createElement('button', null, 'submitButton');
+        ul = this.createElement('ul');
+        li = this.createElement('li');
+
+        button.innerHTML = 'Save';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        button = this.createElement('button', null, 'cancelButton');
+        li     = this.createElement('li');
+
+        button.innerHTML = 'Cancel';
+
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        form.appendChild(ul);
+
+        input = this.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', 'contentId');
+        input.value = contentData.id;
+
+        form.appendChild(input);
+        div.appendChild(form);
+
+        this.element.appendChild(div);
+    }
+
+
 
     /***************************************************************************
      * Methods to bind event Listeners
@@ -292,6 +397,15 @@ export class AdminView {
             event.preventDefault();
 
             handler();
+        });
+    }
+
+    bindClickContent(handler)
+    {
+        this.getElement('#contentList').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler(event.target.dataset.contentId);
         });
     }
 

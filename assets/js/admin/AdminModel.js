@@ -59,7 +59,23 @@ export class AdminModel {
             .then(response => response.json())
             .then(json => JSON.parse(json))
             .then(contentList => {
-                this.onContentDataChanged(contentList);
+                this.onContentListChanged(contentList);
+            })
+    }
+
+    getContentForm(contentId)
+    {
+        fetch('/admin/content/' + contentId)
+            .then(response => response.json())
+            .then(data => {
+                this.onContentDataChanged(data);
+                // this.buildForm(data);
+                // document
+                //     .getElementById('submitButton')
+                //     .addEventListener('click', this.onClickSubmit.bind(this));
+                // document
+                //     .getElementById('cancelButton')
+                //     .addEventListener('click', this.onClickCancel.bind(this));
             })
     }
 
@@ -74,6 +90,11 @@ export class AdminModel {
     bindViewDataChanged(callback)
     {
         this.onViewDataChanged = callback;
+    }
+
+    bindContentListChanged(callback)
+    {
+        this.onContentListChanged = callback;
     }
 
     bindContentDataChanged(callback)
