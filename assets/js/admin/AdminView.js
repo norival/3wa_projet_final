@@ -100,7 +100,7 @@ export class AdminView {
 
     renderViewForm(viewData)
     {
-        const viewDiv = this.createElement('div');
+        const viewDiv = this.createElement('div', null, 'viewFormOutput');
         const form    = this.createElement('form', null, 'viewForm');
 
         let h3       = this.createElement('h3');
@@ -199,13 +199,9 @@ export class AdminView {
         viewDiv.appendChild(ul);
         this.element.appendChild(viewDiv);
 
-        // TODO add event listeners for addContent and cancel buttons
-        // document
-        //     .getElementById('addContent')
-        //     .addEventListener('click', this.onClickAddContent.bind(this));
-        // document
-        //     .getElementById('cancelButton')
-        //     .addEventListener('click', this.onClickCancel.bind(this));
+        // TODO add event listeners for addContent
+        // this.getElement('#addContent').addEventListener('click', this.onClickAddContent);
+        this.getElement('#cancelButton').addEventListener('click', this.onClickCancel);
     }
 
 
@@ -239,5 +235,15 @@ export class AdminView {
 
             handler(event.target.dataset.viewId, this.getViewFormData());
         });
+    }
+
+
+    /***************************************************************************
+     * Methods to handle view related events
+     **************************************************************************/
+
+    onClickCancel = (event) => {
+        event.preventDefault();
+        this.getElement('#viewFormOutput').remove();
     }
 }
