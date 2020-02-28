@@ -35,10 +35,13 @@ export class AdminController {
         this.view.bindClickContent(this.handleClickContent);
     }
 
-    handleClickContent = (contentId) => {
-        this.model.getContentForm(contentId);
-        // TODO 
-        // this.view.bindClickSubmitContent(this.handleClickSubmitContent)
+    handleClickContent = async (contentId) => {
+        await this.model.getContentForm(contentId);
+        this.view.bindClickSubmitContent(this.handleClickSubmitContent)
+    }
+
+    handleClickSubmitContent = (contentId, formData) => {
+        this.model.submitContentForm(contentId, formData);
     }
 
     onViewListChanged = (promise) => {

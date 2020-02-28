@@ -20,7 +20,6 @@ export class AdminModel {
 
     async getViewForm(viewId)
     {
-        console.log(`getting view form for view: ${viewId}`);
         await fetch('/admin/view/form/' + event.target.dataset.name)
             .then(response => response.json())
             .then(json => JSON.parse(json))
@@ -47,6 +46,7 @@ export class AdminModel {
             .then(json => {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
                 console.log(json)
                 console.log('data sent')
                 // this.form.remove();
@@ -63,19 +63,36 @@ export class AdminModel {
             })
     }
 
-    getContentForm(contentId)
+    async getContentForm(contentId)
     {
-        fetch('/admin/content/' + contentId)
+        await fetch('/admin/content/' + contentId)
             .then(response => response.json())
             .then(data => {
                 this.onContentDataChanged(data);
-                // this.buildForm(data);
-                // document
-                //     .getElementById('submitButton')
-                //     .addEventListener('click', this.onClickSubmit.bind(this));
-                // document
-                //     .getElementById('cancelButton')
-                //     .addEventListener('click', this.onClickCancel.bind(this));
+            })
+    }
+
+    submitContentForm(contentId, formData)
+    {
+        console.log(formData);
+        console.log(contentId);
+
+        fetch('admin/content/' + contentId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
+                console.log(json)
+                console.log('data sent')
+                // this.form.remove();
             })
     }
 

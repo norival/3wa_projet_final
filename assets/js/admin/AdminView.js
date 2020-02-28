@@ -67,6 +67,24 @@ export class AdminView {
         return data;
     }
 
+    getContentFormData()
+    {
+        const formData = new FormData(this.getElement('#contentForm form'));
+        const data     = {};
+
+        data['content'] = {};
+        formData.forEach((element, key) => {
+            if (key.match(/^content_/g)) {
+                data['content'][key.substring(8)] = element;
+                return;
+            }
+
+            data[key] = element;
+        });
+
+        return data;
+    }
+
 
     /***************************************************************************
      * Methods to render views
@@ -205,6 +223,10 @@ export class AdminView {
 
     renderContentList(contentList)
     {
+        /*
+        * TODO Refacto: already building the content list in the view form =>
+        *      make an helper function or sthg like that
+        */
         Utils.clear(this.element);
 
         const table = this.createElement('table', null, 'contentList');
@@ -331,7 +353,8 @@ export class AdminView {
         ul = this.createElement('ul');
         li = this.createElement('li');
 
-        button.innerHTML = 'Save';
+        button.innerHTML         = 'Save';
+        button.dataset.contentId = contentData.id;
 
         li.appendChild(button);
         ul.appendChild(li);
@@ -346,12 +369,6 @@ export class AdminView {
 
         form.appendChild(ul);
 
-        input = this.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', 'contentId');
-        input.value = contentData.id;
-
-        form.appendChild(input);
         div.appendChild(form);
 
         this.element.appendChild(div);
@@ -406,6 +423,15 @@ export class AdminView {
             event.preventDefault();
 
             handler(event.target.dataset.contentId);
+        });
+    }
+
+    bindClickSubmitContent(handler)
+    {
+        this.getElement('#submitButton').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler(event.target.dataset.contentId, this.getContentFormData());
         });
     }
 
