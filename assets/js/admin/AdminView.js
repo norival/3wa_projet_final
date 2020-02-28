@@ -1,4 +1,5 @@
 import {Utils} from '../utils/Utils';
+import {Components} from './Components';
 
 export class AdminView {
     constructor()
@@ -159,7 +160,7 @@ export class AdminView {
         h3.innerHTML = 'Content list';
         viewDiv.appendChild(h3);
 
-        viewDiv.appendChild(this._renderContentList(viewData.viewContents, true));
+        viewDiv.appendChild(Components.contentList(viewData.viewContents, 'contentList', true));
 
         ul = this.createElement('ul', null, 'buttonList');
 
@@ -196,7 +197,7 @@ export class AdminView {
     {
         Utils.clear(this.element);
 
-        this.element.appendChild(this._renderContentList(contentList, false));
+        this.element.appendChild(Components.contentList(contentList, 'contentList', false));
     }
 
     renderContentForm(contentData)
@@ -301,59 +302,6 @@ export class AdminView {
         this.getElement('#cancelButton').addEventListener('click', this.onClickCancel);
     }
 
-
-    _renderContentList(contentList, contentListIsNested = false)
-    {
-        const table = this.createElement('table', null, 'contentList');
-        const tbody = this.createElement('tbody');
-
-        const thead = this.createElement('thead');
-        let th      = this.createElement('th');
-
-        th.innerHTML = 'Name';
-        thead.appendChild(th);
-
-        th = this.createElement('th');
-        th.innerHTML = 'Type';
-        thead.appendChild(th);
-
-        table.appendChild(thead);
-
-        contentList.forEach(element => {
-            if (contentListIsNested) {
-                element = element.content;
-            }
-
-            let tr = this.createElement('tr');
-            let td = this.createElement('td');
-            let a  = this.createElement('a');
-
-            a.text              = element.name;
-            a.href              = '#';
-            a.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            td = this.createElement('td');
-            a  = this.createElement('a');
-
-            a.text              = element.type;
-            a.href              = '#';
-            a.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            tbody.appendChild(tr);
-        });
-
-        // TODO add event listeners for click events
-        // table.addEventListener('click', this.onClickContent.bind(this));
-        table.appendChild(tbody);
-
-        return table;
-    }
 
     /***************************************************************************
      * Methods to bind event Listeners
