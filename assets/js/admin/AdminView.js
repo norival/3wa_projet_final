@@ -172,7 +172,7 @@ export class AdminView {
         ul.appendChild(li);
 
         li               = this.createElement('li');
-        button           = this.createElement('button', null, 'submitButton');
+        button           = this.createElement('button', null, 'submitViewButton');
         button.innerHTML = 'Save';
         button.dataset.viewId = viewData.id;
         li.appendChild(button);
@@ -274,7 +274,7 @@ export class AdminView {
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
-        let button = this.createElement('button', null, 'submitButton');
+        let button = this.createElement('button', null, 'submitContentButton');
         ul = this.createElement('ul');
         li = this.createElement('li');
 
@@ -327,7 +327,7 @@ export class AdminView {
 
     bindClickSubmitView(handler)
     {
-        this.getElement('#submitButton').addEventListener('click', event => {
+        this.getElement('#submitViewButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.viewId, this.getViewFormData());
@@ -354,7 +354,7 @@ export class AdminView {
 
     bindClickSubmitContent(handler)
     {
-        this.getElement('#submitButton').addEventListener('click', event => {
+        this.getElement('#submitContentButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.contentId, this.getContentFormData());
