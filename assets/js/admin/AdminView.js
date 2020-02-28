@@ -152,36 +152,6 @@ export class AdminView {
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
-        const table = this.createElement('table', null, 'contentList');
-        const thead = this.createElement('thead');
-        const tbody = this.createElement('tbody');
-
-        let tr = this.createElement('tr');
-        let th = this.createElement('th');
-
-        th.innerHTML = 'Name';
-        tr.appendChild(th);
-
-        thead.appendChild(tr);
-        table.appendChild(thead);
-
-        viewData.viewContents.forEach((value) => {
-            let tr = this.createElement('tr');
-            let td = this.createElement('td');
-            let a  = this.createElement('a');
-
-            a.href               = '#';
-            a.text               = value.content.name;
-            a.dataset.contentId  = value.content.id;
-            td.dataset.contentId = value.content.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-            tbody.appendChild(tr);
-        });
-
-        table.appendChild(tbody);
-
         form.dataset.viewId = viewData.id;
         viewDiv.appendChild(form);
 
@@ -189,7 +159,7 @@ export class AdminView {
         h3.innerHTML = 'Content list';
         viewDiv.appendChild(h3);
 
-        viewDiv.appendChild(table);
+        viewDiv.appendChild(this._renderContentList(viewData.viewContents, true));
 
         ul = this.createElement('ul', null, 'buttonList');
 
@@ -224,56 +194,9 @@ export class AdminView {
 
     renderContentList(contentList)
     {
-        /*
-        * TODO Refacto: already building the content list in the view form =>
-        *      make an helper function or sthg like that
-        */
         Utils.clear(this.element);
 
-        const table = this.createElement('table', null, 'contentList');
-        const tbody = this.createElement('tbody');
-
-        const thead = this.createElement('thead');
-        let th      = this.createElement('th');
-
-        th.innerHTML = 'Name';
-        thead.appendChild(th);
-
-        th = this.createElement('th');
-        th.innerHTML = 'Type';
-        thead.appendChild(th);
-
-        table.appendChild(thead);
-
-        contentList.forEach(element => {
-            let tr = this.createElement('tr');
-            let td = this.createElement('td');
-            let a  = this.createElement('a');
-
-            a.text              = element.name;
-            a.href              = '#';
-            a.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            td = this.createElement('td');
-            a  = this.createElement('a');
-
-            a.text              = element.type;
-            a.href              = '#';
-            a.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            tbody.appendChild(tr);
-        });
-
-        // TODO add event listeners for click events
-        // table.addEventListener('click', this.onClickContent.bind(this));
-        table.appendChild(tbody);
-        this.element.appendChild(table);
+        this.element.appendChild(this._renderContentList(contentList, false));
     }
 
     renderContentForm(contentData)
@@ -379,6 +302,58 @@ export class AdminView {
     }
 
 
+    _renderContentList(contentList, contentListIsNested = false)
+    {
+        const table = this.createElement('table', null, 'contentList');
+        const tbody = this.createElement('tbody');
+
+        const thead = this.createElement('thead');
+        let th      = this.createElement('th');
+
+        th.innerHTML = 'Name';
+        thead.appendChild(th);
+
+        th = this.createElement('th');
+        th.innerHTML = 'Type';
+        thead.appendChild(th);
+
+        table.appendChild(thead);
+
+        contentList.forEach(element => {
+            if (contentListIsNested) {
+                element = element.content;
+            }
+
+            let tr = this.createElement('tr');
+            let td = this.createElement('td');
+            let a  = this.createElement('a');
+
+            a.text              = element.name;
+            a.href              = '#';
+            a.dataset.contentId = element.id;
+
+            td.appendChild(a)
+            tr.appendChild(td);
+
+            td = this.createElement('td');
+            a  = this.createElement('a');
+
+            a.text              = element.type;
+            a.href              = '#';
+            a.dataset.contentId = element.id;
+
+            td.appendChild(a)
+            tr.appendChild(td);
+
+            tbody.appendChild(tr);
+        });
+
+        // TODO add event listeners for click events
+        // table.addEventListener('click', this.onClickContent.bind(this));
+        table.appendChild(tbody);
+
+        return table;
+    }
 
     /***************************************************************************
      * Methods to bind event Listeners

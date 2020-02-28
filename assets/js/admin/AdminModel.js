@@ -20,7 +20,7 @@ export class AdminModel {
 
     async getViewForm(viewId)
     {
-        await fetch('/admin/view/form/' + event.target.dataset.name)
+        await fetch('/admin/view/form/' + viewId)
             .then(response => response.json())
             .then(json => JSON.parse(json))
             .then(viewData => {
