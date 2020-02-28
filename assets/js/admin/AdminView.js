@@ -397,7 +397,6 @@ export class AdminView {
     {
         this.getElement('#viewList').addEventListener('click', event => {
             event.preventDefault();
-            console.log(event.target.dataset.id)
 
             handler(event.target.dataset.id);
         });

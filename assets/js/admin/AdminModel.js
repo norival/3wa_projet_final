@@ -32,8 +32,6 @@ export class AdminModel {
 
     submitViewForm(viewId, formData)
     {
-        console.log(formData);
-
         fetch('admin/view/' + viewId, {
             method: 'PUT',
             headers: {
@@ -74,9 +72,6 @@ export class AdminModel {
 
     submitContentForm(contentId, formData)
     {
-        console.log(formData);
-        console.log(contentId);
-
         fetch('admin/content/' + contentId, {
             method: 'PUT',
             headers: {
