@@ -72,9 +72,10 @@ export class Components {
             td = this.createElement('td');
             a  = this.createElement('a');
 
-            a.text              = element.type;
-            a.href              = '#';
-            a.dataset.contentId = element.id;
+            a.text               = element.type;
+            a.href               = '#';
+            a.dataset.contentId  = element.id;
+            td.dataset.contentId = element.id;
 
             td.appendChild(a)
             tr.appendChild(td);

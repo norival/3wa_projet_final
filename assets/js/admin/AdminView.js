@@ -61,7 +61,9 @@ export class AdminView {
                 return 0;
             }
             Array.from(tr.cells).forEach((cell) => {
-                data['content'].push(cell.dataset.contentId);
+                if (cell.dataset.contentId) {
+                    data['content'].push(cell.dataset.contentId);
+                }
             })
         });
 
