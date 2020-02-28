@@ -207,9 +207,10 @@ export class AdminView {
         li.appendChild(button);
         ul.appendChild(li);
 
-        li               = this.createElement('li');
-        button           = this.createElement('button', null, 'cancelButton');
-        button.innerHTML = 'Cancel';
+        li                      = this.createElement('li');
+        button                  = this.createElement('button', null, 'cancelButton');
+        button.innerHTML        = 'Cancel';
+        button.dataset.parentId = 'viewFormOutput';
         li.appendChild(button);
         ul.appendChild(li);
 
@@ -363,6 +364,7 @@ export class AdminView {
         li     = this.createElement('li');
 
         button.innerHTML = 'Cancel';
+        button.dataset.parentId = 'contentForm';
 
         li.appendChild(button);
         ul.appendChild(li);
@@ -372,6 +374,8 @@ export class AdminView {
         div.appendChild(form);
 
         this.element.appendChild(div);
+
+        this.getElement('#cancelButton').addEventListener('click', this.onClickCancel);
     }
 
 
@@ -442,6 +446,6 @@ export class AdminView {
 
     onClickCancel = (event) => {
         event.preventDefault();
-        this.getElement('#viewFormOutput').remove();
+        this.getElement(`#${event.target.dataset.parentId}`).remove();
     }
 }
