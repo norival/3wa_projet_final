@@ -24,6 +24,7 @@ export class AdminController {
     handleClickView = async (viewId) => {
         await this.model.getViewForm(viewId);
         this.view.bindClickSubmitView(this.handleClickSubmitView);
+        this.view.bindClickContent(this.handleClickContent);
     }
 
     handleClickSubmitView = (viewId, formData) => {
