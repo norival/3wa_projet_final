@@ -28,7 +28,7 @@ class Content
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"content_form"})
+     * @Groups({"form", "content_form"})
      */
     private $type;
 
