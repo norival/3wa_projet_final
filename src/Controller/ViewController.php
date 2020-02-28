@@ -81,15 +81,15 @@ class ViewController extends AbstractController
      *
      * Get the view information and send it to the admin as JSON data
      *
-     * @Route("/admin/view/form/{name}", name="view_get_form", methods={"GET"})
+     * @Route("/admin/view/form/{id}", name="view_get_form", methods={"GET"})
      *
      * @param  string $name
      * @return Response
      */
-    public function getForm(SerializerInterface $serializer, string $name)
+    public function getForm(SerializerInterface $serializer, string $id)
     {
         // get the view object
-        $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
+        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
         $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
 
         return new JsonResponse($json);
