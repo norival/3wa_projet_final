@@ -8,12 +8,14 @@ export class AdminController {
         // bind event handlers for view events
         this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
+        this.view.bindSearchContent(this.handleSearchContent);
 
         // bind event handlers for model events
         this.model.bindViewListChanged(this.onViewListChanged);
         this.model.bindViewDataChanged(this.onViewDataChanged);
         this.model.bindContentListChanged(this.onContentListChanged);
         this.model.bindContentDataChanged(this.onContentDataChanged);
+        this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
     }
 
     handleListViews = async () => {
@@ -25,6 +27,7 @@ export class AdminController {
         await this.model.getViewForm(viewId);
         this.view.bindClickSubmitView(this.handleClickSubmitView);
         this.view.bindClickContent(this.handleClickContent);
+        // this.view.bindAddContent(this.handleAddContent);
     }
 
     handleClickSubmitView = (viewId, formData) => {
@@ -45,6 +48,14 @@ export class AdminController {
         this.model.submitContentForm(contentId, formData);
     }
 
+    handleAddContent = (contentData) => {
+        this.model.submitContentForm(null, contentData);
+    }
+
+    handleSearchContent = (searchTerm) => {
+        this.model.searchContent(searchTerm);
+    }
+
     onViewListChanged = (promise) => {
         this.view.renderViewList(promise);
     }
@@ -59,5 +70,9 @@ export class AdminController {
 
     onContentDataChanged = (contentData) => {
         this.view.renderContentForm(contentData);
+    }
+
+    onContentSuggestionChanged = (suggestion) => {
+        this.view.renderContentSuggestion(suggestion);
     }
 }

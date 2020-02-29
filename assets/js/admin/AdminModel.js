@@ -72,14 +72,16 @@ export class AdminModel {
 
     submitContentForm(contentId, formData)
     {
-        fetch('admin/content/' + contentId, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
+        // const url = contentId === null ? `admin/content/${contentId}` : 'admin/content';
+
+        fetch(contentId === null ? 'admin/content' : `admin/content/${contentId}`, {
+                method: contentId === null ? 'POST': 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
             .then(response => response.json())
             .then(json => {
                 // TODO If the server returns an error, display the form and the validation errors
@@ -88,6 +90,20 @@ export class AdminModel {
                 console.log(json)
                 console.log('data sent')
                 // this.form.remove();
+            })
+    }
+
+    searchContent(searchTerm)
+    {
+        const url = '/content/search?' + encodeURI(`search=${searchTerm}`);
+        // console.log(`I'm looking for: ${url}`);
+
+        fetch(url, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(json => {
+                this.onContentSuggestionChanged(JSON.parse(json));
             })
     }
 
@@ -112,5 +128,10 @@ export class AdminModel {
     bindContentDataChanged(callback)
     {
         this.onContentDataChanged = callback;
+    }
+
+    bindContentSuggestionChanged(callback)
+    {
+        this.onContentSuggestionChanged = callback;
     }
 }

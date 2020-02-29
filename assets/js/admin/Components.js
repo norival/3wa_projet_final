@@ -87,4 +87,73 @@ export class Components {
 
         return table;
     }
+
+    /**
+     * Create form to ask which type of content must be added
+     *
+     * @returns {Element}
+     */
+    static askNewContentForm()
+    {
+        const addContentDiv = this.createElement('div', null, 'askNewContentType');
+        const ul = this.createElement('ul');
+
+        let li = this.createElement('li');
+        let a  = this.createElement('a', 'button', 'createContent');
+        a.text = 'Create new Content';
+        a.href = "#";
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        li     = this.createElement('li');
+        a      = this.createElement('a', 'button', 'useContent');
+        a.text = 'Use existing Content';
+        a.href = "#";
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        addContentDiv.appendChild(ul);
+
+        return addContentDiv;
+    }
+
+    /**
+     * Create a search content form
+     *
+     * @returns {Element}
+     */
+    static searchContentForm()
+    {
+        const searchContentDiv = this.createElement('div', null, 'searchContent');
+        const form             = this.createElement('form', null, 'searchContentForm');
+        const input            = this.createElement('input');
+
+        form.appendChild(input);
+        searchContentDiv.appendChild(form);
+
+        return searchContentDiv;
+    }
+
+    /**
+     * Create list to display content suggestions
+     *
+     * @returns {undefined}
+     */
+    static contentSuggestion(suggestion)
+    {
+        const ul = this.createElement('ul');
+
+        suggestion.forEach(element => {
+            let li              = this.createElement('li');
+            let a               = this.createElement('a');
+            a.href              = '#';
+            a.innerHTML         = element.name;
+            a.dataset.contentId = element.id;
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        return ul;
+    }
 }

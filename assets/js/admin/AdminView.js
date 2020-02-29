@@ -16,6 +16,8 @@ export class AdminView {
      *
      * Create an element and optionnally adds a class and an id
      *
+     * @param {string} tag - A valid html tag
+     *
      * @returns Element
      */
     createElement(tag, className, id)
@@ -168,7 +170,7 @@ export class AdminView {
 
         let li = this.createElement('li');
 
-        let button       = this.createElement('button', null, 'addContent');
+        let button       = this.createElement('button', null, 'addContentButton');
         button.innerHTML = 'Add content';
         li.appendChild(button);
         ul.appendChild(li);
@@ -192,7 +194,8 @@ export class AdminView {
 
         // TODO add event listeners for addContent
         // this.getElement('#addContent').addEventListener('click', this.onClickAddContent);
-        this.getElement('#cancelContentEditButton').addEventListener('click', this.onClickCancel);
+        this.getElement('#cancelContentEditButton').addEventListener('click', this._onClickCancel);
+        this.getElement('#addContentButton').addEventListener('click', this._onClickAddContent);
     }
 
     renderContentList(contentList)
@@ -301,7 +304,49 @@ export class AdminView {
 
         this.element.appendChild(div);
 
-        this.getElement('#cancelViewEditButton').addEventListener('click', this.onClickCancel);
+        this.getElement('#cancelViewEditButton').addEventListener('click', this._onClickCancel);
+    }
+
+    renderAskNewContentForm()
+    {
+        const div = Components.askNewContentForm();
+
+        this.element.appendChild(div);
+
+        this.getElement('#createContent').addEventListener('click', this.renderNewContentForm);
+        this.getElement('#useContent').addEventListener('click', this.renderUseContentForm.bind(this));
+    }
+
+    renderNewContentForm()
+    {
+        // TODO render a form to create a new content
+        console.log('we will create a new content from scratch');
+    }
+
+    renderUseContentForm()
+    {
+        // render a search content form
+        this.element.appendChild(Components.searchContentForm());
+
+        this.element.appendChild(this.createElement('div', null, 'contentSuggestion'));
+
+        this.getElement('#searchContentForm input').addEventListener('keyup', event => {
+            this.searchContent(event.target.value);
+        });
+
+        this.getElement('#contentSuggestion').addEventListener('click', event => {
+            // TODO display content when clicking
+            event.preventDefault();
+
+            this.getElement('#searchContentForm input').value = event.target.innerHTML;
+            console.log(event.target.dataset.contentId);
+        });
+    }
+
+    renderContentSuggestion(suggestion)
+    {
+        Utils.clear(this.getElement('#contentSuggestion'));
+        this.getElement('#contentSuggestion').appendChild(Components.contentSuggestion(suggestion));
     }
 
 
@@ -363,13 +408,27 @@ export class AdminView {
         });
     }
 
+    bindSearchContent(callback)
+    {
+        // the callback is called when we search for a content
+        this.searchContent = callback;
+    }
+
 
     /***************************************************************************
      * Methods to handle view related events
      **************************************************************************/
 
-    onClickCancel = (event) => {
+    _onClickCancel = (event) => {
         event.preventDefault();
         this.getElement(`#${event.target.dataset.parentId}`).remove();
     }
+
+    _onClickAddContent = (event) => {
+            event.preventDefault();
+            // TODO render a form to ask if we create a new content or if we
+            // use an existing content
+
+            this.renderAskNewContentForm();
+    };
 }
