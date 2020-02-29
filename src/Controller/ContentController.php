@@ -79,9 +79,34 @@ class ContentController extends AbstractController
     }
 
     /**
+     * @Route("/admin/content", name="content_new", methods={"POST"})
+     *
+     * @return JsonResponse
+     */
+    public function new(Request $request)
+    {
+        /* $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]); */
+        $content = new Content();
+        $form = $this->createForm(ContentType::class, $content);
+
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data, false);
+
+        if ($form->isValid()) {
+            // TODO if object has not been modified, do not change updated_at field
+            $content->setUpdatedAt(date_create());
+
+            $this->em->persist($content);
+            $this->em->flush();
+        }
+
+        return new JsonResponse(json_encode('data received'));
+    }
+
+    /**
      * @Route("/admin/content/{id}", name="content_update", methods={"PUT"}, requirements={"id"="\d+"})
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -100,5 +125,19 @@ class ContentController extends AbstractController
         }
 
         return new JsonResponse(json_encode('data received'));
+    }
+
+    /**
+     * @Route("/content/search", name="content_search", methods={"GET"})
+     *
+     * Search a content's id and name by its name
+     *
+     * @return JsonResponse
+     */
+    public function searchByName(Request $request)
+    {
+        $contentList = $this->em->getRepository(Content::class)->searchByName($request->get('search'));
+
+        return new JsonResponse(\json_encode($contentList));
     }
 }

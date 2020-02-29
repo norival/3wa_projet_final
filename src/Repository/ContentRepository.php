@@ -19,32 +19,29 @@ class ContentRepository extends ServiceEntityRepository
         parent::__construct($registry, Content::class);
     }
 
-    // /**
-    //  * @return Content[] Returns an array of Content objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * searchByName
+     *
+     * Search a content by its name and return content's id and name 
+     *
+     * @param  string $value
+     *
+     * @return array
+     */
+    public function searchByName(string $value)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $em = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Content
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $em
+            ->createQuery(
+                'SELECT c.id, c.name
+                FROM App\Entity\Content c
+                WHERE c.name LIKE :value'
+            )
+            ->setParameters([
+                'value' => '%' . $value . '%',
+            ]);
+
+        return $query->getResult();
     }
-    */
 }
