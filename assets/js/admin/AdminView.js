@@ -339,7 +339,7 @@ export class AdminView {
             event.preventDefault();
 
             this.getElement('#searchContentForm input').value = event.target.innerHTML;
-            console.log(event.target.dataset.contentId);
+            this.needContent(event.target.dataset.contentId);
         });
     }
 
@@ -347,6 +347,23 @@ export class AdminView {
     {
         Utils.clear(this.getElement('#contentSuggestion'));
         this.getElement('#contentSuggestion').appendChild(Components.contentSuggestion(suggestion));
+    }
+
+    renderContent(content)
+    {
+        let contentDiv = this.getElement('#contentDisplay');
+
+        // remove it if already created
+        if (contentDiv) {
+            contentDiv.remove();
+        }
+
+        contentDiv = Components.content(content);
+
+
+
+
+        this.element.appendChild(contentDiv);
     }
 
 
@@ -412,6 +429,12 @@ export class AdminView {
     {
         // the callback is called when we search for a content
         this.searchContent = callback;
+    }
+
+    bindNeedContent(callback)
+    {
+        // call this when the view need a content
+        this.needContent = callback;
     }
 
 

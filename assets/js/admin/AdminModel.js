@@ -63,7 +63,7 @@ export class AdminModel {
 
     async getContentForm(contentId)
     {
-        await fetch('/admin/content/' + contentId)
+        await fetch('/admin/content/form/' + contentId)
             .then(response => response.json())
             .then(data => {
                 this.onContentDataChanged(data);
@@ -90,6 +90,15 @@ export class AdminModel {
                 console.log(json)
                 console.log('data sent')
                 // this.form.remove();
+            })
+    }
+
+    getContent(contentId)
+    {
+        fetch('/admin/content/' + contentId)
+            .then(response => response.json())
+            .then(json => {
+                this.onContentReceived(JSON.parse(json));
             })
     }
 
@@ -125,13 +134,18 @@ export class AdminModel {
         this.onContentListChanged = callback;
     }
 
-    bindContentDataChanged(callback)
+    bindContentFormChanged(callback)
     {
-        this.onContentDataChanged = callback;
+        this.onContentFormChanged = callback;
     }
 
     bindContentSuggestionChanged(callback)
     {
         this.onContentSuggestionChanged = callback;
+    }
+
+    bindContentReceived(callback)
+    {
+        this.onContentReceived = callback;
     }
 }

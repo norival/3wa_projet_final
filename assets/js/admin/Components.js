@@ -156,4 +156,30 @@ export class Components {
 
         return ul;
     }
+
+    static content(content)
+    {
+        const div = this.createElement('div', 'contentDisplay', 'contentDisplay');
+
+        let ul = this.createElement('ul');
+
+        let li = this.createElement('li');
+        li.innerHTML = content.name;
+        ul.appendChild(li);
+
+        li = this.createElement('li');
+        li.innerHTML = content.type;
+        ul.appendChild(li);
+
+        li = this.createElement('li');
+        li.innerHTML = content.created_at;
+        ul.appendChild(li);
+
+        li = this.createElement('li');
+        li.innerHTML = content.updated_at;
+        ul.appendChild(li);
+
+        div.appendChild(ul);
+        return div;
+    }
 }

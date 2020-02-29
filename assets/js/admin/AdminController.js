@@ -9,13 +9,15 @@ export class AdminController {
         this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
         this.view.bindSearchContent(this.handleSearchContent);
+        this.view.bindNeedContent(this.handleNeedContent);
 
         // bind event handlers for model events
         this.model.bindViewListChanged(this.onViewListChanged);
         this.model.bindViewDataChanged(this.onViewDataChanged);
         this.model.bindContentListChanged(this.onContentListChanged);
-        this.model.bindContentDataChanged(this.onContentDataChanged);
+        this.model.bindContentFormChanged(this.onContentFormChanged);
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
+        this.model.bindContentReceived(this.onContentReceived);
     }
 
     handleListViews = async () => {
@@ -68,11 +70,20 @@ export class AdminController {
         this.view.renderContentList(contentData);
     }
 
-    onContentDataChanged = (contentData) => {
+    onContentFormChanged = (contentData) => {
         this.view.renderContentForm(contentData);
     }
 
     onContentSuggestionChanged = (suggestion) => {
         this.view.renderContentSuggestion(suggestion);
+    }
+
+    handleNeedContent = (contentId) => {
+        // call this when the view need a content
+        this.model.getContent(contentId);
+    }
+
+    onContentReceived = (content) => {
+        this.view.renderContent(content);
     }
 }
