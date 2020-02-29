@@ -22,23 +22,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/admin/content/form/{route}", name="content_get_form", methods={"GET"})
-     *
-     * @param  Request $request
-     * @param  string $route
-     * @return Response
-     */
-    public function getForm(Request $request, string $route)
-    {
-        $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
-        $form = $this->createForm(ContentType::class, $content);
-
-        return $this->render("content/{$route}_form.html.twig", [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/admin/content", name="content_list", methods={"GET"})
      *
      * @return JsonResponse
@@ -65,17 +48,32 @@ class ContentController extends AbstractController
      *
      * @return Response
      */
-    public function getById(SerializerInterface $serializer, $id)
+    public function getForm(SerializerInterface $serializer, $id)
     {
         // TODO get only one column from db
         $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
-        \dump($content);
 
         $json = $serializer->serialize($content, 'json', [
             'groups' => 'content_form',
         ]);
 
         return new Response($json);
+    }
+
+    /**
+     * @Route("/admin/content/{id}", name="content_get", methods={"GET"}, requirements={"id"="\d+"})
+     *
+     * @return JsonResponse
+     */
+    public function getById(SerializerInterface $serializer, $id)
+    {
+        $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
+
+        $json = $serializer->serialize($content, 'json', [
+            'groups' => 'default',
+        ]);
+
+        return new JsonResponse($json);
     }
 
     /**

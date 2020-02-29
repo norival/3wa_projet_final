@@ -16,35 +16,37 @@ class Content
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form", "content_form"})
+     * @Groups({"default", "form", "content_form"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form", "content_form"})
+     * @Groups({"default", "form", "content_form"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form", "content_form"})
+     * @Groups({"form", "default", "content_form"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="array")
-     * @Groups({"content_form"})
+     * @Groups({"default", "content_form"})
      */
     private $content = [];
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"default"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"default"})
      */
     private $updated_at;
 
