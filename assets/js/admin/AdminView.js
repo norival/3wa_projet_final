@@ -99,6 +99,9 @@ export class AdminView {
     {
         Utils.clear(this.element);
 
+        const title = this.createElement('h2');
+        title.innerHTML = 'List of views';
+
         const ul = this.createElement('ul', null, 'viewList');
 
         viewList.forEach((view) => {
@@ -117,6 +120,7 @@ export class AdminView {
             ul.appendChild(li);
         });
 
+        this.element.appendChild(title);
         this.element.appendChild(ul);
     }
 
