@@ -22,38 +22,6 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/content/{route}", name="content")
-     *
-     * @param  Request $request
-     * @param  string $route
-     * @return Response
-     */
-    public function index(Request $request, string $route)
-    {
-        // get content from db
-        $content = $this->em->getRepository(Content::class)->findOneBy(['route' => $route]);
-
-        // not found exception if the page does not exist
-        if (!$content) {
-            throw $this->createNotFoundException('This page does not exist');
-        }
-
-        $content2 = new Content();
-        $content2->getContent();
-        $content2->setTitle('title');
-        $content2->setRoute('newroute');
-        $content2->setCreatedAt(\date_create());
-
-        $form = $this->createForm(ContentType::class, $content2);
-
-        dump($form->createView());
-
-        return $this->render("content/$route.html.twig", [
-            'content' => $content->getContent(),
-        ]);
-    }
-
-    /**
      * @Route("/admin/content/form/{route}", name="content_get_form", methods={"GET"})
      *
      * @param  Request $request
