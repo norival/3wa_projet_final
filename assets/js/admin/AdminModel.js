@@ -66,7 +66,7 @@ export class AdminModel {
         await fetch('/admin/content/form/' + contentId)
             .then(response => response.json())
             .then(data => {
-                this.onContentDataChanged(data);
+                this.onContentFormChanged(data);
             })
     }
 
