@@ -26,8 +26,17 @@ li {
 #admin-navigation {
     $navPadding: 15px;
     // border: 1px solid orange;
+    header {
+        padding: 40px 0 40px;
+        background-color: $paletteSecondary;
 
-    min-width: 15%;
+        h2 {
+            margin: 0;
+            padding: 0 0 0 $navPadding;
+        }
+    }
+
+    min-width: 20%;
     max-width: 25%;
     // position: fixed;
     // width: 20%;
@@ -41,10 +50,6 @@ li {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     font-size: 1em;
 
-    h2 {
-        padding: 0 0 0 $navPadding;
-    }
-
     ul {
         // background-color: $paletteSecondary;
         color: #fff;
@@ -54,9 +59,14 @@ li {
             // padding: 10px;
         }
 
-        li:nth-of-type(even) {
+        li.current {
             background-color: $palettePrimary;
+            color: #fff;
         }
+
+        // li:nth-of-type(even) {
+        //     background-color: $palettePrimary;
+        // }
     }
 
 }
