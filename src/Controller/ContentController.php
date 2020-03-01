@@ -44,7 +44,7 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/admin/content/{id}", name="content_get", methods={"GET"}, requirements={"id"="\d+"})
+     * @Route("/admin/content/form/{id}", name="content_get_form", methods={"GET"}, requirements={"id"="\d+"})
      *
      * @return Response
      */
