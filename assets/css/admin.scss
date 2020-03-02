@@ -101,4 +101,17 @@ li {
             height: 80vh;
         }
     }
+
+    .button {
+        margin: 3px;
+        padding: 8px;
+        background-color: $paletteSecondary;
+        color: white;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        border-radius: 6px;
+    }
+
+    .beta::after {
+        content: ' (beta feature)';
+    }
 }

@@ -15,7 +15,11 @@ export class Components {
         const element = document.createElement(tag);
 
         if (className) {
-            element.classList.add(className);
+            if (!Array.isArray(className)) {
+                className = [className];
+            }
+
+            element.classList.add(...className);
         }
 
         if (id) {
@@ -116,18 +120,20 @@ export class Components {
             let li = this.createElement('li');
             let a  = this.createElement('a', 'button', 'editView');
 
+            li.innerHTML = view.name;
+
             a.href         = '#';
-            a.text         = view.name;
+            a.text         = 'Edit';
             a.dataset.name = view.name;
             a.dataset.id   = view.id
 
             li.appendChild(a);
 
             // adds button for visual editing of view (experimental)
-            a  = this.createElement('a', 'button', 'editViewVisual');
+            a = this.createElement('a', ['button', 'beta'], 'editViewVisual');
 
             a.href         = '#';
-            a.text         = 'Visual mode';
+            a.text         = 'Visual edit';
             a.dataset.name = view.name;
             a.dataset.id   = view.id
 
