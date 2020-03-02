@@ -1,3 +1,5 @@
+import {Utils} from '../utils/Utils';
+
 export class Components {
     /***************************************************************************
      * Helper methods
@@ -146,6 +148,87 @@ export class Components {
         outputDiv.appendChild(ul);
 
         return outputDiv;
+    }
+
+    /**
+     * Create a form to modify a View
+     *
+     * @param {object} viewData The view data
+     *
+     * @returns {Element}
+     */
+    static viewForm(viewData)
+    {
+        const viewDiv = this.createElement('div', null, 'viewFormOutput');
+        const form    = this.createElement('form', null, 'viewForm');
+
+        let h3       = this.createElement('h3');
+        h3.innerHTML = `View: ${viewData.name}`;
+        viewDiv.appendChild(h3);
+
+        let fieldset = this.createElement('fieldset');
+        let h4       = this.createElement('h4');
+        h4.innerHTML = 'Informations';
+
+        fieldset.appendChild(h4);
+
+        let ul      = this.createElement('ul');
+        const infos = {'name': viewData.name, 'title': viewData.title}
+
+        for (const key in infos) {
+            let li    = this.createElement('li');
+            let input = this.createElement('input');
+            let label = this.createElement('label');
+
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', key);
+            input.value = infos[key];
+            label.innerHTML = Utils.capitalizeFirst(key);
+            label.setAttribute('for', key);
+
+            li.appendChild(label);
+            li.appendChild(input);
+            ul.appendChild(li);
+        }
+
+        fieldset.appendChild(ul);
+        form.appendChild(fieldset);
+
+        form.dataset.viewId = viewData.id;
+        viewDiv.appendChild(form);
+
+        h3           = this.createElement('h3');
+        h3.innerHTML = 'Content list';
+        viewDiv.appendChild(h3);
+
+        viewDiv.appendChild(this.contentList(viewData.viewContents, 'contentList', true));
+
+        ul = this.createElement('ul', null, 'buttonList');
+
+        let li = this.createElement('li');
+
+        let button       = this.createElement('button', null, 'addContentButton');
+        button.innerHTML = 'Add content';
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        li               = this.createElement('li');
+        button           = this.createElement('button', null, 'submitViewButton');
+        button.innerHTML = 'Save';
+        button.dataset.viewId = viewData.id;
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        li                      = this.createElement('li');
+        button                  = this.createElement('button', null, 'cancelContentEditButton');
+        button.innerHTML        = 'Cancel';
+        button.dataset.parentId = 'viewFormOutput';
+        li.appendChild(button);
+        ul.appendChild(li);
+
+        viewDiv.appendChild(ul);
+
+        return viewDiv;
     }
 
     /**

@@ -111,77 +111,14 @@ export class AdminView {
         this.element.appendChild(Components.viewList(viewList));
     }
 
+    /**
+     * Render a view form and attach event listeners
+     *
+     * @param {object} viewData The view data for the form
+     */
     renderViewForm(viewData)
     {
-        const viewDiv = this.createElement('div', null, 'viewFormOutput');
-        const form    = this.createElement('form', null, 'viewForm');
-
-        let h3       = this.createElement('h3');
-        h3.innerHTML = `View: ${viewData.name}`;
-        viewDiv.appendChild(h3);
-
-        let fieldset = this.createElement('fieldset');
-        let h4       = this.createElement('h4');
-        h4.innerHTML = 'Informations';
-
-        fieldset.appendChild(h4);
-
-        let ul      = this.createElement('ul');
-        const infos = {'name': viewData.name, 'title': viewData.title}
-
-        for (const key in infos) {
-            let li    = this.createElement('li');
-            let input = this.createElement('input');
-            let label = this.createElement('label');
-
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', key);
-            input.value = infos[key];
-            label.innerHTML = key;
-            label.setAttribute('for', key);
-
-            li.appendChild(label);
-            li.appendChild(input);
-            ul.appendChild(li);
-        }
-
-        fieldset.appendChild(ul);
-        form.appendChild(fieldset);
-
-        form.dataset.viewId = viewData.id;
-        viewDiv.appendChild(form);
-
-        h3           = this.createElement('h3');
-        h3.innerHTML = 'Content list';
-        viewDiv.appendChild(h3);
-
-        viewDiv.appendChild(Components.contentList(viewData.viewContents, 'contentList', true));
-
-        ul = this.createElement('ul', null, 'buttonList');
-
-        let li = this.createElement('li');
-
-        let button       = this.createElement('button', null, 'addContentButton');
-        button.innerHTML = 'Add content';
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        li               = this.createElement('li');
-        button           = this.createElement('button', null, 'submitViewButton');
-        button.innerHTML = 'Save';
-        button.dataset.viewId = viewData.id;
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        li                      = this.createElement('li');
-        button                  = this.createElement('button', null, 'cancelContentEditButton');
-        button.innerHTML        = 'Cancel';
-        button.dataset.parentId = 'viewFormOutput';
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        viewDiv.appendChild(ul);
-        this.element.appendChild(viewDiv);
+        this.element.appendChild(Components.viewForm(viewData));
 
         // TODO add event listeners for addContent
         // this.getElement('#addContent').addEventListener('click', this.onClickAddContent);
