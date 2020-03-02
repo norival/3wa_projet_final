@@ -160,104 +160,14 @@ export class AdminView {
         this.element.appendChild(Components.contentList(contentList, 'contentList', false));
     }
 
+    /**
+     * Render a content form and attach event listeners
+     *
+     * @param {object} contentData The content data
+     */
     renderContentForm(contentData)
     {
-        const div  = this.createElement('div', null, 'contentForm');
-        const form = this.createElement('form');
-
-        let fieldset = this.createElement('fieldset');
-        let h3 = this.createElement('h3');
-
-        h3.innerHTML = 'Informations';
-        fieldset.appendChild(h3);
-
-        let ul = this.createElement('ul');
-
-        let li    = this.createElement('li');
-        let input = this.createElement('input');
-        let label = this.createElement('label');
-
-        label.setAttribute('for', 'name');
-        label.innerHTML = 'Name';
-        input.setAttribute('type', 'text');
-        input.setAttribute('name', 'name');
-        input.value = contentData.name;
-
-        li.appendChild(label);
-        li.appendChild(input);
-        ul.appendChild(li);
-
-        li    = this.createElement('li');
-        input = this.createElement('input');
-        label = this.createElement('label');
-
-        label.setAttribute('for', 'type');
-        label.innerHTML = 'Type';
-        input.setAttribute('type', 'text');
-        input.setAttribute('name', 'type');
-        input.value = contentData.type;
-
-        li.appendChild(label);
-        li.appendChild(input);
-        ul.appendChild(li);
-
-        fieldset.appendChild(ul);
-
-        form.appendChild(fieldset);
-
-        fieldset = this.createElement('fieldset');
-        h3 = this.createElement('h3');
-
-        h3.innerHTML = 'Content';
-        fieldset.appendChild(h3);
-
-        ul = this.createElement('ul');
-
-        for (let property in contentData.content) {
-            let li    = this.createElement('li');
-            let label = this.createElement('label');
-            let input = this.createElement('input');
-
-            label.innerHTML = property;
-            label.setAttribute('for', `content_${property}`);
-
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', `content_${property}`);
-            input.value = contentData.content[property];
-            
-            li.appendChild(label);
-            li.appendChild(input);
-
-            ul.appendChild(li);
-        }
-
-        fieldset.appendChild(ul);
-        form.appendChild(fieldset);
-
-        let button = this.createElement('button', null, 'submitContentButton');
-        ul = this.createElement('ul');
-        li = this.createElement('li');
-
-        button.innerHTML         = 'Save';
-        button.dataset.contentId = contentData.id;
-
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        button = this.createElement('button', null, 'cancelViewEditButton');
-        li     = this.createElement('li');
-
-        button.innerHTML = 'Cancel';
-        button.dataset.parentId = 'contentForm';
-
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        form.appendChild(ul);
-
-        div.appendChild(form);
-
-        this.element.appendChild(div);
+        this.element.appendChild(Components.contentForm(contentData));
 
         this.getElement('#cancelViewEditButton').addEventListener('click', this._onClickCancel);
     }
