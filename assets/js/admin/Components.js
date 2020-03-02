@@ -212,7 +212,9 @@ export class Components {
         const outputDiv = this.createElement('div');
         const p         = this.createElement('p');
         const title     = this.createElement('h2');
+        const listTitle = this.createElement('h3');
         const ul        = this.createElement('ul', null, 'viewList');
+
 
         p.innerHTML = `
             A view is a collection of contents that are rendered together
@@ -220,7 +222,8 @@ export class Components {
         `;
         helpDiv.appendChild(p);
 
-        title.innerHTML = 'Views';
+        title.innerHTML     = 'Views';
+        listTitle.innerHTML = 'List of available views';
 
         viewList.forEach((view) => {
             // create list item
@@ -250,6 +253,7 @@ export class Components {
 
         outputDiv.appendChild(title);
         outputDiv.appendChild(helpDiv);
+        outputDiv.appendChild(listTitle);
         outputDiv.appendChild(ul);
 
         return outputDiv;
