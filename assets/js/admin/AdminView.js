@@ -47,24 +47,33 @@ export class AdminView {
         return document.querySelector(selector);
     }
 
-    getViewFormData()
+    /**
+     * Get and format View form data
+     *
+     * @param {int} viewId The id of the view for which the form is submitted
+     *
+     * @returns {Object}
+     */
+    getViewFormData(viewId)
     {
         const contentList = this.getElement('#contentList');
         const data        = {};
         const formData    = new FormData(this.getElement('#viewForm'));
 
+        // get data from the form
         formData.forEach((element, key) => {
             data[key] = element;
         });
 
-        data['content'] = [];
-        Array.from(contentList.rows).forEach((tr, row_ind) => {
-            if (row_ind === 0) {
-                return 0;
-            }
+        // get data contained in contentList
+        data['viewContents'] = [];
+        Array.from(contentList.rows).forEach((tr) => {
             Array.from(tr.cells).forEach((cell) => {
                 if (cell.dataset.contentId) {
-                    data['content'].push(cell.dataset.contentId);
+                    data['viewContents'].push({
+                        view: viewId,
+                        content: cell.dataset.contentId
+                    });
                 }
             })
         });
@@ -411,8 +420,9 @@ export class AdminView {
     {
         this.getElement('#submitViewButton').addEventListener('click', event => {
             event.preventDefault();
+            const viewId = event.target.dataset.viewId;
 
-            handler(event.target.dataset.viewId, this.getViewFormData());
+            handler(viewId, this.getViewFormData(viewId));
         });
     }
 

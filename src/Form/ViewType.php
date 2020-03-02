@@ -16,8 +16,8 @@ class ViewType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('title', TextType::class)
-            ->add('content_type', CollectionType::class, [
-                'entry_type'   => TextType::class,
+            ->add('viewContents', CollectionType::class, [
+                'entry_type'   => ViewContentType::class,
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'entry_options' => [
