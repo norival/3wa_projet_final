@@ -107,7 +107,7 @@ export class AdminView {
         viewList.forEach((view) => {
             // create list item
             let li = this.createElement('li');
-            let a  = this.createElement('a');
+            let a  = this.createElement('a', 'button', 'editView');
 
             a.href         = '#';
             a.text         = view.title;
@@ -116,7 +116,14 @@ export class AdminView {
 
             li.appendChild(a);
 
-            // append element to list
+            a  = this.createElement('a', 'button', 'editViewVisual');
+
+            a.href         = '#';
+            a.text         = 'Visual mode';
+            a.dataset.name = view.name;
+            a.dataset.id   = view.id
+
+            li.appendChild(a);
             ul.appendChild(li);
         });
 
@@ -200,6 +207,33 @@ export class AdminView {
         // this.getElement('#addContent').addEventListener('click', this.onClickAddContent);
         this.getElement('#cancelContentEditButton').addEventListener('click', this._onClickCancel);
         this.getElement('#addContentButton').addEventListener('click', this._onClickAddContent);
+    }
+
+    /**
+     * Render the template associated to viewId within an iframe
+     *
+     * @param {int} viewId The id of the view. Set to null to only refresh an
+     * existing iframe
+     *
+     * @returns {undefined}
+     */
+    renderViewTemplate(viewId)
+    {
+        if (!viewId) {
+            // called without viewId when refreshing the iframe, so we get
+            // viewId from existing iframe
+            viewId = this.getElement('#visualView').dataset.viewId;
+            this.getElement('#visualViewContainer').remove();
+        }
+
+        const div    = this.createElement('div', null, 'visualViewContainer');
+        const iframe = this.createElement('iframe', null, 'visualView');
+
+        iframe.dataset.viewId = viewId;
+        iframe.setAttribute('src', `admin/view/visual/${viewId}`);
+
+        div.appendChild(iframe);
+        this.element.appendChild(div);
     }
 
     renderContentList(contentList)
@@ -386,7 +420,16 @@ export class AdminView {
 
     bindClickView(handler)
     {
-        this.getElement('#viewList').addEventListener('click', event => {
+        this.getElement('#editView').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler(event.target.dataset.id);
+        });
+    }
+
+    bindClickViewVisual(handler)
+    {
+        this.getElement('#editViewVisual').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.id);
@@ -420,7 +463,33 @@ export class AdminView {
         });
     }
 
+    bindClickContentVisual(handler)
+    {
+        const iframe = this.getElement('iframe');
+
+        iframe.contentWindow.addEventListener('DOMContentLoaded', () => {
+            const innerDoc = iframe.contentWindow.document;
+            // const elements = innerDoc.querySelectorAll('a.editContent');
+            const elements = innerDoc.querySelectorAll('.contentBox');
+
+            elements.forEach((element) => {
+                element.addEventListener('click', (event) => {
+                    handler(event.currentTarget.dataset.contentId);
+                });
+            });
+        });
+    }
+
     bindClickSubmitContent(handler)
+    {
+        this.getElement('#submitContentButton').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler(event.target.dataset.contentId, this.getContentFormData());
+        });
+    }
+
+    bindClickSubmitContentVisual(handler)
     {
         this.getElement('#submitContentButton').addEventListener('click', event => {
             event.preventDefault();

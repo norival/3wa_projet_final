@@ -70,7 +70,7 @@ export class AdminModel {
             })
     }
 
-    submitContentForm(contentId, formData)
+    submitContentForm(contentId, formData, visual)
     {
         // const url = contentId === null ? `admin/content/${contentId}` : 'admin/content';
 
@@ -87,9 +87,12 @@ export class AdminModel {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
                 // TODO Clear the form
-                console.log(json)
-                console.log('data sent')
-                // this.form.remove();
+                const data = JSON.parse(json);
+                console.log(data)
+                if (visual) {
+                    // call callback to refresh iframe
+                    this.onVisualViewChanged();
+                }
             })
     }
 
@@ -127,6 +130,11 @@ export class AdminModel {
     bindViewDataChanged(callback)
     {
         this.onViewDataChanged = callback;
+    }
+
+    bindVisualViewChanged(callback)
+    {
+        this.onVisualViewChanged = callback;
     }
 
     bindContentListChanged(callback)

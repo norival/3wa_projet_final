@@ -14,6 +14,7 @@ export class AdminController {
         // bind event handlers for model events
         this.model.bindViewListChanged(this.onViewListChanged);
         this.model.bindViewDataChanged(this.onViewDataChanged);
+        this.model.bindVisualViewChanged(this.onVisualViewChanged);
         this.model.bindContentListChanged(this.onContentListChanged);
         this.model.bindContentFormChanged(this.onContentFormChanged);
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
@@ -23,6 +24,7 @@ export class AdminController {
     handleListViews = async () => {
         await this.model.listViews();
         this.view.bindClickView(this.handleClickView);
+        this.view.bindClickViewVisual(this.handleClickViewVisual);
     }
 
     handleClickView = async (viewId) => {
@@ -30,6 +32,11 @@ export class AdminController {
         this.view.bindClickSubmitView(this.handleClickSubmitView);
         this.view.bindClickContent(this.handleClickContent);
         // this.view.bindAddContent(this.handleAddContent);
+    }
+
+    handleClickViewVisual = (viewId) => {
+        this.view.renderViewTemplate(viewId);
+        this.view.bindClickContentVisual(this.handleClickContentVisual);
     }
 
     handleClickSubmitView = (viewId, formData) => {
@@ -43,11 +50,21 @@ export class AdminController {
 
     handleClickContent = async (contentId) => {
         await this.model.getContentForm(contentId);
-        this.view.bindClickSubmitContent(this.handleClickSubmitContent)
+        this.view.bindClickSubmitContent(this.handleClickSubmitContent);
+    }
+
+    handleClickContentVisual = async (contentId) => {
+        await this.model.getContentForm(contentId);
+        this.view.bindClickSubmitContentVisual(this.handleClickSubmitContentVisual);
+        // this.view.renderViewTemplate();
     }
 
     handleClickSubmitContent = (contentId, formData) => {
-        this.model.submitContentForm(contentId, formData);
+        this.model.submitContentForm(contentId, formData, false);
+    }
+
+    handleClickSubmitContentVisual = (contentId, formData) => {
+        this.model.submitContentForm(contentId, formData, true);
     }
 
     handleAddContent = (contentData) => {
@@ -64,6 +81,10 @@ export class AdminController {
 
     onViewDataChanged = (viewData) => {
         this.view.renderViewForm(viewData);
+    }
+
+    onVisualViewChanged = () => {
+        this.handleClickViewVisual();
     }
 
     onContentListChanged = (contentData) => {
