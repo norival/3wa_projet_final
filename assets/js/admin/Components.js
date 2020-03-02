@@ -89,6 +89,60 @@ export class Components {
     }
 
     /**
+     * Create a list of available views
+     *
+     * @param {Array} viewList The content list
+     *
+     * @returns {Element}
+     */
+    static viewList(viewList)
+    {
+        const helpDiv   = this.createElement('div', 'help');
+        const outputDiv = this.createElement('div');
+        const p         = this.createElement('p');
+        const title     = this.createElement('h2');
+        const ul        = this.createElement('ul', null, 'viewList');
+
+        p.innerHTML = `
+            A view is a collection of contents that are rendered together
+            within a template or from an API query.
+        `;
+        helpDiv.appendChild(p);
+
+        title.innerHTML = 'Views';
+
+        viewList.forEach((view) => {
+            // create list item
+            let li = this.createElement('li');
+            let a  = this.createElement('a', 'button', 'editView');
+
+            a.href         = '#';
+            a.text         = view.name;
+            a.dataset.name = view.name;
+            a.dataset.id   = view.id
+
+            li.appendChild(a);
+
+            // adds button for visual editing of view (experimental)
+            a  = this.createElement('a', 'button', 'editViewVisual');
+
+            a.href         = '#';
+            a.text         = 'Visual mode';
+            a.dataset.name = view.name;
+            a.dataset.id   = view.id
+
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+
+        outputDiv.appendChild(title);
+        outputDiv.appendChild(helpDiv);
+        outputDiv.appendChild(ul);
+
+        return outputDiv;
+    }
+
+    /**
      * Create form to ask which type of content must be added
      *
      * @returns {Element}

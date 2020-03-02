@@ -99,36 +99,7 @@ export class AdminView {
     {
         Utils.clear(this.element);
 
-        const title = this.createElement('h2');
-        title.innerHTML = 'List of views';
-
-        const ul = this.createElement('ul', null, 'viewList');
-
-        viewList.forEach((view) => {
-            // create list item
-            let li = this.createElement('li');
-            let a  = this.createElement('a', 'button', 'editView');
-
-            a.href         = '#';
-            a.text         = view.title;
-            a.dataset.name = view.name;
-            a.dataset.id   = view.id
-
-            li.appendChild(a);
-
-            a  = this.createElement('a', 'button', 'editViewVisual');
-
-            a.href         = '#';
-            a.text         = 'Visual mode';
-            a.dataset.name = view.name;
-            a.dataset.id   = view.id
-
-            li.appendChild(a);
-            ul.appendChild(li);
-        });
-
-        this.element.appendChild(title);
-        this.element.appendChild(ul);
+        this.element.appendChild(Components.viewList(viewList));
     }
 
     renderViewForm(viewData)
