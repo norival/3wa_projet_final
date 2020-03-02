@@ -53,8 +53,40 @@ class ViewController extends AbstractController
             'title'        => $view->getTitle(),
             'contentModel' => $contentModel,
             'assetModel'   => $assetModel,
+            'admin'        => false,
         ]);
     }
+
+    /**
+     * @Route("/admin/view/visual/{id}", name="view_admin_visual", requirements={"id"="\d+"})
+     *
+     * Renders a view from a template to be used in admin UI
+     *
+     * @param int $id The id of the view
+     */
+    public function renderVisualAdmin(int $id)
+    {
+        // get the view from the db
+        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
+        $name = $view->getName();
+
+        // use models to simplify templating
+        $contentModel = new ContentModel(
+            $this->em->getRepository(ViewContent::class)->findByViewIdJoined($view->getId())
+        );
+        $assetModel = new AssetModel(
+            $this->em->getRepository(ViewAsset::class)->findByViewIdJoined($view->getId())
+        );
+
+        return $this->render("view/$name.html.twig", [
+            'title'        => $view->getTitle(),
+            'contentModel' => $contentModel,
+            'assetModel'   => $assetModel,
+            'admin'        => true,
+        ]);
+    }
+
+
 
     /**
      * @Route("/admin/list-view", name="view_list", methods={"GET"})

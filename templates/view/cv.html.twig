@@ -3,6 +3,9 @@
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('home') }}
+    {% if (admin) %}
+        {{ encore_entry_link_tags('visual_admin') }}
+    {% endif %}
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/beon" type="text/css"/> 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/hi" type="text/css"/> 
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/exo-2" type="text/css"/> 
@@ -22,7 +25,7 @@
 </header>
 <main>
     <section id="presentation" class="wrapper">
-        <div class="neonBox neonText">
+        <div class="neonBox neonText contentBox" data-content-id="{{ contentModel.cv_header[0].id }}">
             <h1>{{ contentModel.cv_header[0].content.title }}</h1>
             <p>{{ contentModel.cv_header[0].content.subtitle }}</p>
         </div>
@@ -36,7 +39,9 @@
                     <ul>
                         {% for item in contentModel.skill %}
                             {% if item.content.section == 'web' %}
-                                <li>{{ item.content.name }}</li>
+                                <li class="contentBox" data-content-id="{{ item.id }}">
+                                    {{ item.content.name }}
+                                </li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -46,7 +51,9 @@
                     <ul>
                         {% for item in contentModel.skill %}
                             {% if item.content.section == 'technical' %}
-                                <li>{{ item.content.name }}</li>
+                                <li class="contentBox" data-content-id="{{ item.id }}">
+                                    {{ item.content.name }}
+                                </li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -56,7 +63,9 @@
                     <ul>
                         {% for item in contentModel.skill %}
                             {% if item.content.section == 'other' %}
-                                <li>{{ item.content.name }}</li>
+                                <li class="contentBox" data-content-id="{{ item.id }}">
+                                    {{ item.content.name }}
+                                </li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -67,7 +76,7 @@
             <h2>Training</h2>
             <div class="flex-big">
                 {% for training in contentModel.training|sort((a, b) => a.content.year <= b.content.year)  %}
-                    <article class="item">
+                    <article class="item contentBox" data-content-id="{{ training.id }}">
                         <h3>{{ training.content.year }}</h3>
                         <p><strong>{{ training.content.name }}</strong></p>
                         <p><em>{{ training.content.place }}</em></p>
@@ -80,7 +89,7 @@
             <h2>Experiences</h2>
             <div class="flex-big">
                 {% for experience in contentModel.experience|sort((a, b) => a.content.year_end <= b.content.year_end) %}
-                    <article class="item">
+                    <article class="item contentBox" data-content-id="{{ experience.id }}">
                         <h3>
                             {{ experience.content.year_start }}{% if experience.content.year_end %}-{{ experience.content.year_end }} {% endif %}
                         </h3>
@@ -95,7 +104,7 @@
             <h2>Realisations</h2>
             <div class="flex-big">
                 {% for realisation in contentModel.realisation %}
-                    <article class="item">
+                    <article class="item contentBox" data-content-id="{{ realisation.id }}">
                         <h3>{{ realisation.content.name }}</h3>
                         <p><em>{{ realisation.content.year }}</em></p>
                         <p>{{ realisation.content.description }}</p>
