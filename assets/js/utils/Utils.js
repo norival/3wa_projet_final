@@ -12,4 +12,16 @@ export class Utils {
 
         return 1;
     }
+
+    /**
+     * Capitalize first letter of string
+     *
+     * @param {string} string The string to capitalize
+     *
+     * @returns {string}
+     */
+    static capitalizeFirst(string)
+    {
+        return string[0].toUpperCase() + string.slice(1);
+    }
 }
