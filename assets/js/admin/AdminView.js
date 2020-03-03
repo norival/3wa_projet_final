@@ -225,6 +225,9 @@ export class AdminView {
 
         newContentForm.appendChild(Components.newContentForm());
         this.element.appendChild(newContentForm);
+
+        // add event listener for cancel button
+        this.getElement('#cancelContentFormButton').addEventListener('click', this._onClickCancel);
     }
 
     /**
