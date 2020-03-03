@@ -20,7 +20,8 @@ class ViewContentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ViewContent::class,
+            'data_class'      => ViewContent::class,
+            'csrf_protection' => false,
         ]);
     }
 }

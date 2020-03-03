@@ -51,7 +51,7 @@ class View
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true, cascade={"persist"})
      * @Groups({"form"})
      */
     private $viewContents;
