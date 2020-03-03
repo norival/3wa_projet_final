@@ -6,6 +6,7 @@ use App\Entity\Content;
 use App\Entity\View;
 use App\Entity\ViewAsset;
 use App\Entity\ViewContent;
+use App\Form\ViewContentType;
 use App\Form\ViewType;
 use App\Model\AssetModel;
 use App\Model\ContentModel;
@@ -137,7 +138,7 @@ class ViewController extends AbstractController
      * @param  string $id
      * @return Response
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, SerializerInterface $serializer, string $id)
     {
         $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
         $form = $this->createForm(ViewType::class, $view);
@@ -152,6 +153,9 @@ class ViewController extends AbstractController
             $this->em->flush();
         }
 
-        return new JsonResponse(json_encode('data received'));
+        // serialize the view to send back
+        $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
+
+        return new JsonResponse($json);
     }
 }

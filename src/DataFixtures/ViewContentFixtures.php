@@ -19,6 +19,9 @@ class ViewContentFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($contents as $content) {
             $viewContent = new ViewContent();
+            if ($content->getName() === 'misc') {
+                continue;
+            }
 
             $viewContent->setContent($content);
             $viewContent->setView($view);
