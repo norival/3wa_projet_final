@@ -180,7 +180,7 @@ export class Components {
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
-        let button = this.createElement('button', null, 'submitContentButton');
+        let button = this.createElement('button', null, 'submitContentFormButton');
         ul         = this.createElement('ul');
         li         = this.createElement('li');
 
@@ -190,7 +190,7 @@ export class Components {
         li.appendChild(button);
         ul.appendChild(li);
 
-        button = this.createElement('button', null, 'cancelViewEditButton');
+        button = this.createElement('button', null, 'cancelContentFormButton');
         li     = this.createElement('li');
 
         button.innerHTML        = 'Cancel';

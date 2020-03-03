@@ -184,7 +184,7 @@ export class AdminView {
     {
         this.element.appendChild(Components.contentForm(contentData));
 
-        this.getElement('#cancelViewEditButton').addEventListener('click', this._onClickCancel);
+        this.getElement('#cancelContentFormButton').addEventListener('click', this._onClickCancel);
     }
 
     /**
@@ -391,7 +391,7 @@ export class AdminView {
 
     bindClickSubmitContent(handler)
     {
-        this.getElement('#submitContentButton').addEventListener('click', event => {
+        this.getElement('#submitContentFormButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.contentId, this.getContentFormData());
@@ -400,7 +400,7 @@ export class AdminView {
 
     bindClickSubmitContentVisual(handler)
     {
-        this.getElement('#submitContentButton').addEventListener('click', event => {
+        this.getElement('#submitContentFormButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.contentId, this.getContentFormData());
