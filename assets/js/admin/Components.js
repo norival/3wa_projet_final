@@ -100,8 +100,9 @@ export class Components {
     /**
      * Create a form to modify a content
      *
-     * @param {object} contentData The content data
+     * @param {object?} contentData The content data or null to create a new content
      *
+     * @static
      * @returns {Element}
      */
     static contentForm(contentData) {
@@ -109,7 +110,7 @@ export class Components {
         const form = this.createElement('form');
 
         let fieldset = this.createElement('fieldset');
-        let h3 = this.createElement('h3');
+        let h3       = this.createElement('h3');
 
         h3.innerHTML = 'Informations';
         fieldset.appendChild(h3);
@@ -124,7 +125,7 @@ export class Components {
         label.innerHTML = 'Name';
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'name');
-        input.value = contentData.name;
+        input.value = contentData ? contentData.name : '';
 
         li.appendChild(label);
         li.appendChild(input);
@@ -138,7 +139,7 @@ export class Components {
         label.innerHTML = 'Type';
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'type');
-        input.value = contentData.type;
+        input.value = contentData ? contentData.type : '';
 
         li.appendChild(label);
         li.appendChild(input);
@@ -149,40 +150,42 @@ export class Components {
         form.appendChild(fieldset);
 
         fieldset = this.createElement('fieldset');
-        h3 = this.createElement('h3');
+        h3       = this.createElement('h3');
 
         h3.innerHTML = 'Content';
         fieldset.appendChild(h3);
 
-        ul = this.createElement('ul');
+        ul = this.createElement('ul', null, 'innerContentList');
 
-        for (let property in contentData.content) {
-            let li    = this.createElement('li');
-            let label = this.createElement('label');
-            let input = this.createElement('input');
+        if (contentData) {
+            for (let property in contentData.content) {
+                let li    = this.createElement('li');
+                let label = this.createElement('label');
+                let input = this.createElement('input');
 
-            label.innerHTML = property;
-            label.setAttribute('for', `content_${property}`);
+                label.innerHTML = property;
+                label.setAttribute('for', `content_${property}`);
 
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', `content_${property}`);
-            input.value = contentData.content[property];
+                input.setAttribute('type', 'text');
+                input.setAttribute('name', `content_${property}`);
+                input.value = contentData.content[property];
 
-            li.appendChild(label);
-            li.appendChild(input);
+                li.appendChild(label);
+                li.appendChild(input);
 
-            ul.appendChild(li);
+                ul.appendChild(li);
+            }
         }
 
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
         let button = this.createElement('button', null, 'submitContentButton');
-        ul = this.createElement('ul');
-        li = this.createElement('li');
+        ul         = this.createElement('ul');
+        li         = this.createElement('li');
 
         button.innerHTML         = 'Save';
-        button.dataset.contentId = contentData.id;
+        button.dataset.contentId = contentData ? contentData.id : '';
 
         li.appendChild(button);
         ul.appendChild(li);
@@ -190,7 +193,7 @@ export class Components {
         button = this.createElement('button', null, 'cancelViewEditButton');
         li     = this.createElement('li');
 
-        button.innerHTML = 'Cancel';
+        button.innerHTML        = 'Cancel';
         button.dataset.parentId = 'contentForm';
 
         li.appendChild(button);
@@ -474,5 +477,24 @@ export class Components {
         div.appendChild(article);
 
         return div;
+    }
+
+    /**
+     * Create a form to create a new content
+     *
+     * @static
+     * @returns {Element}
+     */
+    static newContentForm()
+    {
+        const form             = this.contentForm(null);
+        const innerContentList = form.querySelector('#innerContentList');
+
+        const button     = this.createElement('a', 'button', 'addInnerContent');
+        button.innerHTML = 'Add Content';
+        button.href      = '#';
+        innerContentList.appendChild(button);
+
+        return form;
     }
 }

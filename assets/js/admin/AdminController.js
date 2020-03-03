@@ -43,14 +43,28 @@ export class AdminController {
         this.model.submitViewForm(viewId, formData);
     }
 
+    /**
+     * Call this when the user clicks on the content link in the menu
+     * 
+     * @callback AdminController~handleListContent
+     * @async
+     */
     handleListContent = async () => {
         await this.model.listContent();
         this.view.bindClickContent(this.handleClickContent);
+        this.view.bindClickNewContent(this.handleClickNewContent);
     }
 
     handleClickContent = async (contentId) => {
         await this.model.getContentForm(contentId);
         this.view.bindClickSubmitContent(this.handleClickSubmitContent);
+    }
+
+    /**
+     * Handle click on newContentButton
+     */
+    handleClickNewContent = () => {
+        this.view.renderNewContentForm(null);
     }
 
     handleClickContentVisual = async (contentId) => {
@@ -99,6 +113,8 @@ export class AdminController {
     handleClickAddContentNew = (viewId) => {
         // TODO handle creation of a new content
         console.log(`creating new content for view ${viewId}`);
+        this.view.renderNewContentForm(viewId);
+        // TODO add event listners on new content form
     }
 
     /**

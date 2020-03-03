@@ -162,9 +162,17 @@ export class AdminView {
 
     renderContentList(contentList)
     {
+        const button = this.createElement('a', 'button', 'newContentButton');
+
+        // clear admin output
         Utils.clear(this.element);
 
+        // create a button to add a new content
+        button.href      = '#';
+        button.innerHTML = 'New content';
+
         this.element.appendChild(Components.contentList(contentList, 'contentList', false));
+        this.element.appendChild(button);
     }
 
     /**
@@ -192,10 +200,31 @@ export class AdminView {
         parent.appendChild(div);
     }
 
-    renderNewContentForm()
+    /**
+     * Render a form to create a new content
+     * 
+     * @param {number?} viewId The id of the view for which we want to add a
+     * content or null if we do not want to add it to a view
+     */
+    renderNewContentForm(viewId)
     {
         // TODO render a form to create a new content
-        console.log('we will create a new content from scratch');
+        // const parent = this.getElement('#viewFormOutput');
+        if (viewId) {
+            // TODO do something else if we are creating a new content from the
+            // view pane
+        }
+
+        let newContentForm = this.getElement('#newContentForm');
+
+        if (newContentForm) {
+            Utils.clear(newContentForm);
+        } else {
+            newContentForm = this.createElement('div', null, 'newContentForm');
+        }
+
+        newContentForm.appendChild(Components.newContentForm());
+        this.element.appendChild(newContentForm);
     }
 
     /**
@@ -326,6 +355,20 @@ export class AdminView {
             event.preventDefault();
 
             handler(event.target.dataset.contentId);
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when user click on 'newContentButton'
+     * 
+     * @param {function} handler The callback to bind
+     */
+    bindClickNewContent(handler)
+    {
+        this.getElement('#newContentButton').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
         });
     }
 
