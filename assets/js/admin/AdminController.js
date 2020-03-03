@@ -62,9 +62,31 @@ export class AdminController {
 
     /**
      * Handle click on newContentButton
+     * @callback AdminController~handleClickNewContent
      */
     handleClickNewContent = () => {
         this.view.renderNewContentForm(null);
+        this.view.bindClickAddInnerContent(this.handleClickAddInnerContent);
+        this.view.bindClickSubmitNewContent(this.handleClickSubmitNewContent);
+    }
+
+    /**
+     * Handle click on addInnerContent
+     * @callback AdminController~handleClickNewContent
+     */
+    handleClickAddInnerContent = () => {
+        this.view.renderAddInnerContentForm();
+    }
+
+    /**
+     * Handle the submission of a new content
+     *
+     * @param {Object} contentData Data for the new content
+     * @callback AdminController~handleClickSubmitNewContent
+     */
+    handleClickSubmitNewContent = (contentData) => {
+        console.log(contentData);
+        this.model.submitNewContentForm(contentData);
     }
 
     handleClickContentVisual = async (contentId) => {
@@ -74,6 +96,7 @@ export class AdminController {
     }
 
     handleClickSubmitContent = (contentId, formData) => {
+        console.log(formData);
         this.model.submitContentForm(contentId, formData, false);
     }
 

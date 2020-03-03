@@ -137,6 +137,30 @@ export class AdminModel {
     }
 
     /**
+     * Submit form to create a new content
+     *
+     */
+    submitNewContentForm(contentData)
+    {
+        fetch('admin/content', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(contentData)
+            })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
+                const data = JSON.parse(json);
+                console.log(data)
+            })
+    }
+
+    /**
      * Fetch a content from database with its id
      *
      * @param {int} contentId The id id of the content to fetch

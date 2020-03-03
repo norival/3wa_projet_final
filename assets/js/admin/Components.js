@@ -190,7 +190,7 @@ export class Components {
         li.appendChild(button);
         ul.appendChild(li);
 
-        button = this.createElement('button', null, 'cancelContentFormButton');
+        button = this.createElement('button', 'cancelButton', 'cancelContentFormButton');
         li     = this.createElement('li');
 
         button.innerHTML        = 'Cancel';
@@ -336,7 +336,7 @@ export class Components {
         ul.appendChild(li);
 
         li                      = this.createElement('li');
-        button                  = this.createElement('button', null, 'cancelContentEditButton');
+        button                  = this.createElement('button', 'cancelButton', 'cancelContentEditButton');
         button.innerHTML        = 'Cancel';
         button.dataset.parentId = 'viewFormOutput';
         li.appendChild(button);
@@ -490,11 +490,60 @@ export class Components {
         const form             = this.contentForm(null);
         const innerContentList = form.querySelector('#innerContentList');
 
+        // count the number of inner contents
+        innerContentList.dataset.innerContentCount = 0;
+
+        const li         = this.createElement('li');
         const button     = this.createElement('a', 'button', 'addInnerContent');
         button.innerHTML = 'Add Content';
         button.href      = '#';
-        innerContentList.appendChild(button);
+
+        li.appendChild(button);
+        innerContentList.appendChild(li);
+
+        // ---------------------------------------------------------------------
+        // Tests !!
+        // ---------------------------------------------------------------------
+        form.querySelector('[name="name"]').value = 'Test content name';
+        form.querySelector('[name="type"]').value = 'Test content type';
+        // ---------------------------------------------------------------------
 
         return form;
+    }
+
+    /**
+     * Create a form to add an inner content
+     *
+     * @param {number} count The current number of inner contents added
+     * @returns {Element}
+     * @static
+     */
+    static newInnerContentForm(count)
+    {
+        const name    = this.createElement('input');
+        const content = this.createElement('input');
+
+        let li = this.createElement('li');
+        // li.dataset.innerContentNumber = count;
+
+        let label = this.createElement('label');
+        name.setAttribute('type', 'text');
+        name.setAttribute('name', `contentName_${count}`);
+        name.value = `test_inner_content_name_${count}`;
+        label.setAttribute('for', `contentName_${count}`);
+        label.innerHTML = 'Name';
+        li.appendChild(label);
+        li.appendChild(name);
+
+        label = this.createElement('label');
+        content.setAttribute('type', 'text');
+        content.setAttribute('name', `contentContent_${count}`);
+        content.value = `test inner content content ${count}`;
+        label.setAttribute('for', `contentContent_${count}`);
+        label.innerHTML = 'Content';
+        li.appendChild(label);
+        li.appendChild(content);
+
+        return li;
     }
 }

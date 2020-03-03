@@ -88,6 +88,29 @@ export class AdminView {
         return data;
     }
 
+    getNewContentFormData()
+    {
+        const formData = new FormData(document.querySelector('#contentForm form'));
+        const data     = {};
+        
+        data.name = formData.get('name');
+        data.type = formData.get('type');
+
+        data['content'] = {};
+
+        let i = 1;
+        let innerContentName = formData.get(`contentName_${i}`);
+
+        while (innerContentName) {
+            // loop over inner contents
+            data['content'][innerContentName] = formData.get(`contentContent_${i}`);
+
+            innerContentName = formData.get(`contentName_${++i}`);
+        }
+
+        return data;
+    }
+
     getContentFormData()
     {
         const formData = new FormData(this.getElement('#contentForm form'));
@@ -130,7 +153,7 @@ export class AdminView {
         }
         this.element.appendChild(Components.viewForm(viewData));
 
-        this.getElement('#cancelContentEditButton').addEventListener('click', this._onClickCancel);
+        this._bindClickCancelButtons();
     }
 
     /**
@@ -184,7 +207,7 @@ export class AdminView {
     {
         this.element.appendChild(Components.contentForm(contentData));
 
-        this.getElement('#cancelContentFormButton').addEventListener('click', this._onClickCancel);
+        this._bindClickCancelButtons();
     }
 
     /**
@@ -227,7 +250,21 @@ export class AdminView {
         this.element.appendChild(newContentForm);
 
         // add event listener for cancel button
-        this.getElement('#cancelContentFormButton').addEventListener('click', this._onClickCancel);
+        this._bindClickCancelButtons();
+    }
+
+    /**
+     * Render form to add inner content inside content object
+     */
+    renderAddInnerContentForm()
+    {
+        const innerContentList = this.getElement('#innerContentList');
+
+        // increment innerContentCount and add a new one
+        innerContentList.dataset.innerContentCount++;
+        innerContentList.appendChild(
+            Components.newInnerContentForm(innerContentList.dataset.innerContentCount)
+        );
     }
 
     /**
@@ -375,6 +412,20 @@ export class AdminView {
         });
     }
 
+    /**
+     * Bind the controller callback to use when user click on 'addInnerContent'
+     * 
+     * @param {function} handler The callback to bind
+     */
+    bindClickAddInnerContent(handler)
+    {
+        this.getElement('#addInnerContent').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
+
     bindClickContentVisual(handler)
     {
         const iframe = this.getElement('iframe');
@@ -392,6 +443,25 @@ export class AdminView {
         });
     }
 
+    /**
+     * Bind the controller callback to use when new content form is submitted
+     * 
+     * @param {function} handler The callback to bind
+     */
+    bindClickSubmitNewContent(handler)
+    {
+        this.getElement('#submitContentFormButton').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler(this.getNewContentFormData());
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when content form is submitted
+     * 
+     * @param {function} handler The callback to bind
+     */
     bindClickSubmitContent(handler)
     {
         this.getElement('#submitContentFormButton').addEventListener('click', event => {
@@ -516,10 +586,22 @@ export class AdminView {
      * Methods to handle view related events
      **************************************************************************/
 
-    _onClickCancel = (event) => {
-        event.preventDefault();
-        this.getElement(`#${event.target.dataset.parentId}`).remove();
+    _bindClickCancelButtons()
+    {
+        const cancelButtons = document.querySelectorAll('.cancelButton');
+
+        cancelButtons.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                this.getElement(`#${event.target.dataset.parentId}`).remove();
+            });
+        });
     }
+
+    // _onClickCancel = (event) => {
+    //     event.preventDefault();
+    //     this.getElement(`#${event.target.dataset.parentId}`).remove();
+    // }
 
     _onClickAddContent = (event) => {
             event.preventDefault();
