@@ -71,16 +71,51 @@ export class AdminController {
         this.model.submitContentForm(null, contentData);
     }
 
-    handleSearchContent = (searchTerm) => {
-        this.model.searchContent(searchTerm);
-    }
+//     handleSearchContent = (searchTerm) => {
+//         this.model.searchContent(searchTerm);
+//     }
 
     onViewListChanged = (promise) => {
         this.view.renderViewList(promise);
     }
 
+    /**
+     * Call this method from the model when the view data has been loaded. It
+     * will render the view form and attach event listeners to it
+     * 
+     * @callback AdminController~onViewDataChanged
+     */
     onViewDataChanged = (viewData) => {
         this.view.renderViewForm(viewData);
+        this.view.bindClickAddContent(this.handleClickAddContent);
+    }
+
+    handleClickAddContent = (viewId) => {
+        this.view.renderAskNewContentForm(viewId);
+        this.view.bindClickAddContentNew(this.handleClickAddContentNew);
+        this.view.bindClickAddContentUse(this.handleClickAddContentUse);
+    }
+
+    handleClickAddContentNew = (viewId) => {
+        // TODO handle creation of a new content
+        console.log(`creating new content for view ${viewId}`);
+    }
+
+    /**
+     * Call this method from the view when the user wants to add an existing
+     * content to the view
+     *
+     * @param {number} viewId The id of the view
+     * @callback AdminController~handleClickAddContentUse
+     */
+    handleClickAddContentUse = (viewId) => {
+        // render form and call model.searchContent() to render the list of
+        // suggestions
+        this.view.renderUseContentForm(viewId);
+        this.model.searchContent('');
+
+        this.view.bindKeyUpSearchContent(this.handleKeyUpSearchContent);
+        this.view.bindClickContentSuggestion(this.handleClickContentSuggestion);
     }
 
     onVisualViewChanged = () => {
@@ -95,8 +130,50 @@ export class AdminController {
         this.view.renderContentForm(contentData);
     }
 
+    /**
+     * Call this method from the model when the content suggestions have
+     * changed (when looking for content)
+     *
+     * @param {Object} suggestion An object containing the suggestions
+     * @callback AdminController~onContentSuggestionChanged
+     */
     onContentSuggestionChanged = (suggestion) => {
         this.view.renderContentSuggestion(suggestion);
+    }
+
+    /**
+     * Handle a keyup on content search input: it calls the model's method to
+     * search for content in the database
+     *
+     * @param {string} searchTerm The string to look for in database
+     * @callback AdminController~handleKeyUpSearchContent
+     */
+    handleKeyUpSearchContent = (searchTerm) => {
+        this.model.searchContent(searchTerm);
+    }
+
+    /**
+     * Handle a click on a content suggestion
+     *
+     * @param {number} contentId The id of the content that has been clicked
+     * @param {number} viewId The id of the view for which we want to add a content
+     * @callback AdminController~handleClickContentSuggestion
+     */
+    handleClickContentSuggestion = async (contentId) => {
+        await this.model.getContent(contentId);
+        this.view.bindClickUseThisContent(this.handleClickUseThisContent);
+    }
+
+    /**
+     * Handle adding an existing content to a view
+     *
+     * @param {number} contentId The id of the content that has been clicked
+     * @param {object} formData The formated form data
+     * @callback AdminController~handleClickUseThisContent
+     */
+    handleClickUseThisContent = (viewId, formData, contentId) => {
+        this.model.addContentToView(viewId, formData, contentId);
+        // TODO refresh view
     }
 
     handleNeedContent = (contentId) => {
@@ -104,6 +181,12 @@ export class AdminController {
         this.model.getContent(contentId);
     }
 
+    /**
+     * Called from the model when a content has been received
+     *
+     * @param {Object} content An object representation of the content
+     * @callback AdminController~onContentReceived
+     */
     onContentReceived = (content) => {
         this.view.renderContent(content);
     }

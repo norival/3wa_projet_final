@@ -10,6 +10,9 @@ export class Components {
      *
      * Create an element and optionnally adds a class and an id
      *
+     * @param {string} tag - A valid html tag
+     * @param {string|Array} className - A class name or an array of class names
+     * @param {string} id - An id
      * @returns Element
      */
     static createElement(tag, className, id)
@@ -316,14 +319,15 @@ export class Components {
 
         let li = this.createElement('li');
 
-        let button       = this.createElement('button', null, 'addContentButton');
-        button.innerHTML = 'Add content';
+        let button            = this.createElement('button', null, 'addContentButton');
+        button.innerHTML      = 'Add content';
+        button.dataset.viewId = viewData.id;
         li.appendChild(button);
         ul.appendChild(li);
 
-        li               = this.createElement('li');
-        button           = this.createElement('button', null, 'submitViewButton');
-        button.innerHTML = 'Save';
+        li                    = this.createElement('li');
+        button                = this.createElement('button', null, 'submitViewButton');
+        button.innerHTML      = 'Save';
         button.dataset.viewId = viewData.id;
         li.appendChild(button);
         ul.appendChild(li);
@@ -343,24 +347,27 @@ export class Components {
     /**
      * Create form to ask which type of content must be added
      *
+     * @param {integer} viewId The id of the view for which we want to add a content
      * @returns {Element}
      */
-    static askNewContentForm()
+    static askNewContentForm(viewId)
     {
         const addContentDiv = this.createElement('div', null, 'askNewContentType');
         const ul = this.createElement('ul');
 
-        let li = this.createElement('li');
-        let a  = this.createElement('a', 'button', 'createContent');
-        a.text = 'Create new Content';
-        a.href = "#";
+        let li           = this.createElement('li');
+        let a            = this.createElement('a', 'button', 'createContent');
+        a.text           = 'Create new Content';
+        a.href           = "#";
+        a.dataset.viewId = viewId;
         li.appendChild(a);
         ul.appendChild(li);
 
-        li     = this.createElement('li');
-        a      = this.createElement('a', 'button', 'useContent');
-        a.text = 'Use existing Content';
-        a.href = "#";
+        li               = this.createElement('li');
+        a                = this.createElement('a', 'button', 'useContent');
+        a.text           = 'Use existing Content';
+        a.href           = "#";
+        a.dataset.viewId = viewId;
         li.appendChild(a);
         ul.appendChild(li);
 
@@ -389,6 +396,7 @@ export class Components {
     /**
      * Create list to display content suggestions
      *
+     * @param {Array} suggestion An array of content suggestions
      * @returns {undefined}
      */
     static contentSuggestion(suggestion)
@@ -409,29 +417,62 @@ export class Components {
         return ul;
     }
 
+    /**
+     * Create a div to display a content
+     *
+     * @param {Object} content The content to be displayed
+     * @returns {Element}
+     */
     static content(content)
     {
         const div = this.createElement('div', 'contentDisplay', 'contentDisplay');
 
-        let ul = this.createElement('ul');
+        let ul      = this.createElement('ul');
+        let li      = this.createElement('li');
+        let title   = this.createElement('h4');
+        let article = this.createElement('article', 'content');
 
-        let li = this.createElement('li');
-        li.innerHTML = content.name;
+        title.innerHTML = 'Informations';
+        article.appendChild(title);
+
+        li.innerHTML = `Name: ${content.name}`;
         ul.appendChild(li);
 
-        li = this.createElement('li');
-        li.innerHTML = content.type;
+        li           = this.createElement('li');
+        li.innerHTML = `Type: ${content.type}`;
         ul.appendChild(li);
 
-        li = this.createElement('li');
-        li.innerHTML = content.created_at;
+        li           = this.createElement('li');
+        li.innerHTML = `Creation date: ${Utils.formatDate(content.created_at)}`;
         ul.appendChild(li);
 
-        li = this.createElement('li');
-        li.innerHTML = content.updated_at;
-        ul.appendChild(li);
+        if (content.updated_at) {
+            li           = this.createElement('li');
+            li.innerHTML = `Last updated: ${Utils.formatDate(content.updated_at)}`;
+            ul.appendChild(li);
+        }
 
-        div.appendChild(ul);
+        article.appendChild(ul);
+        div.appendChild(article);
+
+        // render the content
+        article = this.createElement('article', 'content');
+        title   = this.createElement('h4');
+        ul      = this.createElement('ul');
+
+        title.innerHTML = 'Content';
+        article.appendChild(title);
+
+        for (const key in content.content) {
+            li           = this.createElement('li');
+            li.innerHTML = `${Utils.capitalizeFirst(key)}: ${content.content[key]}`;
+
+            ul.appendChild(li);
+        }
+        article.appendChild(ul);
+
+        div.appendChild(article);
+
         return div;
     }
 }

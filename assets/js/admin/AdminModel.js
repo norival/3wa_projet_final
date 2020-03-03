@@ -30,6 +30,12 @@ export class AdminModel {
         return this;
     }
 
+    /**
+     * Submit the form to update a view
+     *
+     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {object} formData The formated form data
+     */
     submitViewForm(viewId, formData)
     {
         fetch('admin/view/' + viewId, {
@@ -47,6 +53,40 @@ export class AdminModel {
                 // TODO Clear the form
                 console.log(json)
                 console.log('data sent')
+                // this.form.remove();
+            })
+    }
+
+    /**
+     * Add a content to a view
+     *
+     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {object} formData The formated form data
+     * @param {number} contentId The id of the content that is added
+     */
+    addContentToView(viewId, formData, contentId)
+    {
+        formData.viewContents.push({
+            view:    viewId,
+            content: contentId
+        });
+
+        fetch('admin/view/' + viewId, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(json => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
+                console.log(json)
+                console.log('data sent')
+                this.onViewDataChanged(JSON.parse(json));
                 // this.form.remove();
             })
     }
@@ -96,15 +136,26 @@ export class AdminModel {
             })
     }
 
-    getContent(contentId)
+    /**
+     * Fetch a content from database with its id
+     *
+     * @param {int} contentId The id id of the content to fetch
+     * @async
+     */
+    async getContent(contentId)
     {
-        fetch('/admin/content/' + contentId)
+        await fetch('/admin/content/' + contentId)
             .then(response => response.json())
             .then(json => {
                 this.onContentReceived(JSON.parse(json));
             })
     }
 
+    /**
+     * Search a content by name
+     *
+     * @param {string} searchTerm The string to look for in database
+     */
     searchContent(searchTerm)
     {
         const url = '/content/search?' + encodeURI(`search=${searchTerm}`);
@@ -147,11 +198,21 @@ export class AdminModel {
         this.onContentFormChanged = callback;
     }
 
+    /**
+     * Bind the controller callback to use when the content suggestions have changed
+     *
+     * @param {function} callback The callback to bind
+     */
     bindContentSuggestionChanged(callback)
     {
         this.onContentSuggestionChanged = callback;
     }
 
+    /**
+     * Bind the controller callback to use when the a content have been received
+     *
+     * @param {function} callback The callback to bind
+     */
     bindContentReceived(callback)
     {
         this.onContentReceived = callback;
