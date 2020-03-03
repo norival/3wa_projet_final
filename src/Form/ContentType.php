@@ -18,6 +18,7 @@ class ContentType extends AbstractType
             ->add('type', TextType::class)
             ->add('content', CollectionType::class, [
                 'entry_type' => TextType::class,
+                'allow_add'  => true,
             ])
             ->add('created_at')
             ->add('updated_at')

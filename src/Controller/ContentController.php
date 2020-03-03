@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/*
+ * TODO
+ * Set location headers for responses
+ */
 class ContentController extends AbstractController
 {
     private $em;
@@ -77,28 +81,34 @@ class ContentController extends AbstractController
     }
 
     /**
+     * Create a new content
+     *
      * @Route("/admin/content", name="content_new", methods={"POST"})
      *
+     * @param  Request $request
      * @return JsonResponse
      */
     public function new(Request $request)
     {
-        /* $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]); */
         $content = new Content();
         $form = $this->createForm(ContentType::class, $content);
 
-        $data = json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true);
         $form->submit($data, false);
 
         if ($form->isValid()) {
             // TODO if object has not been modified, do not change updated_at field
-            $content->setUpdatedAt(date_create());
+            $content->setCreatedAt(\date_create());
 
             $this->em->persist($content);
             $this->em->flush();
+
+            return new JsonResponse(\json_encode('Resource created'), 201);
         }
 
-        return new JsonResponse(json_encode('data received'));
+        // TODO useful error message
+        $errorMessage = 'The data is not valid';
+        return new JsonResponse(\json_encode($errorMessage), 400);
     }
 
     /**
