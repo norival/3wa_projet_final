@@ -1,3 +1,19 @@
+/*
+ * TODO remove a content
+ * TODO remove a content from a view
+ * TODO JS form validation
+ * TODO manage form errors
+ * TODO Assets view
+ * TODO Users view
+ */
+
+/**
+ * Creates an AdminController which links AdminModel and AdminView together.
+ *
+ * @param {AdminView} view The associated AdminView
+ * @param {AdminModel} model The associated AdminModel
+ * @class
+ */
 export class AdminController {
     constructor(view, model)
     {
@@ -82,11 +98,14 @@ export class AdminController {
      * Handle the submission of a new content
      *
      * @param {Object} contentData Data for the new content
+     * @param {?number} viewId Null to create a new content only or the id of
+     * the view to which the new content must be added
+     * @param {?Object} viewData Null to create a new content only or viewData
+     * to be submitted
      * @callback AdminController~handleClickSubmitNewContent
      */
-    handleClickSubmitNewContent = (contentData) => {
-        console.log(contentData);
-        this.model.submitNewContentForm(contentData);
+    handleClickSubmitNewContent = (contentData, viewId = null, viewData = null) => {
+        this.model.submitNewContentForm(contentData, viewId, viewData);
     }
 
     handleClickContentVisual = async (contentId) => {
@@ -133,11 +152,18 @@ export class AdminController {
         this.view.bindClickAddContentUse(this.handleClickAddContentUse);
     }
 
+    /**
+     * Call this method from the view when the user wants to create a new
+     * content from the view screen
+     *
+     * @param {number} viewId The id of the view to which the new content will
+     * be added
+     * @callback AdminController~handleClickAddContentNew
+     */
     handleClickAddContentNew = (viewId) => {
-        // TODO handle creation of a new content
-        console.log(`creating new content for view ${viewId}`);
         this.view.renderNewContentForm(viewId);
-        // TODO add event listners on new content form
+        this.view.bindClickAddInnerContent(this.handleClickAddInnerContent);
+        this.view.bindClickSubmitNewContent(this.handleClickSubmitNewContent);
     }
 
     /**

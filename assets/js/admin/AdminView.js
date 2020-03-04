@@ -231,13 +231,6 @@ export class AdminView {
      */
     renderNewContentForm(viewId)
     {
-        // TODO render a form to create a new content
-        // const parent = this.getElement('#viewFormOutput');
-        if (viewId) {
-            // TODO do something else if we are creating a new content from the
-            // view pane
-        }
-
         let newContentForm = this.getElement('#newContentForm');
 
         if (newContentForm) {
@@ -247,7 +240,13 @@ export class AdminView {
         }
 
         newContentForm.appendChild(Components.newContentForm());
+
         this.element.appendChild(newContentForm);
+
+        if (viewId) {
+            // Create a new content from the view pane
+            this.getElement('#submitContentFormButton').dataset.viewId = viewId;
+        }
 
         // add event listener for cancel button
         this._bindClickCancelButtons();
@@ -451,8 +450,18 @@ export class AdminView {
     bindClickSubmitNewContent(handler)
     {
         this.getElement('#submitContentFormButton').addEventListener('click', event => {
+            const viewId = event.target.dataset.viewId;
+
             event.preventDefault();
 
+            if (viewId) {
+                // submit new content form and add it to the view
+                handler(this.getNewContentFormData(), viewId, this.getViewFormData(viewId));
+
+                return;
+            }
+
+            // only submit new content form
             handler(this.getNewContentFormData());
         });
     }

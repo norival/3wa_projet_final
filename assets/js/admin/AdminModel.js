@@ -137,10 +137,16 @@ export class AdminModel {
     }
 
     /**
-     * Submit form to create a new content
+     * Submit form to create a new content and add it to a view if viewId and
+     * viewData are supplied
      *
+     * @param {Object} contentData Data for the new content
+     * @param {?number} viewId Null to create a new content only or the id of
+     * the view to which the new content must be added
+     * @param {?Object} viewData Null to create a new content only or viewData
+     * to be submitted
      */
-    submitNewContentForm(contentData)
+    submitNewContentForm(contentData, viewId = null, viewData = null)
     {
         fetch('admin/content', {
                 method: 'POST',
@@ -155,8 +161,18 @@ export class AdminModel {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
                 // TODO Clear the form
-                const data = JSON.parse(json);
-                console.log(data)
+                const contentId = JSON.parse(json);
+
+                if (viewId) {
+                    // if viewId was supplied, we update the corresponding view
+                    // with the new content
+                    viewData.viewContents.push({
+                        view: viewId,
+                        content: contentId
+                    });
+
+                    this.submitViewForm(viewId, viewData);
+                }
             })
     }
 
