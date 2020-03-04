@@ -51,7 +51,7 @@ class Content
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="content")
+     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="content", cascade="remove")
      */
     private $viewContents;
 
