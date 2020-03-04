@@ -48,6 +48,25 @@ class ContentController extends AbstractController
     }
 
     /**
+     * Delete a content from the database
+     *
+     * @Route("/admin/content/{id}", name="content_delete", methods={"DELETE"}, requirements={"id"="\d+"})
+     *
+     * @return JsonResponse
+     */
+    public function delete(int $id)
+    {
+        $content = $this->em->getRepository(Content::class)->find($id);
+
+        if ($content) {
+            $this->em->remove($content);
+            $this->em->flush();
+        }
+
+        return new JsonResponse(null, 204);
+    }
+
+    /**
      * @Route("/admin/content/form/{id}", name="content_get_form", methods={"GET"}, requirements={"id"="\d+"})
      *
      * @return Response
