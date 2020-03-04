@@ -103,7 +103,8 @@ class ContentController extends AbstractController
             $this->em->persist($content);
             $this->em->flush();
 
-            return new JsonResponse(\json_encode('Resource created'), 201);
+            // return if of newly created content
+            return new JsonResponse(\json_encode($content->getId(), 201));
         }
 
         // TODO useful error message
