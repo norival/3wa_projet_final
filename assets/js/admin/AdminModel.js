@@ -179,7 +179,7 @@ export class AdminModel {
     /**
      * Fetch a content from database with its id
      *
-     * @param {int} contentId The id id of the content to fetch
+     * @param {number} contentId The id of the content to fetch
      * @async
      */
     async getContent(contentId)
@@ -207,6 +207,27 @@ export class AdminModel {
             .then(response => response.json())
             .then(json => {
                 this.onContentSuggestionChanged(JSON.parse(json));
+            })
+    }
+
+    /**
+     * Delete a content from the database
+     *
+     * @param {number} contentId The id of the content to delete
+     */
+    deleteContent(contentId)
+    {
+        console.log('coucou');
+        fetch('/admin/content/' + contentId, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                console.log('coucou');
+                console.log(response.status);
             })
     }
 

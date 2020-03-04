@@ -71,8 +71,11 @@ export class Components {
             let td = this.createElement('td');
             let a  = this.createElement('a');
 
+            tr.dataset.contentId = element.id;
+
             a.text              = element.name;
             a.href              = '#';
+            a.dataset.action    = 'edit';
             a.dataset.contentId = element.id;
 
             td.appendChild(a)
@@ -84,6 +87,18 @@ export class Components {
             a.text               = element.type;
             a.href               = '#';
             a.dataset.contentId  = element.id;
+            td.dataset.contentId = element.id;
+
+            td.appendChild(a)
+            tr.appendChild(td);
+
+            td = this.createElement('td');
+            a  = this.createElement('a', ['button', 'delete']);
+
+            a.text               = 'Delete'
+            a.href               = '#';
+            a.dataset.contentId  = element.id;
+            a.dataset.action     = 'delete';
             td.dataset.contentId = element.id;
 
             td.appendChild(a)

@@ -1,5 +1,5 @@
 /*
- * TODO remove a content
+ * DONE remove a content from 
  * TODO remove a content from a view
  * TODO JS form validation
  * TODO manage form errors
@@ -69,11 +69,21 @@ export class AdminController {
         await this.model.listContent();
         this.view.bindClickContent(this.handleClickContent);
         this.view.bindClickNewContent(this.handleClickNewContent);
+        this.view.bindClickDeleteContent(this.handleClickDeleteContent);
     }
 
     handleClickContent = async (contentId) => {
         await this.model.getContentForm(contentId);
         this.view.bindClickSubmitContent(this.handleClickSubmitContent);
+    }
+
+    /**
+     * Handle click on deleteContentButton
+     * @callback AdminController~handleClickDeleteContent
+     */
+    handleClickDeleteContent = (contentId) => {
+        console.log(`deleting content: ${event.target.dataset.contentId}`);
+        this.model.deleteContent(contentId);
     }
 
     /**

@@ -75,13 +75,9 @@ export class AdminView {
         // get data contained in contentList
         data['viewContents'] = [];
         Array.from(contentList.rows).forEach((tr) => {
-            Array.from(tr.cells).forEach((cell) => {
-                if (cell.dataset.contentId) {
-                    data['viewContents'].push({
-                        view: viewId,
-                        content: cell.dataset.contentId
-                    });
-                }
+            data['viewContents'].push({
+                view: viewId,
+                content: tr.dataset.contentId
             })
         });
 
@@ -393,7 +389,25 @@ export class AdminView {
         this.getElement('#contentList').addEventListener('click', event => {
             event.preventDefault();
 
-            handler(event.target.dataset.contentId);
+            if (event.target.dataset.action === 'edit') {
+                handler(event.target.dataset.contentId);
+            }
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when user click on 'deleteContentButton'
+     * 
+     * @param {function} handler The callback to bind
+     */
+    bindClickDeleteContent(handler)
+    {
+        this.getElement('#contentList').addEventListener('click', event => {
+            event.preventDefault();
+
+            if (event.target.dataset.action === 'delete') {
+                handler(event.target.dataset.contentId);
+            }
         });
     }
 
