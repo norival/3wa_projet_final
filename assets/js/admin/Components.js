@@ -39,13 +39,14 @@ export class Components {
      *
      * The content list component.
      *
-     * @param contentList The content list
-     * @param contentListIsNested Whether the content is nested inside the
-     * content list
+     * @param {Object} contentList The content list
+     * @param {number} id The html id of the content list
+     * @param {bool} forViewScreen Whether the content is nested inside
+     * the content list. Used when rendering content list from the View screen.
      *
      * @returns {undefined}
      */
-    static contentList(contentList, id, contentListIsNested = false)
+    static contentList(contentList, id, forViewScreen = false)
     {
         const table = this.createElement('table', null, id);
         const tbody = this.createElement('tbody');
@@ -63,7 +64,7 @@ export class Components {
         table.appendChild(thead);
 
         contentList.forEach(element => {
-            if (contentListIsNested) {
+            if (forViewScreen) {
                 element = element.content;
             }
 
@@ -93,12 +94,17 @@ export class Components {
             tr.appendChild(td);
 
             td = this.createElement('td');
-            a  = this.createElement('a', ['button', 'delete']);
 
-            a.text               = 'Delete'
+            
+            a  = this.createElement('a', [
+                'button',
+                forViewScreen ? 'remove' : 'delete'
+            ]);
+
+            a.text               = forViewScreen ? 'Remove' : 'Delete';
             a.href               = '#';
             a.dataset.contentId  = element.id;
-            a.dataset.action     = 'delete';
+            a.dataset.action     = forViewScreen ? 'removeFromView' : 'delete';
             td.dataset.contentId = element.id;
 
             td.appendChild(a)

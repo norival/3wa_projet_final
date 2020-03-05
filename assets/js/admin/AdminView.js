@@ -333,6 +333,15 @@ export class AdminView {
         parent.appendChild(contentDiv);
     }
 
+    /**
+     * Remove a content from the list of contents on the view screen
+     *
+     * @param {number} contentId The id of the content to remove
+     */
+    removeContentFromView(contentId)
+    {
+        this.getElement(`#contentList tr[data-content-id="${contentId}"]`).remove();
+    }
 
     /***************************************************************************
      * Methods to bind event Listeners
@@ -406,6 +415,23 @@ export class AdminView {
             event.preventDefault();
 
             if (event.target.dataset.action === 'delete') {
+                handler(event.target.dataset.contentId);
+            }
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when user click on button to remove
+     * a content from the view
+     * 
+     * @param {function} handler The callback to bind
+     */
+    bindClickRemoveContentFromView(handler)
+    {
+        this.getElement('#contentList').addEventListener('click', event => {
+            event.preventDefault();
+
+            if (event.target.dataset.action === 'removeFromView') {
                 handler(event.target.dataset.contentId);
             }
         });

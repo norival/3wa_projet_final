@@ -1,6 +1,6 @@
 /*
  * DONE remove a content from 
- * TODO remove a content from a view
+ * DONE remove a content from a view
  * TODO JS form validation
  * TODO manage form errors
  * TODO Assets view
@@ -154,12 +154,24 @@ export class AdminController {
     onViewDataChanged = (viewData) => {
         this.view.renderViewForm(viewData);
         this.view.bindClickAddContent(this.handleClickAddContent);
+        this.view.bindClickRemoveContentFromView(this.handleClickRemoveContentFromView);
     }
 
     handleClickAddContent = (viewId) => {
         this.view.renderAskNewContentForm(viewId);
         this.view.bindClickAddContentNew(this.handleClickAddContentNew);
         this.view.bindClickAddContentUse(this.handleClickAddContentUse);
+    }
+
+    /**
+     * Call this method from the view when the user wants to remove a content
+     * from the view
+     *
+     * @param {number} contentId The id of the content that must be removed
+     * @callback AdminController~handleClickRemoveContentFromView
+     */
+    handleClickRemoveContentFromView = (contentId) => {
+        this.view.removeContentFromView(contentId);
     }
 
     /**
