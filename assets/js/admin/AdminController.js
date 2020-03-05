@@ -2,10 +2,12 @@
  * DONE remove a content from 
  * DONE remove a content from a view
  * TODO JS form validation
+ * TODO When adding content to a view, only update screen, do not submit the form
  * TODO manage form errors
  * TODO Assets view
  * TODO Users view
  * TODO Create a new view
+ * TODO Add inner content in content modification form
  */
 
 import {AdminModel} from './AdminModel';
@@ -59,8 +61,27 @@ export class AdminController {
         this.view.bindClickContentVisual(this.handleClickContentVisual);
     }
 
-    handleClickSubmitView = (viewId, formData) => {
-        this.model.submitViewForm(viewId, formData);
+    /**
+     * Call this when a view form is submitted. Handles validation and submission
+     *
+     * @param {Element} form The form to validate
+     */
+    handleClickSubmitView = (form) => {
+        const formValidator = new FormValidator(form);
+
+        formValidator.validate();
+
+        if (formValidator.isValid) {
+            this.model.submitViewForm(
+                form.dataset.viewId,
+                this.view.getViewFormData(form.dataset.viewId)
+            );
+
+            return;
+        }
+
+        // send the errors back to the view
+        this.view.renderFormErrors(form, formValidator.errors);
     }
 
     /**
@@ -109,28 +130,47 @@ export class AdminController {
     }
 
     /**
+     * Handle the submission of an existing content
+     *
+     * @param {Element} form The form to validate
+     * @callback AdminController~handleClickSubmitNewContent
+     */
+    handleClickSubmitContent = (form) => {
+        const formValidator = new FormValidator(form);
+
+        formValidator.validate();
+
+        if (formValidator.isValid) {
+            this.model.submitContentForm(
+                form.dataset.contentId,
+                this.view.getContentFormData()
+            );
+
+            return;
+        }
+
+        // send the errors back to the view
+        this.view.renderFormErrors(form, formValidator.errors);
+    }
+
+    /**
      * Handle the submission of a new content
      *
      * @param {Object} contentData Data for the new content
      * @param {?number} viewId Null to create a new content only or the id of
      * the view to which the new content must be added
-     * @param {?Object} viewData Null to create a new content only or viewData
-     * to be submitted
+     * @param {?Object} viewData Null to create a new content only or Object containg the view data
      * @callback AdminController~handleClickSubmitNewContent
      */
     handleClickSubmitNewContent = (contentData, viewId = null, viewData = null) => {
         this.model.submitNewContentForm(contentData, viewId, viewData);
+        // const formValidator = new FormValidator();
     }
 
     handleClickContentVisual = async (contentId) => {
         await this.model.getContentForm(contentId);
         this.view.bindClickSubmitContentVisual(this.handleClickSubmitContentVisual);
         // this.view.renderViewTemplate();
-    }
-
-    handleClickSubmitContent = (contentId, formData) => {
-        console.log(formData);
-        this.model.submitContentForm(contentId, formData, false);
     }
 
     handleClickSubmitContentVisual = (contentId, formData) => {

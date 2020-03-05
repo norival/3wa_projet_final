@@ -116,10 +116,15 @@ export class AdminModel {
             })
     }
 
+    /**
+     * Submit form to edit a content
+     *
+     * @param {number} contentId The id of the content to edit
+     * @param {?Object} formData The data to send
+     * @param {Boolean} visual Whether we are in visual mode or not
+     */
     submitContentForm(contentId, formData, visual)
     {
-        // const url = contentId === null ? `admin/content/${contentId}` : 'admin/content';
-
         fetch(contentId === null ? 'admin/content' : `admin/content/${contentId}`, {
                 method: contentId === null ? 'POST': 'PUT',
                 headers: {

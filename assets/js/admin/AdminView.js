@@ -107,6 +107,11 @@ export class AdminView {
         return data;
     }
 
+    /**
+     * Get and format Content form data
+     *
+     * @return {Object} The formated data
+     */
     getContentFormData()
     {
         const formData = new FormData(this.getElement('#contentForm form'));
@@ -150,6 +155,32 @@ export class AdminView {
         this.element.appendChild(Components.viewForm(viewData));
 
         this._bindClickCancelButtons();
+    }
+
+    /**
+     * Render form errors
+     *
+     * @param {Element} form The form that has errors
+     * @param {Object} errors Errors to render
+     */
+    renderFormErrors(form, errors)
+    {
+        // remove previous errors (if any)
+        const previousErrors = document.querySelectorAll('.formError');
+
+        if (previousErrors) {
+            previousErrors.forEach((element) => {
+                element.remove();
+            });
+        }
+
+        // display error messages
+        for (let property in errors) {
+            const span     = this.createElement('span', 'formError');
+            span.innerHTML = errors[property];
+
+            form.querySelector(`[data-name="${property}"]`).insertAdjacentElement('afterend', span);
+        }
     }
 
     /**
@@ -374,13 +405,18 @@ export class AdminView {
         });
     }
 
+    /**
+     * Bind the controller callback to use to submit a view form
+     * 
+     * @param {function} handler The callback to bind
+     */
     bindClickSubmitView(handler)
     {
         this.getElement('#submitViewButton').addEventListener('click', event => {
             event.preventDefault();
-            const viewId = event.target.dataset.viewId;
 
-            handler(viewId, this.getViewFormData(viewId));
+            // send the form element
+            handler(this.getElement('#viewForm'));
         });
     }
 
@@ -516,7 +552,8 @@ export class AdminView {
         this.getElement('#submitContentFormButton').addEventListener('click', event => {
             event.preventDefault();
 
-            handler(event.target.dataset.contentId, this.getContentFormData());
+            // handler(event.target.dataset.contentId, this.getContentFormData());
+            handler(this.getElement('#contentForm form'));
         });
     }
 

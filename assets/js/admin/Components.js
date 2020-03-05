@@ -130,6 +130,10 @@ export class Components {
         const div  = this.createElement('div', null, 'contentForm');
         const form = this.createElement('form');
 
+        if (contentData) {
+            form.dataset.contentId = contentData.id;
+        }
+
         let fieldset = this.createElement('fieldset');
         let h3       = this.createElement('h3');
 
@@ -147,6 +151,10 @@ export class Components {
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'name');
         input.value = contentData ? contentData.name : '';
+        // validation
+        input.dataset.required = true;
+        input.dataset.type     = 'text';
+        input.dataset.name     = 'Name';
 
         li.appendChild(label);
         li.appendChild(input);
@@ -161,6 +169,10 @@ export class Components {
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'type');
         input.value = contentData ? contentData.type : '';
+        // validation
+        input.dataset.required = true;
+        input.dataset.type     = 'text';
+        input.dataset.name     = 'Type';
 
         li.appendChild(label);
         li.appendChild(input);
@@ -190,6 +202,10 @@ export class Components {
                 input.setAttribute('type', 'text');
                 input.setAttribute('name', `content_${property}`);
                 input.value = contentData.content[property];
+
+                // validation
+                input.dataset.type = 'text';
+                input.dataset.name = Utils.capitalizeFirst(property);
 
                 li.appendChild(label);
                 li.appendChild(input);
@@ -557,6 +573,11 @@ export class Components {
         name.value = `test_inner_content_name_${count}`;
         label.setAttribute('for', `contentName_${count}`);
         label.innerHTML = 'Name';
+        // validation
+        name.dataset.required = true;
+        name.dataset.type     = 'text';
+        name.dataset.name     = Utils.capitalizeFirst(`contentContent_${count}`);
+
         li.appendChild(label);
         li.appendChild(name);
 
