@@ -1,4 +1,10 @@
+/**
+ * The model component for the admin MVC app
+ */
 export class AdminModel {
+    /**
+     * Create the AdminModel
+     */
     constructor()
     {
         this.viewList = null;

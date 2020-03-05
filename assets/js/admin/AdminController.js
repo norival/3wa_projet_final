@@ -5,21 +5,25 @@
  * TODO manage form errors
  * TODO Assets view
  * TODO Users view
+ * TODO Create a new view
  */
 
+import {AdminModel} from './AdminModel';
+import {AdminView} from './AdminView';
+import {FormValidator} from '../form/FormValidator';
+
 /**
- * Creates an AdminController which links AdminModel and AdminView together.
- *
- * @param {AdminView} view The associated AdminView
- * @param {AdminModel} model The associated AdminModel
- * @class
+ * The controller component for the admin MVC app
  */
 export class AdminController {
-    constructor(view, model)
+    /**
+     * Create an AdminController object
+     */
+    constructor()
     {
         // initialization
-        this.view  = view;
-        this.model = model;
+        this.view  = new AdminView();
+        this.model = new AdminModel();
 
         // bind event handlers for view events
         this.view.bindListViews(this.handleListViews);
