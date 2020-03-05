@@ -322,6 +322,10 @@ export class Components {
             label.innerHTML = Utils.capitalizeFirst(key);
             label.setAttribute('for', key);
 
+            input.dataset.required = true;
+            input.dataset.type     = 'text';
+            input.dataset.name     = Utils.capitalizeFirst(key);
+
             li.appendChild(label);
             li.appendChild(input);
             ul.appendChild(li);
