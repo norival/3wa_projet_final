@@ -411,6 +411,9 @@ export class Components {
         const addContentDiv = this.createElement('div', null, 'askNewContentType');
         const ul = this.createElement('ul');
 
+        // set data-group: used to easily remove groups of divs
+        addContentDiv.dataset.group = 'addContentToView';
+
         let li           = this.createElement('li');
         let a            = this.createElement('a', 'button', 'createContent');
         a.text           = 'Create new Content';
@@ -442,6 +445,8 @@ export class Components {
         const searchContentDiv = this.createElement('div', null, 'searchContent');
         const form             = this.createElement('form', null, 'searchContentForm');
         const input            = this.createElement('input');
+
+        searchContentDiv.dataset.group = 'addContentToView';
 
         form.appendChild(input);
         searchContentDiv.appendChild(form);
@@ -489,6 +494,7 @@ export class Components {
         let article = this.createElement('article', 'content');
 
         div.dataset.contentId = content.id;
+        div.dataset.group     = 'addContentToView';
 
         title.innerHTML = 'Informations';
         article.appendChild(title);

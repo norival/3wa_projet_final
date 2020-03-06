@@ -308,7 +308,7 @@ export class AdminController {
      */
     handleClickUseThisContent = (contentData) => {
         this.view.addContentToView(contentData);
-        // TODO clear display from all the add content stuff
+        this.view.clearGroup('addContentToView');
     }
 
     handleNeedContent = (contentId) => {

@@ -147,6 +147,17 @@ export class AdminView {
         };
     }
 
+    /**
+     * Clear a group of elements
+     *
+     * @param {string} group The name of the group to clear
+     */
+    clearGroup(group)
+    {
+        document.querySelectorAll(`[data-group="${group}"]`).forEach((element) => {
+            element.remove();
+        });
+    }
 
     /***************************************************************************
      * Methods to render views
@@ -323,6 +334,7 @@ export class AdminView {
 
         const div          = this.createElement('div', null, 'contentSuggestion');
         div.dataset.viewId = viewId;
+        div.dataset.group  = 'addContentToView';
         parent.appendChild(div);
     }
 
