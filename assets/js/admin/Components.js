@@ -276,6 +276,41 @@ export class Components {
     }
 
     /**
+     * Create the view homepage
+     *
+     * @returns {Element}
+     */
+    static viewsHome()
+    {
+        const viewDiv = this.createElement('div', null, 'viewOutput');
+        const header  = this.createElement('header', 'adminPanel');
+        const title   = this.createElement('h2');
+        const helpDiv = this.createElement('div', 'help');
+        const message = this.createElement('p');
+        const p       = this.createElement('p');
+
+        title.innerHTML = 'Views';
+
+        message.innerHTML = `
+            On this screen, you can manage your views.
+        `;
+
+        p.innerHTML = `
+            A view is a collection of contents that are rendered together
+            within a template or from an API query.
+        `;
+        helpDiv.appendChild(p);
+
+        header.appendChild(title);
+        header.appendChild(message);
+        header.appendChild(helpDiv);
+
+        viewDiv.appendChild(header);
+
+        return viewDiv;
+    }
+
+    /**
      * Create a list of available views
      *
      * @param {Array} viewList The content list
@@ -284,21 +319,10 @@ export class Components {
      */
     static viewList(viewList)
     {
-        const helpDiv   = this.createElement('div', 'help');
         const outputDiv = this.createElement('div');
-        const p         = this.createElement('p');
-        const title     = this.createElement('h2');
         const listTitle = this.createElement('h3');
         const ul        = this.createElement('ul', null, 'viewList');
 
-
-        p.innerHTML = `
-            A view is a collection of contents that are rendered together
-            within a template or from an API query.
-        `;
-        helpDiv.appendChild(p);
-
-        title.innerHTML     = 'Views';
         listTitle.innerHTML = 'List of available views';
 
         viewList.forEach((view) => {
@@ -327,8 +351,6 @@ export class Components {
             ul.appendChild(li);
         });
 
-        outputDiv.appendChild(title);
-        outputDiv.appendChild(helpDiv);
         outputDiv.appendChild(listTitle);
         outputDiv.appendChild(ul);
 

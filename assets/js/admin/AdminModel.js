@@ -7,18 +7,19 @@ export class AdminModel {
      */
     constructor()
     {
-        this.viewList = null;
     }
 
+    /**
+     * Fetch the list of available views
+     */
     async listViews()
     {
         // fetch data from website and store the promise in this.views
         await fetch('admin/list-view')
             .then(response => response.json())
-            .then(json => JSON.parse(json))
-            .then(viewList => {
+            .then(json => {
                 // tell the controller to refresh the view
-                this.onViewListChanged(viewList);
+                this.onViewsListLoaded(JSON.parse(json));
             });
 
         return this;
@@ -235,12 +236,15 @@ export class AdminModel {
             })
     }
 
-    bindViewListChanged(callback)
+    /**
+     * Bind the controller callback to use when the list of view have been
+     * loaded
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindViewsListLoaded(callback)
     {
-        /*
-         * Here we set the callback that must be called when this.views gets updated
-         */
-        this.onViewListChanged = callback;
+        this.onViewsListLoaded = callback;
     }
 
     bindViewDataChanged(callback)

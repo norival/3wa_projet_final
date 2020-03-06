@@ -28,16 +28,17 @@ export class AdminController {
         this.model = new AdminModel();
 
         // bind event handlers for view events
+        this.view.bindViewsHome(this.handleViewsHome);
         this.view.bindAssetsHome(this.handleAssetsHome);
         this.view.bindUsersHome(this.handleUsersHome);
         this.view.bindStatsHome(this.handleStatsHome);
-        this.view.bindListViews(this.handleListViews);
+        // this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
         this.view.bindSearchContent(this.handleSearchContent);
         this.view.bindNeedContent(this.handleNeedContent);
 
         // bind event handlers for model events
-        this.model.bindViewListChanged(this.onViewListChanged);
+        this.model.bindViewsListLoaded(this.onViewsListLoaded);
         this.model.bindViewDataChanged(this.onViewDataChanged);
         this.model.bindVisualViewChanged(this.onVisualViewChanged);
         this.model.bindContentListChanged(this.onContentListChanged);
@@ -45,6 +46,18 @@ export class AdminController {
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
         this.model.bindContentReceived(this.onContentReceived);
         this.model.bindContentCreatedForView(this.onContentCreatedForView);
+    }
+
+    /**
+     * Handle click on the 'Views' menu entry
+     *
+     * @callback AdminController~handleViewsHome
+     */
+    handleViewsHome = async () => {
+        this.view.renderViewsHome();
+        await this.model.listViews();
+        this.view.bindClickView(this.handleClickView);
+        this.view.bindClickViewVisual(this.handleClickViewVisual);
     }
 
     /**
@@ -227,12 +240,13 @@ export class AdminController {
         this.model.submitContentForm(null, contentData);
     }
 
-//     handleSearchContent = (searchTerm) => {
-//         this.model.searchContent(searchTerm);
-//     }
-
-    onViewListChanged = (promise) => {
-        this.view.renderViewList(promise);
+    /**
+     * Call this method from the model when the list of view has been loaded.
+     * 
+     * @callback AdminController~onViewDataChanged
+     */
+    onViewsListLoaded = (viewListData) => {
+        this.view.renderViewsList(viewListData);
     }
 
     /**

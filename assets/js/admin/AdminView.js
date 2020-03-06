@@ -193,11 +193,23 @@ export class AdminView {
         this.element.appendChild(Components.notImplementedFeature());
     }
 
-    renderViewList(viewList)
+    /**
+     * Render home page layout for views management
+     *
+     * @returns {undefined}
+     */
+    renderViewsHome()
     {
         Utils.clear(this.element);
 
-        this.element.appendChild(Components.viewList(viewList));
+        this.element.appendChild(Components.viewsHome());
+    }
+
+    renderViewsList(viewList)
+    {
+        const element = this.getElement('#viewOutput');
+
+        element.appendChild(Components.viewList(viewList));
     }
 
     /**
@@ -477,7 +489,7 @@ export class AdminView {
         });
     }
 
-    bindListViews(handler)
+    bindViewsHome(handler)
     {
         this.getElement('#views').addEventListener('click', event => {
             event.preventDefault();
