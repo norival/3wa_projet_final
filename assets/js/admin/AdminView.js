@@ -130,6 +130,23 @@ export class AdminView {
         return data;
     }
 
+    /**
+     * Helper to get content data from content display
+     *
+     * @param {Element} contentInformations The element from which to retrieve content data
+     * @returns {Object} Object representation of the content data
+     */
+    getContentDataFromContentDisplay(contentInformations)
+    {
+        return {
+            id:         contentInformations.dataset.contentId,
+            name:       contentInformations.dataset.contentName,
+            type:       contentInformations.dataset.contentType,
+            created_at: contentInformations.dataset.createdAt,
+            updated_at: contentInformations.dataset.updatedAt
+        };
+    }
+
 
     /***************************************************************************
      * Methods to render views
@@ -372,6 +389,18 @@ export class AdminView {
     removeContentFromView(contentId)
     {
         this.getElement(`#contentList tr[data-content-id="${contentId}"]`).remove();
+    }
+
+    /**
+     * Add a content to the view
+     *
+     * @param {Object} contentData Data for the content to add to the view
+     */
+    addContentToView(contentData)
+    {
+        const contentListBody = this.getElement('#contentList tbody');
+
+        contentListBody.appendChild(Components.contentListRow(contentData, true));
     }
 
     /***************************************************************************
@@ -659,12 +688,10 @@ export class AdminView {
         this.getElement('#useThisContent').addEventListener('click', (event) => {
             event.preventDefault();
 
-            const viewId    = event.target.dataset.viewId;
-            const contentId = event.target.dataset.contentId;
+            const contentInformations = this.getElement('#contentInformations');
+            const contentData         = this.getContentDataFromContentDisplay(contentInformations);
 
-            const formData = this.getViewFormData(viewId);
-
-            handler(viewId, formData, contentId);
+            handler(contentData);
         });
     }
 

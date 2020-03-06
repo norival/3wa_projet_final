@@ -201,6 +201,11 @@ export class AdminController {
         this.view.bindClickRemoveContentFromView(this.handleClickRemoveContentFromView);
     }
 
+    /**
+     * Call this when we want to add a content to a view
+     *
+     * @callback AdminController~handleClickAddContent
+     */
     handleClickAddContent = (viewId) => {
         this.view.renderAskNewContentForm(viewId);
         this.view.bindClickAddContentNew(this.handleClickAddContentNew);
@@ -298,13 +303,12 @@ export class AdminController {
     /**
      * Handle adding an existing content to a view
      *
-     * @param {number} contentId The id of the content that has been clicked
-     * @param {object} formData The formated form data
+     * @param {Object} contentData Data for the content to add to the view
      * @callback AdminController~handleClickUseThisContent
      */
-    handleClickUseThisContent = (viewId, formData, contentId) => {
-        this.model.addContentToView(viewId, formData, contentId);
-        // TODO refresh view
+    handleClickUseThisContent = (contentData) => {
+        this.view.addContentToView(contentData);
+        // TODO clear display from all the add content stuff
     }
 
     handleNeedContent = (contentId) => {

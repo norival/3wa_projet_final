@@ -44,7 +44,7 @@ export class Components {
      * @param {bool} forViewScreen Whether the content is nested inside
      * the content list. Used when rendering content list from the View screen.
      *
-     * @returns {undefined}
+     * @returns {Element}
      */
     static contentList(contentList, id, forViewScreen = false)
     {
@@ -68,54 +68,66 @@ export class Components {
                 element = element.content;
             }
 
-            let tr = this.createElement('tr');
-            let td = this.createElement('td');
-            let a  = this.createElement('a');
-
-            tr.dataset.contentId = element.id;
-
-            a.text              = element.name;
-            a.href              = '#';
-            a.dataset.action    = 'edit';
-            a.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            td = this.createElement('td');
-            a  = this.createElement('a');
-
-            a.text               = element.type;
-            a.href               = '#';
-            a.dataset.contentId  = element.id;
-            td.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            td = this.createElement('td');
-
-            
-            a  = this.createElement('a', [
-                'button',
-                forViewScreen ? 'remove' : 'delete'
-            ]);
-
-            a.text               = forViewScreen ? 'Remove' : 'Delete';
-            a.href               = '#';
-            a.dataset.contentId  = element.id;
-            a.dataset.action     = forViewScreen ? 'removeFromView' : 'delete';
-            td.dataset.contentId = element.id;
-
-            td.appendChild(a)
-            tr.appendChild(td);
-
-            tbody.appendChild(tr);
+            tbody.appendChild(this.contentListRow(element, forViewScreen));
         });
 
         table.appendChild(tbody);
 
         return table;
+    }
+
+    /**
+     * Create a single row for the content list
+     *
+     * @param {Object} content An object representation of the content
+     * @param {bool} forViewScreen Whether the content is nested inside
+     * @returns {Element}
+     */
+    static contentListRow(content, forViewScreen = false)
+    {
+        let tr = this.createElement('tr');
+        let td = this.createElement('td');
+        let a  = this.createElement('a');
+
+        tr.dataset.contentId = content.id;
+
+        a.text              = content.name;
+        a.href              = '#';
+        a.dataset.action    = 'edit';
+        a.dataset.contentId = content.id;
+
+        td.appendChild(a)
+        tr.appendChild(td);
+
+        td = this.createElement('td');
+        a  = this.createElement('a');
+
+        a.text               = content.type;
+        a.href               = '#';
+        a.dataset.contentId  = content.id;
+        td.dataset.contentId = content.id;
+
+        td.appendChild(a)
+        tr.appendChild(td);
+
+        td = this.createElement('td');
+
+
+        a  = this.createElement('a', [
+            'button',
+            forViewScreen ? 'remove' : 'delete'
+        ]);
+
+        a.text               = forViewScreen ? 'Remove' : 'Delete';
+        a.href               = '#';
+        a.dataset.contentId  = content.id;
+        a.dataset.action     = forViewScreen ? 'removeFromView' : 'delete';
+        td.dataset.contentId = content.id;
+
+        td.appendChild(a)
+        tr.appendChild(td);
+
+        return tr;
     }
 
     /**
@@ -471,10 +483,12 @@ export class Components {
     {
         const div = this.createElement('div', 'contentDisplay', 'contentDisplay');
 
-        let ul      = this.createElement('ul');
+        let ul      = this.createElement('ul', null, 'contentInformations');
         let li      = this.createElement('li');
         let title   = this.createElement('h4');
         let article = this.createElement('article', 'content');
+
+        div.dataset.contentId = content.id;
 
         title.innerHTML = 'Informations';
         article.appendChild(title);
@@ -494,7 +508,15 @@ export class Components {
             li           = this.createElement('li');
             li.innerHTML = `Last updated: ${Utils.formatDate(content.updated_at)}`;
             ul.appendChild(li);
+
         }
+
+        // set content informations in the list dataset for easy retrieval
+        ul.dataset.contentId   = content.id;
+        ul.dataset.contentName = content.name;
+        ul.dataset.contentType = content.type;
+        ul.dataset.createdAt   = content.created_at;
+        ul.dataset.updatedAt   = content.updated_at ? content.updated_at : '';
 
         article.appendChild(ul);
         div.appendChild(article);
