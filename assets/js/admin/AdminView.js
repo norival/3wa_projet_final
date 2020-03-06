@@ -163,6 +163,36 @@ export class AdminView {
      * Methods to render views
      **************************************************************************/
 
+    /**
+     * Render home page for assets management
+     */
+    renderAssestsHome()
+    {
+        Utils.clear(this.element);
+
+        this.element.appendChild(Components.notImplementedFeature());
+    }
+
+    /**
+     * Render home page for users management
+     */
+    renderUsersHome()
+    {
+        Utils.clear(this.element);
+
+        this.element.appendChild(Components.notImplementedFeature());
+    }
+
+    /**
+     * Render home page for stats management
+     */
+    renderStatsHome()
+    {
+        Utils.clear(this.element);
+
+        this.element.appendChild(Components.notImplementedFeature());
+    }
+
     renderViewList(viewList)
     {
         Utils.clear(this.element);
@@ -419,6 +449,33 @@ export class AdminView {
     /***************************************************************************
      * Methods to bind event Listeners
      **************************************************************************/
+
+    bindAssetsHome(handler)
+    {
+        this.getElement('#assets').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
+
+    bindUsersHome(handler)
+    {
+        this.getElement('#users').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
+
+    bindStatsHome(handler)
+    {
+        this.getElement('#stats').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
 
     bindListViews(handler)
     {

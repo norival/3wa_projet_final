@@ -28,6 +28,9 @@ export class AdminController {
         this.model = new AdminModel();
 
         // bind event handlers for view events
+        this.view.bindAssetsHome(this.handleAssetsHome);
+        this.view.bindUsersHome(this.handleUsersHome);
+        this.view.bindStatsHome(this.handleStatsHome);
         this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
         this.view.bindSearchContent(this.handleSearchContent);
@@ -42,6 +45,33 @@ export class AdminController {
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
         this.model.bindContentReceived(this.onContentReceived);
         this.model.bindContentCreatedForView(this.onContentCreatedForView);
+    }
+
+    /**
+     * Handle click on the 'Assets' menu entry
+     *
+     * @callback AdminController~handleAssetsHome
+     */
+    handleAssetsHome = () => {
+        this.view.renderAssestsHome();
+    }
+
+    /**
+     * Handle click on the 'Users' menu entry
+     *
+     * @callback AdminController~handleUsersHome
+     */
+    handleUsersHome = () => {
+        this.view.renderUsersHome();
+    }
+
+    /**
+     * Handle click on the 'Stats' menu entry
+     *
+     * @callback AdminController~handleStatsHome
+     */
+    handleStatsHome = () => {
+        this.view.renderStatsHome();
     }
 
     handleListViews = async () => {

@@ -35,6 +35,27 @@ export class Components {
     }
 
     /**
+     * Create an element to render in not implemented features
+     *
+     * @returns {Element}
+     */
+    static notImplementedFeature()
+    {
+        const div = this.createElement('div', 'notImplemented');
+        const p   = this.createElement('p');
+        const img = this.createElement('img');
+
+        p.innerHTML = 'Working on it! Come back later!';
+
+        img.src = require('../../images/bud.gif');
+
+        div.appendChild(p);
+        div.appendChild(img);
+
+        return div;
+    }
+
+    /**
      * contentList
      *
      * The content list component.
