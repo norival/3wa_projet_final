@@ -58,7 +58,6 @@ export class AdminModel {
                 // TODO If the server says OK, display confirmation message and clear the page
                 // TODO Clear the form
                 console.log(json)
-                console.log('data sent')
                 // this.form.remove();
             })
     }
@@ -154,10 +153,8 @@ export class AdminModel {
      * @param {Object} contentData Data for the new content
      * @param {?number} viewId Null to create a new content only or the id of
      * the view to which the new content must be added
-     * @param {?Object} viewData Null to create a new content only or viewData
-     * to be submitted
      */
-    submitNewContentForm(contentData, viewId = null, viewData = null)
+    submitNewContentForm(contentData, viewId = null)
     {
         fetch('admin/content', {
                 method: 'POST',
@@ -175,14 +172,8 @@ export class AdminModel {
                 const contentId = JSON.parse(json);
 
                 if (viewId) {
-                    // if viewId was supplied, we update the corresponding view
-                    // with the new content
-                    viewData.viewContents.push({
-                        view: viewId,
-                        content: contentId
-                    });
-
-                    this.submitViewForm(viewId, viewData);
+                    // if viewId was supplied, refresh the view screen
+                    this.onContentCreatedForView(contentId);
                 }
             })
     }
@@ -191,14 +182,16 @@ export class AdminModel {
      * Fetch a content from database with its id
      *
      * @param {number} contentId The id of the content to fetch
+     * @returns {Object} Content data
      * @async
      */
     async getContent(contentId)
     {
-        await fetch('/admin/content/' + contentId)
+        return await fetch('/admin/content/' + contentId)
             .then(response => response.json())
             .then(json => {
-                this.onContentReceived(JSON.parse(json));
+                return JSON.parse(json);
+                // this.onContentReceived(JSON.parse(json));
             })
     }
 
@@ -288,5 +281,16 @@ export class AdminModel {
     bindContentReceived(callback)
     {
         this.onContentReceived = callback;
+    }
+
+    /**
+     * Bind the controller callback to use when the a content have been created
+     * for a view and the view must be updated
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindContentCreatedForView(callback)
+    {
+        this.onContentCreatedForView = callback;
     }
 }

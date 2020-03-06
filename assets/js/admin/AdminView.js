@@ -295,6 +295,7 @@ export class AdminView {
         }
 
         newContentForm.appendChild(Components.newContentForm());
+        newContentForm.dataset.group = 'addContentToView';
 
         this.element.appendChild(newContentForm);
 
@@ -567,19 +568,12 @@ export class AdminView {
     bindClickSubmitNewContent(handler)
     {
         this.getElement('#submitContentFormButton').addEventListener('click', event => {
-            const viewId = event.target.dataset.viewId;
+            const viewId = event.target.dataset.viewId ? event.target.dataset.viewId : null;
 
             event.preventDefault();
 
-            if (viewId) {
-                // submit new content form and add it to the view
-                handler(this.getNewContentFormData(), viewId, this.getViewFormData(viewId));
-
-                return;
-            }
-
-            // only submit new content form
-            handler(this.getNewContentFormData());
+            // submit new content form and add it to the view
+            handler(this.getElement('#contentForm form'), viewId)
         });
     }
 

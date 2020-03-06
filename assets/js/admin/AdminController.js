@@ -1,9 +1,9 @@
 /*
  * DONE remove a content from 
  * DONE remove a content from a view
- * TODO JS form validation
- * TODO When adding content to a view, only update screen, do not submit the form
- * TODO manage form errors
+ * DONE JS form validation
+ * DONE When adding content to a view, only update screen, do not submit the form
+ * TODO manage form errors from php
  * TODO Assets view
  * TODO Users view
  * TODO Create a new view
@@ -41,6 +41,7 @@ export class AdminController {
         this.model.bindContentFormChanged(this.onContentFormChanged);
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
         this.model.bindContentReceived(this.onContentReceived);
+        this.model.bindContentCreatedForView(this.onContentCreatedForView);
     }
 
     handleListViews = async () => {
@@ -133,7 +134,7 @@ export class AdminController {
      * Handle the submission of an existing content
      *
      * @param {Element} form The form to validate
-     * @callback AdminController~handleClickSubmitNewContent
+     * @callback AdminController~handleClickSubmitContent
      */
     handleClickSubmitContent = (form) => {
         const formValidator = new FormValidator(form);
@@ -156,14 +157,29 @@ export class AdminController {
     /**
      * Handle the submission of a new content
      *
-     * @param {Object} contentData Data for the new content
+     * @param {Element} form The form to validate
      * @param {?number} viewId Null to create a new content only or the id of
      * the view to which the new content must be added
-     * @param {?Object} viewData Null to create a new content only or Object containg the view data
      * @callback AdminController~handleClickSubmitNewContent
      */
-    handleClickSubmitNewContent = (contentData, viewId = null, viewData = null) => {
-        this.model.submitNewContentForm(contentData, viewId, viewData);
+    handleClickSubmitNewContent = (form, viewId = null) => {
+        const formValidator = new FormValidator(form);
+
+        formValidator.validate();
+
+        if (formValidator.isValid) {
+            // submit the content
+            this.model.submitNewContentForm(
+                this.view.getNewContentFormData(),
+                viewId
+            );
+
+            return;
+        }
+
+        // send the errors back to the view
+        this.view.renderFormErrors(form, formValidator.errors);
+        // this.model.submitNewContentForm(contentData, viewId, viewData);
         // const formValidator = new FormValidator();
     }
 
@@ -296,7 +312,8 @@ export class AdminController {
      * @callback AdminController~handleClickContentSuggestion
      */
     handleClickContentSuggestion = async (contentId) => {
-        await this.model.getContent(contentId);
+        const contentData = await this.model.getContent(contentId);
+        this.view.renderContent(contentData);
         this.view.bindClickUseThisContent(this.handleClickUseThisContent);
     }
 
@@ -324,5 +341,20 @@ export class AdminController {
      */
     onContentReceived = (content) => {
         this.view.renderContent(content);
+    }
+
+    /**
+     * Called from the model when a content has been created from the view
+     * screen
+     *
+     * @param {number} contentId The id of the content that is added
+     * @callback AdminController~onContentReceived
+     */
+    onContentCreatedForView = async (contentId) => {
+        // get the content from the model
+        const contentData = await this.model.getContent(contentId);
+        // send it to the view
+        this.view.addContentToView(contentData);
+        this.view.clearGroup('addContentToView');
     }
 }
