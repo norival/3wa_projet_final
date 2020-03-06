@@ -136,7 +136,7 @@ class ViewController extends AbstractController
      * @Route("/admin/view/{id}", name="view_update", methods={"PUT", "PATCH"})
      *
      * @param  string $id
-     * @return Response
+     * @return JsonResponse The 
      */
     public function update(Request $request, SerializerInterface $serializer, string $id)
     {
@@ -151,11 +151,13 @@ class ViewController extends AbstractController
 
             $this->em->persist($view);
             $this->em->flush();
+
+            // send the id of the updated view
+            return new JsonResponse(\json_encode($view->getId()), 200);
         }
 
-        // serialize the view to send back
-        $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
-
-        return new JsonResponse($json);
+        // TODO useful error message
+        $errorMessage = 'The data is not valid';
+        return new JsonResponse(\json_encode($errorMessage), 400);
     }
 }
