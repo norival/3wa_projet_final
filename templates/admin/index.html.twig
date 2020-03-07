@@ -1,7 +1,10 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block body %}
-<main>
+    <main
+        data-user-email="{{ app.user.email }}"
+        data-site-name="{{ siteName }}"
+    >
     <div id="adminBar">
         <div class="leftBar">
             <img id="siteLogo" class="logo" src="" text="Website logo" alt="Website logo">
@@ -19,7 +22,7 @@
     <div class="adminFlexContainer">
         <nav id="admin-menu">
             <ul>
-                <li class="activeMenu"><a href="#" id="home">Home</a></li>
+                <li><a class="currentMenuEntry" href="#" id="home">Home</a></li>
                 <li><a href="#" id="views">Views</a></li>
                 <li><a href="#" id="content">Content</a></li>
                 <li><a href="#" id="assets">Assets</a></li>
@@ -28,7 +31,6 @@
             </ul>
         </nav>
         <div id="admin-main">
-            <p>Welcome to your Admin home page!</p>
         </div>
     </div>
 </main>

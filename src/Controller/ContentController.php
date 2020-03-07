@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ContentController extends AbstractController
 {
+    /** @var \Doctrine\ORM\EntityManagerInterface $em */
     private $em;
 
     public function __construct(EntityManagerInterface $em)

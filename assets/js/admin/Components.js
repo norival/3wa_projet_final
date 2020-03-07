@@ -23,6 +23,45 @@ export class Components {
     }
 
     /**
+     * Create the home page for the admin panel
+     *
+     * @param {{siteName: string, userEmail: string}} informations Informations about the website
+     * @returns {Element} The admin home page element
+     */
+    static homePage(informations)
+    {
+        const div   = Utils.createElement('div', null, 'admin-homepage');
+        const title = Utils.createElement('h1');
+        let message = Utils.createElement('p');
+        let list    = Utils.createElement('ul', 'bulletList');
+        let item    = Utils.createElement('li');
+
+        title.innerHTML = "Website administration";
+        div.appendChild(title);
+
+        message.innerHTML = `
+            Welcome back ${informations.userEmail}! This is the administration panel
+            of your website!
+        `;
+        div.appendChild(message);
+
+        message           = Utils.createElement('p');
+        message.innerHTML = 'Here, there should be:';
+        div.appendChild(message);
+
+        item.innerHTML = 'A link to the documentation';
+        list.appendChild(item);
+
+        item           = Utils.createElement('li');
+        item.innerHTML = 'An overview of the site content (number of views, number of contents, ...';
+        list.appendChild(item);
+
+        div.appendChild(list);
+
+        return div;
+    }
+
+    /**
      * contentList
      *
      * The content list component.

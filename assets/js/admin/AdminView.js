@@ -4,7 +4,15 @@ import {Components} from './Components';
 export class AdminView {
     constructor()
     {
-        this.output = Utils.getElement('#admin-main');
+        this.output   = Utils.getElement('#admin-main');
+        this.menu     = Utils.getElement('#admin-menu');
+        this.adminBar = {
+            logo:            Utils.getElement('#siteLogo'),
+            name:            Utils.getElement('#siteName'),
+            notificationBar: Utils.getElement('#notificationBar'),
+            userName:        Utils.getElement('#userName'),
+            userSettings:    Utils.getElement('#userSettings')
+        };
     }
 
     /***************************************************************************
@@ -116,9 +124,39 @@ export class AdminView {
         });
     }
 
+    /**
+     * Add the currentMenuEntry class on the current entry and remove it from
+     * the previous current entry
+     *
+     * @param {string} id The id of the current menu entry
+     */
+    toggleCurrentMenuEntry(id)
+    {
+        this.menu.querySelector('.currentMenuEntry').classList.remove('currentMenuEntry');
+        this.menu.querySelector(`#${id}`).classList.add('currentMenuEntry');
+    }
+
     /***************************************************************************
      * Methods to render views
      **************************************************************************/
+
+    /**
+     * Render admin home page
+     */
+    renderHomePage()
+    {
+        const dataset      = Utils.getElement('main').dataset;
+        const informations = {
+            siteName: dataset.siteName,
+            userEmail: dataset.userEmail
+        };
+
+        Utils.clear(this.output);
+
+        this.output.appendChild(Components.homePage(informations));
+        this.toggleCurrentMenuEntry('home');
+        document.title = 'Administration - Home';
+    }
 
     /**
      * Render home page for assets management
@@ -418,6 +456,19 @@ export class AdminView {
     /***************************************************************************
      * Methods to bind event Listeners
      **************************************************************************/
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Home' menu
+     * entry
+     */
+    bindClickHome(handler)
+    {
+        Utils.getElement('a#home').addEventListener('click', event => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
 
     bindAssetsHome(handler)
     {

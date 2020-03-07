@@ -1,9 +1,15 @@
 'use strict';
 
-import {AdminController} from './admin/AdminController';
+// import css
 import '../css/admin.scss';
 
+// import required JS modules
+import {AdminController} from './admin/AdminController';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // const admin = new Admin();
+    // create the controller
     const adminController = new AdminController();
+
+    // start the controller
+    adminController.start();
 })

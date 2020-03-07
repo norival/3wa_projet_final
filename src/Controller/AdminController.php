@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Content;
+use App\Service\SettingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

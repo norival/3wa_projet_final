@@ -26,8 +26,15 @@ export class AdminController {
         // initialization
         this.view  = new AdminView();
         this.model = new AdminModel();
+    }
 
+    /**
+     * Start the controller
+     */
+    start()
+    {
         // bind event handlers for view events
+        this.view.bindClickHome(this.handleClickHome);
         this.view.bindViewsHome(this.handleViewsHome);
         this.view.bindAssetsHome(this.handleAssetsHome);
         this.view.bindUsersHome(this.handleUsersHome);
@@ -46,6 +53,23 @@ export class AdminController {
         this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
         this.model.bindContentReceived(this.onContentReceived);
         this.model.bindContentCreatedForView(this.onContentCreatedForView);
+
+        // render the home page
+        this.handleClickHome();
+    }
+
+    /**
+     * Handle click on the 'Views' menu entry
+     *
+     * @callback AdminController~handleViewsHome
+     */
+    handleClickHome = () =>
+    {
+        // TODO render the admin homepage
+        // - Get the informations about the site (name, user)
+        // - Get the notifications (not implemented yet (say 'No notification')
+        // this.view.
+        this.view.renderHomePage();
     }
 
     /**
