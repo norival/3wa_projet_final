@@ -1,39 +1,6 @@
 import {Utils} from '../utils/Utils';
 
 export class Components {
-    /***************************************************************************
-     * Helper methods
-     **************************************************************************/
-
-    /**
-     * createElement
-     *
-     * Create an element and optionnally adds a class and an id
-     *
-     * @param {string} tag - A valid html tag
-     * @param {string|Array} className - A class name or an array of class names
-     * @param {string} id - An id
-     * @returns Element
-     */
-    static createElement(tag, className, id)
-    {
-        const element = document.createElement(tag);
-
-        if (className) {
-            if (!Array.isArray(className)) {
-                className = [className];
-            }
-
-            element.classList.add(...className);
-        }
-
-        if (id) {
-            element.id = id;
-        }
-
-        return element;
-    }
-
     /**
      * Create an element to render in not implemented features
      *
@@ -41,9 +8,9 @@ export class Components {
      */
     static notImplementedFeature()
     {
-        const div = this.createElement('div', 'notImplemented');
-        const p   = this.createElement('p');
-        const img = this.createElement('img');
+        const div = Utils.createElement('div', 'notImplemented');
+        const p   = Utils.createElement('p');
+        const img = Utils.createElement('img');
 
         p.innerHTML = 'Working on it! Come back later!';
 
@@ -69,16 +36,16 @@ export class Components {
      */
     static contentList(contentList, id, forViewScreen = false)
     {
-        const table = this.createElement('table', null, id);
-        const tbody = this.createElement('tbody');
+        const table = Utils.createElement('table', null, id);
+        const tbody = Utils.createElement('tbody');
 
-        const thead = this.createElement('thead');
-        let th      = this.createElement('th');
+        const thead = Utils.createElement('thead');
+        let th      = Utils.createElement('th');
 
         th.innerHTML = 'Name';
         thead.appendChild(th);
 
-        th = this.createElement('th');
+        th = Utils.createElement('th');
         th.innerHTML = 'Type';
         thead.appendChild(th);
 
@@ -106,9 +73,9 @@ export class Components {
      */
     static contentListRow(content, forViewScreen = false)
     {
-        let tr = this.createElement('tr');
-        let td = this.createElement('td');
-        let a  = this.createElement('a');
+        let tr = Utils.createElement('tr');
+        let td = Utils.createElement('td');
+        let a  = Utils.createElement('a');
 
         tr.dataset.contentId = content.id;
 
@@ -120,8 +87,8 @@ export class Components {
         td.appendChild(a)
         tr.appendChild(td);
 
-        td = this.createElement('td');
-        a  = this.createElement('a');
+        td = Utils.createElement('td');
+        a  = Utils.createElement('a');
 
         a.text               = content.type;
         a.href               = '#';
@@ -131,10 +98,10 @@ export class Components {
         td.appendChild(a)
         tr.appendChild(td);
 
-        td = this.createElement('td');
+        td = Utils.createElement('td');
 
 
-        a  = this.createElement('a', [
+        a  = Utils.createElement('a', [
             'button',
             forViewScreen ? 'remove' : 'delete'
         ]);
@@ -160,24 +127,24 @@ export class Components {
      * @returns {Element}
      */
     static contentForm(contentData) {
-        const div  = this.createElement('div', null, 'contentForm');
-        const form = this.createElement('form');
+        const div  = Utils.createElement('div', null, 'contentForm');
+        const form = Utils.createElement('form');
 
         if (contentData) {
             form.dataset.contentId = contentData.id;
         }
 
-        let fieldset = this.createElement('fieldset');
-        let h3       = this.createElement('h3');
+        let fieldset = Utils.createElement('fieldset');
+        let h3       = Utils.createElement('h3');
 
         h3.innerHTML = 'Informations';
         fieldset.appendChild(h3);
 
-        let ul = this.createElement('ul');
+        let ul = Utils.createElement('ul');
 
-        let li    = this.createElement('li');
-        let input = this.createElement('input');
-        let label = this.createElement('label');
+        let li    = Utils.createElement('li');
+        let input = Utils.createElement('input');
+        let label = Utils.createElement('label');
 
         label.setAttribute('for', 'name');
         label.innerHTML = 'Name';
@@ -193,9 +160,9 @@ export class Components {
         li.appendChild(input);
         ul.appendChild(li);
 
-        li    = this.createElement('li');
-        input = this.createElement('input');
-        label = this.createElement('label');
+        li    = Utils.createElement('li');
+        input = Utils.createElement('input');
+        label = Utils.createElement('label');
 
         label.setAttribute('for', 'type');
         label.innerHTML = 'Type';
@@ -215,19 +182,19 @@ export class Components {
 
         form.appendChild(fieldset);
 
-        fieldset = this.createElement('fieldset');
-        h3       = this.createElement('h3');
+        fieldset = Utils.createElement('fieldset');
+        h3       = Utils.createElement('h3');
 
         h3.innerHTML = 'Content';
         fieldset.appendChild(h3);
 
-        ul = this.createElement('ul', null, 'innerContentList');
+        ul = Utils.createElement('ul', null, 'innerContentList');
 
         if (contentData) {
             for (let property in contentData.content) {
-                let li    = this.createElement('li');
-                let label = this.createElement('label');
-                let input = this.createElement('input');
+                let li    = Utils.createElement('li');
+                let label = Utils.createElement('label');
+                let input = Utils.createElement('input');
 
                 label.innerHTML = property;
                 label.setAttribute('for', `content_${property}`);
@@ -250,9 +217,9 @@ export class Components {
         fieldset.appendChild(ul);
         form.appendChild(fieldset);
 
-        let button = this.createElement('button', null, 'submitContentFormButton');
-        ul         = this.createElement('ul');
-        li         = this.createElement('li');
+        let button = Utils.createElement('button', null, 'submitContentFormButton');
+        ul         = Utils.createElement('ul');
+        li         = Utils.createElement('li');
 
         button.innerHTML         = 'Save';
         button.dataset.contentId = contentData ? contentData.id : '';
@@ -260,8 +227,8 @@ export class Components {
         li.appendChild(button);
         ul.appendChild(li);
 
-        button = this.createElement('button', 'cancelButton', 'cancelContentFormButton');
-        li     = this.createElement('li');
+        button = Utils.createElement('button', 'cancelButton', 'cancelContentFormButton');
+        li     = Utils.createElement('li');
 
         button.innerHTML        = 'Cancel';
         button.dataset.parentId = 'contentForm';
@@ -282,12 +249,12 @@ export class Components {
      */
     static viewsHome()
     {
-        const viewDiv = this.createElement('div', null, 'viewOutput');
-        const header  = this.createElement('header', 'adminPanel');
-        const title   = this.createElement('h2');
-        const helpDiv = this.createElement('div', 'help');
-        const message = this.createElement('p');
-        const p       = this.createElement('p');
+        const viewDiv = Utils.createElement('div', null, 'viewOutput');
+        const header  = Utils.createElement('header', 'adminPanel');
+        const title   = Utils.createElement('h2');
+        const helpDiv = Utils.createElement('div', 'help');
+        const message = Utils.createElement('p');
+        const p       = Utils.createElement('p');
 
         title.innerHTML = 'Views';
 
@@ -319,16 +286,16 @@ export class Components {
      */
     static viewList(viewList)
     {
-        const outputDiv = this.createElement('div');
-        const listTitle = this.createElement('h3');
-        const ul        = this.createElement('ul', null, 'viewList');
+        const outputDiv = Utils.createElement('div');
+        const listTitle = Utils.createElement('h3');
+        const ul        = Utils.createElement('ul', null, 'viewList');
 
         listTitle.innerHTML = 'List of available views';
 
         viewList.forEach((view) => {
             // create list item
-            let li = this.createElement('li');
-            let a  = this.createElement('a', 'button', 'editView');
+            let li = Utils.createElement('li');
+            let a  = Utils.createElement('a', 'button', 'editView');
 
             li.innerHTML = view.name;
 
@@ -340,7 +307,7 @@ export class Components {
             li.appendChild(a);
 
             // adds button for visual editing of view (experimental)
-            a = this.createElement('a', ['button', 'beta'], 'editViewVisual');
+            a = Utils.createElement('a', ['button', 'beta'], 'editViewVisual');
 
             a.href         = '#';
             a.text         = 'Visual edit';
@@ -366,26 +333,26 @@ export class Components {
      */
     static viewForm(viewData)
     {
-        const viewDiv = this.createElement('div', null, 'viewFormOutput');
-        const form    = this.createElement('form', null, 'viewForm');
+        const viewDiv = Utils.createElement('div', null, 'viewFormOutput');
+        const form    = Utils.createElement('form', null, 'viewForm');
 
-        let h3       = this.createElement('h3');
+        let h3       = Utils.createElement('h3');
         h3.innerHTML = `View: ${viewData.name}`;
         viewDiv.appendChild(h3);
 
-        let fieldset = this.createElement('fieldset');
-        let h4       = this.createElement('h4');
+        let fieldset = Utils.createElement('fieldset');
+        let h4       = Utils.createElement('h4');
         h4.innerHTML = 'Informations';
 
         fieldset.appendChild(h4);
 
-        let ul      = this.createElement('ul');
+        let ul      = Utils.createElement('ul');
         const infos = {'name': viewData.name, 'title': viewData.title}
 
         for (const key in infos) {
-            let li    = this.createElement('li');
-            let input = this.createElement('input');
-            let label = this.createElement('label');
+            let li    = Utils.createElement('li');
+            let input = Utils.createElement('input');
+            let label = Utils.createElement('label');
 
             input.setAttribute('type', 'text');
             input.setAttribute('name', key);
@@ -408,31 +375,31 @@ export class Components {
         form.dataset.viewId = viewData.id;
         viewDiv.appendChild(form);
 
-        h3           = this.createElement('h3');
+        h3           = Utils.createElement('h3');
         h3.innerHTML = 'Content list';
         viewDiv.appendChild(h3);
 
         viewDiv.appendChild(this.contentList(viewData.viewContents, 'contentList', true));
 
-        ul = this.createElement('ul', null, 'buttonList');
+        ul = Utils.createElement('ul', null, 'buttonList');
 
-        let li = this.createElement('li');
+        let li = Utils.createElement('li');
 
-        let button            = this.createElement('button', null, 'addContentButton');
+        let button            = Utils.createElement('button', null, 'addContentButton');
         button.innerHTML      = 'Add content';
         button.dataset.viewId = viewData.id;
         li.appendChild(button);
         ul.appendChild(li);
 
-        li                    = this.createElement('li');
-        button                = this.createElement('button', null, 'submitViewButton');
+        li                    = Utils.createElement('li');
+        button                = Utils.createElement('button', null, 'submitViewButton');
         button.innerHTML      = 'Save';
         button.dataset.viewId = viewData.id;
         li.appendChild(button);
         ul.appendChild(li);
 
-        li                      = this.createElement('li');
-        button                  = this.createElement('button', 'cancelButton', 'cancelContentEditButton');
+        li                      = Utils.createElement('li');
+        button                  = Utils.createElement('button', 'cancelButton', 'cancelContentEditButton');
         button.innerHTML        = 'Cancel';
         button.dataset.parentId = 'viewFormOutput';
         li.appendChild(button);
@@ -451,22 +418,22 @@ export class Components {
      */
     static askNewContentForm(viewId)
     {
-        const addContentDiv = this.createElement('div', null, 'askNewContentType');
-        const ul = this.createElement('ul');
+        const addContentDiv = Utils.createElement('div', null, 'askNewContentType');
+        const ul = Utils.createElement('ul');
 
         // set data-group: used to easily remove groups of divs
         addContentDiv.dataset.group = 'addContentToView';
 
-        let li           = this.createElement('li');
-        let a            = this.createElement('a', 'button', 'createContent');
+        let li           = Utils.createElement('li');
+        let a            = Utils.createElement('a', 'button', 'createContent');
         a.text           = 'Create new Content';
         a.href           = "#";
         a.dataset.viewId = viewId;
         li.appendChild(a);
         ul.appendChild(li);
 
-        li               = this.createElement('li');
-        a                = this.createElement('a', 'button', 'useContent');
+        li               = Utils.createElement('li');
+        a                = Utils.createElement('a', 'button', 'useContent');
         a.text           = 'Use existing Content';
         a.href           = "#";
         a.dataset.viewId = viewId;
@@ -485,9 +452,9 @@ export class Components {
      */
     static searchContentForm()
     {
-        const searchContentDiv = this.createElement('div', null, 'searchContent');
-        const form             = this.createElement('form', null, 'searchContentForm');
-        const input            = this.createElement('input');
+        const searchContentDiv = Utils.createElement('div', null, 'searchContent');
+        const form             = Utils.createElement('form', null, 'searchContentForm');
+        const input            = Utils.createElement('input');
 
         searchContentDiv.dataset.group = 'addContentToView';
 
@@ -505,11 +472,11 @@ export class Components {
      */
     static contentSuggestion(suggestion)
     {
-        const ul = this.createElement('ul');
+        const ul = Utils.createElement('ul');
 
         suggestion.forEach(element => {
-            let li              = this.createElement('li');
-            let a               = this.createElement('a');
+            let li              = Utils.createElement('li');
+            let a               = Utils.createElement('a');
             a.href              = '#';
             a.innerHTML         = element.name;
             a.dataset.contentId = element.id;
@@ -529,12 +496,12 @@ export class Components {
      */
     static content(content)
     {
-        const div = this.createElement('div', 'contentDisplay', 'contentDisplay');
+        const div = Utils.createElement('div', 'contentDisplay', 'contentDisplay');
 
-        let ul      = this.createElement('ul', null, 'contentInformations');
-        let li      = this.createElement('li');
-        let title   = this.createElement('h4');
-        let article = this.createElement('article', 'content');
+        let ul      = Utils.createElement('ul', null, 'contentInformations');
+        let li      = Utils.createElement('li');
+        let title   = Utils.createElement('h4');
+        let article = Utils.createElement('article', 'content');
 
         div.dataset.contentId = content.id;
         div.dataset.group     = 'addContentToView';
@@ -545,16 +512,16 @@ export class Components {
         li.innerHTML = `Name: ${content.name}`;
         ul.appendChild(li);
 
-        li           = this.createElement('li');
+        li           = Utils.createElement('li');
         li.innerHTML = `Type: ${content.type}`;
         ul.appendChild(li);
 
-        li           = this.createElement('li');
+        li           = Utils.createElement('li');
         li.innerHTML = `Creation date: ${Utils.formatDate(content.created_at)}`;
         ul.appendChild(li);
 
         if (content.updated_at) {
-            li           = this.createElement('li');
+            li           = Utils.createElement('li');
             li.innerHTML = `Last updated: ${Utils.formatDate(content.updated_at)}`;
             ul.appendChild(li);
 
@@ -571,15 +538,15 @@ export class Components {
         div.appendChild(article);
 
         // render the content
-        article = this.createElement('article', 'content');
-        title   = this.createElement('h4');
-        ul      = this.createElement('ul');
+        article = Utils.createElement('article', 'content');
+        title   = Utils.createElement('h4');
+        ul      = Utils.createElement('ul');
 
         title.innerHTML = 'Content';
         article.appendChild(title);
 
         for (const key in content.content) {
-            li           = this.createElement('li');
+            li           = Utils.createElement('li');
             li.innerHTML = `${Utils.capitalizeFirst(key)}: ${content.content[key]}`;
 
             ul.appendChild(li);
@@ -605,8 +572,8 @@ export class Components {
         // count the number of inner contents
         innerContentList.dataset.innerContentCount = 0;
 
-        const li         = this.createElement('li');
-        const button     = this.createElement('a', 'button', 'addInnerContent');
+        const li         = Utils.createElement('li');
+        const button     = Utils.createElement('a', 'button', 'addInnerContent');
         button.innerHTML = 'Add Content';
         button.href      = '#';
 
@@ -632,13 +599,13 @@ export class Components {
      */
     static newInnerContentForm(count)
     {
-        const name    = this.createElement('input');
-        const content = this.createElement('input');
+        const name    = Utils.createElement('input');
+        const content = Utils.createElement('input');
 
-        let li = this.createElement('li');
+        let li = Utils.createElement('li');
         // li.dataset.innerContentNumber = count;
 
-        let label = this.createElement('label');
+        let label = Utils.createElement('label');
         name.setAttribute('type', 'text');
         name.setAttribute('name', `contentName_${count}`);
         name.value = `test_inner_content_name_${count}`;
@@ -652,7 +619,7 @@ export class Components {
         li.appendChild(label);
         li.appendChild(name);
 
-        label = this.createElement('label');
+        label = Utils.createElement('label');
         content.setAttribute('type', 'text');
         content.setAttribute('name', `contentContent_${count}`);
         content.value = `test inner content content ${count}`;

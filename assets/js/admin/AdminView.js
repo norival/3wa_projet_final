@@ -4,55 +4,12 @@ import {Components} from './Components';
 export class AdminView {
     constructor()
     {
-        this.element = this.getElement('#admin-main');
+        this.output = Utils.getElement('#admin-main');
     }
 
     /***************************************************************************
      * Helper methods
      **************************************************************************/
-
-    /**
-     * createElement
-     *
-     * Create an element and optionnally adds a class and an id
-     *
-     * @param {string} tag - A valid html tag
-     * @param {string|Array} className - A class name or an array of class names
-     * @param {string} id - An id
-     * @return {Element} The created NodeElement
-     */
-    createElement(tag, className, id)
-    {
-        const element = document.createElement(tag);
-
-        if (className) {
-            if (!Array.isArray(className)) {
-                className = [className];
-            }
-
-            element.classList.add(...className);
-        }
-
-        if (id) {
-            element.id = id;
-        }
-
-        return element;
-    }
-
-    /**
-     * getElement
-     *
-     * Retrieve an element from the DOM
-     *
-     * @param {string} selector A valid css selector
-     * @return {?Element} The corresponding element or null if no element
-     * match the selector
-     */
-    getElement(selector)
-    {
-        return document.querySelector(selector);
-    }
 
     /**
      * Get and format View form data
@@ -63,9 +20,9 @@ export class AdminView {
      */
     getViewFormData(viewId)
     {
-        const contentList = this.getElement('#contentList');
+        const contentList = Utils.getElement('#contentList');
         const data        = {};
-        const formData    = new FormData(this.getElement('#viewForm'));
+        const formData    = new FormData(Utils.getElement('#viewForm'));
 
         // get data from the form
         formData.forEach((element, key) => {
@@ -114,7 +71,7 @@ export class AdminView {
      */
     getContentFormData()
     {
-        const formData = new FormData(this.getElement('#contentForm form'));
+        const formData = new FormData(Utils.getElement('#contentForm form'));
         const data     = {};
 
         data['content'] = {};
@@ -168,9 +125,9 @@ export class AdminView {
      */
     renderAssestsHome()
     {
-        Utils.clear(this.element);
+        Utils.clear(this.output);
 
-        this.element.appendChild(Components.notImplementedFeature());
+        this.output.appendChild(Components.notImplementedFeature());
     }
 
     /**
@@ -178,9 +135,9 @@ export class AdminView {
      */
     renderUsersHome()
     {
-        Utils.clear(this.element);
+        Utils.clear(this.output);
 
-        this.element.appendChild(Components.notImplementedFeature());
+        this.output.appendChild(Components.notImplementedFeature());
     }
 
     /**
@@ -188,9 +145,9 @@ export class AdminView {
      */
     renderStatsHome()
     {
-        Utils.clear(this.element);
+        Utils.clear(this.output);
 
-        this.element.appendChild(Components.notImplementedFeature());
+        this.output.appendChild(Components.notImplementedFeature());
     }
 
     /**
@@ -200,14 +157,14 @@ export class AdminView {
      */
     renderViewsHome()
     {
-        Utils.clear(this.element);
+        Utils.clear(this.output);
 
-        this.element.appendChild(Components.viewsHome());
+        this.output.appendChild(Components.viewsHome());
     }
 
     renderViewsList(viewList)
     {
-        const element = this.getElement('#viewOutput');
+        const element = Utils.getElement('#viewOutput');
 
         element.appendChild(Components.viewList(viewList));
     }
@@ -219,10 +176,10 @@ export class AdminView {
      */
     renderViewForm(viewData)
     {
-        if (this.getElement('#viewFormOutput')) {
-            this.getElement('#viewFormOutput').remove();
+        if (Utils.getElement('#viewFormOutput')) {
+            Utils.getElement('#viewFormOutput').remove();
         }
-        this.element.appendChild(Components.viewForm(viewData));
+        this.output.appendChild(Components.viewForm(viewData));
 
         this._bindClickCancelButtons();
     }
@@ -246,7 +203,7 @@ export class AdminView {
 
         // display error messages
         for (let property in errors) {
-            const span     = this.createElement('span', 'formError');
+            const span     = Utils.createElement('span', 'formError');
             span.innerHTML = errors[property];
 
             form.querySelector(`[data-name="${property}"]`).insertAdjacentElement('afterend', span);
@@ -266,33 +223,33 @@ export class AdminView {
         if (!viewId) {
             // called without viewId when refreshing the iframe, so we get
             // viewId from existing iframe
-            viewId = this.getElement('#visualView').dataset.viewId;
-            this.getElement('#visualViewContainer').remove();
+            viewId = Utils.getElement('#visualView').dataset.viewId;
+            Utils.getElement('#visualViewContainer').remove();
         }
 
-        const div    = this.createElement('div', null, 'visualViewContainer');
-        const iframe = this.createElement('iframe', null, 'visualView');
+        const div    = Utils.createElement('div', null, 'visualViewContainer');
+        const iframe = Utils.createElement('iframe', null, 'visualView');
 
         iframe.dataset.viewId = viewId;
         iframe.setAttribute('src', `admin/view/visual/${viewId}`);
 
         div.appendChild(iframe);
-        this.element.appendChild(div);
+        this.output.appendChild(div);
     }
 
     renderContentList(contentList)
     {
-        const button = this.createElement('a', 'button', 'newContentButton');
+        const button = Utils.createElement('a', 'button', 'newContentButton');
 
         // clear admin output
-        Utils.clear(this.element);
+        Utils.clear(this.output);
 
         // create a button to add a new content
         button.href      = '#';
         button.innerHTML = 'New content';
 
-        this.element.appendChild(Components.contentList(contentList, 'contentList', false));
-        this.element.appendChild(button);
+        this.output.appendChild(Components.contentList(contentList, 'contentList', false));
+        this.output.appendChild(button);
     }
 
     /**
@@ -302,7 +259,7 @@ export class AdminView {
      */
     renderContentForm(contentData)
     {
-        this.element.appendChild(Components.contentForm(contentData));
+        this.output.appendChild(Components.contentForm(contentData));
 
         this._bindClickCancelButtons();
     }
@@ -314,7 +271,7 @@ export class AdminView {
      */
     renderAskNewContentForm(viewId)
     {
-        const parent = this.getElement('#viewFormOutput');
+        const parent = Utils.getElement('#viewFormOutput');
         const div    = Components.askNewContentForm(viewId);
 
         parent.appendChild(div);
@@ -328,22 +285,22 @@ export class AdminView {
      */
     renderNewContentForm(viewId)
     {
-        let newContentForm = this.getElement('#newContentForm');
+        let newContentForm = Utils.getElement('#newContentForm');
 
         if (newContentForm) {
             Utils.clear(newContentForm);
         } else {
-            newContentForm = this.createElement('div', null, 'newContentForm');
+            newContentForm = Utils.createElement('div', null, 'newContentForm');
         }
 
         newContentForm.appendChild(Components.newContentForm());
         newContentForm.dataset.group = 'addContentToView';
 
-        this.element.appendChild(newContentForm);
+        this.output.appendChild(newContentForm);
 
         if (viewId) {
             // Create a new content from the view pane
-            this.getElement('#submitContentFormButton').dataset.viewId = viewId;
+            Utils.getElement('#submitContentFormButton').dataset.viewId = viewId;
         }
 
         // add event listener for cancel button
@@ -355,7 +312,7 @@ export class AdminView {
      */
     renderAddInnerContentForm()
     {
-        const innerContentList = this.getElement('#innerContentList');
+        const innerContentList = Utils.getElement('#innerContentList');
 
         // increment innerContentCount and add a new one
         innerContentList.dataset.innerContentCount++;
@@ -372,10 +329,10 @@ export class AdminView {
     renderUseContentForm(viewId)
     {
         // render a search content form
-        const parent = this.getElement('#viewFormOutput');
+        const parent = Utils.getElement('#viewFormOutput');
         parent.appendChild(Components.searchContentForm());
 
-        const div          = this.createElement('div', null, 'contentSuggestion');
+        const div          = Utils.createElement('div', null, 'contentSuggestion');
         div.dataset.viewId = viewId;
         div.dataset.group  = 'addContentToView';
         parent.appendChild(div);
@@ -389,14 +346,14 @@ export class AdminView {
      */
     renderContentSuggestion(suggestion, viewId)
     {
-        let contentSuggestionDiv = this.getElement('#contentSuggestion');
+        let contentSuggestionDiv = Utils.getElement('#contentSuggestion');
 
         if (!contentSuggestionDiv) {
-            contentSuggestionDiv = this.createElement('div', null, 'contentSuggestion');
+            contentSuggestionDiv = Utils.createElement('div', null, 'contentSuggestion');
             contentSuggestionDiv.dataset.viewId = viewId;
         }
 
-        Utils.clear(this.getElement('#contentSuggestion'));
+        Utils.clear(Utils.getElement('#contentSuggestion'));
 
         // check if array is not empty
         if (suggestion.length > 0) {
@@ -405,7 +362,7 @@ export class AdminView {
         }
         
         // if array is empty, display a message
-        const p     = this.createElement('p');
+        const p     = Utils.createElement('p');
         p.innerHTML = 'No content matching search term';
         contentSuggestionDiv.appendChild(p);
     }
@@ -417,9 +374,9 @@ export class AdminView {
      */
     renderContent(content)
     {
-        const parent   = this.getElement('#viewFormOutput');
-        const button   = this.createElement('a', 'button', 'useThisContent');
-        let contentDiv = this.getElement('#contentDisplay');
+        const parent   = Utils.getElement('#viewFormOutput');
+        const button   = Utils.createElement('a', 'button', 'useThisContent');
+        let contentDiv = Utils.getElement('#contentDisplay');
 
         // remove it if already created
         if (contentDiv) {
@@ -430,7 +387,7 @@ export class AdminView {
         button.innerHTML         = 'Add to view';
         button.href              = '#'
         button.dataset.contentId = content.id;
-        button.dataset.viewId    = this.getElement('#contentSuggestion').dataset.viewId;
+        button.dataset.viewId    = Utils.getElement('#contentSuggestion').dataset.viewId;
 
         contentDiv.appendChild(button);
         parent.appendChild(contentDiv);
@@ -443,7 +400,7 @@ export class AdminView {
      */
     removeContentFromView(contentId)
     {
-        this.getElement(`#contentList tr[data-content-id="${contentId}"]`).remove();
+        Utils.getElement(`#contentList tr[data-content-id="${contentId}"]`).remove();
     }
 
     /**
@@ -453,7 +410,7 @@ export class AdminView {
      */
     addContentToView(contentData)
     {
-        const contentListBody = this.getElement('#contentList tbody');
+        const contentListBody = Utils.getElement('#contentList tbody');
 
         contentListBody.appendChild(Components.contentListRow(contentData, true));
     }
@@ -464,7 +421,7 @@ export class AdminView {
 
     bindAssetsHome(handler)
     {
-        this.getElement('#assets').addEventListener('click', event => {
+        Utils.getElement('#assets').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -473,7 +430,7 @@ export class AdminView {
 
     bindUsersHome(handler)
     {
-        this.getElement('#users').addEventListener('click', event => {
+        Utils.getElement('#users').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -482,7 +439,7 @@ export class AdminView {
 
     bindStatsHome(handler)
     {
-        this.getElement('#stats').addEventListener('click', event => {
+        Utils.getElement('#stats').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -491,7 +448,7 @@ export class AdminView {
 
     bindViewsHome(handler)
     {
-        this.getElement('#views').addEventListener('click', event => {
+        Utils.getElement('#views').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -500,7 +457,7 @@ export class AdminView {
 
     bindClickView(handler)
     {
-        this.getElement('#editView').addEventListener('click', event => {
+        Utils.getElement('#editView').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.id);
@@ -509,7 +466,7 @@ export class AdminView {
 
     bindClickViewVisual(handler)
     {
-        this.getElement('#editViewVisual').addEventListener('click', event => {
+        Utils.getElement('#editViewVisual').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.id);
@@ -523,17 +480,17 @@ export class AdminView {
      */
     bindClickSubmitView(handler)
     {
-        this.getElement('#submitViewButton').addEventListener('click', event => {
+        Utils.getElement('#submitViewButton').addEventListener('click', event => {
             event.preventDefault();
 
             // send the form element
-            handler(this.getElement('#viewForm'));
+            handler(Utils.getElement('#viewForm'));
         });
     }
 
     bindListContent(handler)
     {
-        this.getElement('#content').addEventListener('click', event => {
+        Utils.getElement('#content').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -542,7 +499,7 @@ export class AdminView {
 
     bindClickContent(handler)
     {
-        this.getElement('#contentList').addEventListener('click', event => {
+        Utils.getElement('#contentList').addEventListener('click', event => {
             event.preventDefault();
 
             if (event.target.dataset.action === 'edit') {
@@ -558,7 +515,7 @@ export class AdminView {
      */
     bindClickDeleteContent(handler)
     {
-        this.getElement('#contentList').addEventListener('click', event => {
+        Utils.getElement('#contentList').addEventListener('click', event => {
             event.preventDefault();
 
             if (event.target.dataset.action === 'delete') {
@@ -575,7 +532,7 @@ export class AdminView {
      */
     bindClickRemoveContentFromView(handler)
     {
-        this.getElement('#contentList').addEventListener('click', event => {
+        Utils.getElement('#contentList').addEventListener('click', event => {
             event.preventDefault();
 
             if (event.target.dataset.action === 'removeFromView') {
@@ -591,7 +548,7 @@ export class AdminView {
      */
     bindClickNewContent(handler)
     {
-        this.getElement('#newContentButton').addEventListener('click', event => {
+        Utils.getElement('#newContentButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -605,7 +562,7 @@ export class AdminView {
      */
     bindClickAddInnerContent(handler)
     {
-        this.getElement('#addInnerContent').addEventListener('click', event => {
+        Utils.getElement('#addInnerContent').addEventListener('click', event => {
             event.preventDefault();
 
             handler();
@@ -614,7 +571,7 @@ export class AdminView {
 
     bindClickContentVisual(handler)
     {
-        const iframe = this.getElement('iframe');
+        const iframe = Utils.getElement('iframe');
 
         iframe.contentWindow.addEventListener('DOMContentLoaded', () => {
             const innerDoc = iframe.contentWindow.document;
@@ -636,13 +593,13 @@ export class AdminView {
      */
     bindClickSubmitNewContent(handler)
     {
-        this.getElement('#submitContentFormButton').addEventListener('click', event => {
+        Utils.getElement('#submitContentFormButton').addEventListener('click', event => {
             const viewId = event.target.dataset.viewId ? event.target.dataset.viewId : null;
 
             event.preventDefault();
 
             // submit new content form and add it to the view
-            handler(this.getElement('#contentForm form'), viewId)
+            handler(Utils.getElement('#contentForm form'), viewId)
         });
     }
 
@@ -653,17 +610,17 @@ export class AdminView {
      */
     bindClickSubmitContent(handler)
     {
-        this.getElement('#submitContentFormButton').addEventListener('click', event => {
+        Utils.getElement('#submitContentFormButton').addEventListener('click', event => {
             event.preventDefault();
 
             // handler(event.target.dataset.contentId, this.getContentFormData());
-            handler(this.getElement('#contentForm form'));
+            handler(Utils.getElement('#contentForm form'));
         });
     }
 
     bindClickSubmitContentVisual(handler)
     {
-        this.getElement('#submitContentFormButton').addEventListener('click', event => {
+        Utils.getElement('#submitContentFormButton').addEventListener('click', event => {
             event.preventDefault();
 
             handler(event.target.dataset.contentId, this.getContentFormData());
@@ -689,7 +646,7 @@ export class AdminView {
      */
     bindClickAddContent(handler)
     {
-        this.getElement('#addContentButton').addEventListener('click', (event) => {
+        Utils.getElement('#addContentButton').addEventListener('click', (event) => {
             event.preventDefault();
 
             handler(event.target.dataset.viewId);
@@ -703,7 +660,7 @@ export class AdminView {
      */
     bindClickAddContentNew(handler)
     {
-        this.getElement('#createContent').addEventListener('click', (event) => {
+        Utils.getElement('#createContent').addEventListener('click', (event) => {
             event.preventDefault();
 
             handler(event.target.dataset.viewId);
@@ -717,7 +674,7 @@ export class AdminView {
      */
     bindClickAddContentUse(handler)
     {
-        this.getElement('#useContent').addEventListener('click', (event) => {
+        Utils.getElement('#useContent').addEventListener('click', (event) => {
             event.preventDefault();
 
             handler(event.target.dataset.viewId);
@@ -732,7 +689,7 @@ export class AdminView {
      */
     bindKeyUpSearchContent(handler)
     {
-        this.getElement('#searchContentForm input').addEventListener('keyup', (event) => {
+        Utils.getElement('#searchContentForm input').addEventListener('keyup', (event) => {
             handler(event.target.value);
         });
     }
@@ -745,7 +702,7 @@ export class AdminView {
      */
     bindClickContentSuggestion(handler)
     {
-        this.getElement('#contentSuggestion').addEventListener('click', (event) => {
+        Utils.getElement('#contentSuggestion').addEventListener('click', (event) => {
             event.preventDefault();
 
             handler(event.target.dataset.contentId);
@@ -760,10 +717,10 @@ export class AdminView {
      */
     bindClickUseThisContent(handler)
     {
-        this.getElement('#useThisContent').addEventListener('click', (event) => {
+        Utils.getElement('#useThisContent').addEventListener('click', (event) => {
             event.preventDefault();
 
-            const contentInformations = this.getElement('#contentInformations');
+            const contentInformations = Utils.getElement('#contentInformations');
             const contentData         = this.getContentDataFromContentDisplay(contentInformations);
 
             handler(contentData);
@@ -781,14 +738,14 @@ export class AdminView {
         cancelButtons.forEach((button) => {
             button.addEventListener('click', (event) => {
                 event.preventDefault();
-                this.getElement(`#${event.target.dataset.parentId}`).remove();
+                Utils.getElement(`#${event.target.dataset.parentId}`).remove();
             });
         });
     }
 
     // _onClickCancel = (event) => {
     //     event.preventDefault();
-    //     this.getElement(`#${event.target.dataset.parentId}`).remove();
+    //     Utils.getElement(`#${event.target.dataset.parentId}`).remove();
     // }
 
     _onClickAddContent = (event) => {
