@@ -2,12 +2,24 @@
 
 {% block body %}
 <main>
-    <div class="adminContainer">
-        <nav id="admin-navigation">
-            <header>
-                <h2>Menu</h2>
-            </header>
+    <div id="adminBar">
+        <div class="leftBar">
+            <img id="siteLogo" class="logo" src="" text="Website logo" alt="Website logo">
+            <span id="siteName">{{ siteName }}</span>
+            <span id="notificationBar">Notification bar</span>
+        </div>
+        <div class="rightBar">
+            <a id="userName" href="#">{{ app.user.email }}</a>
+            <ul class="userLinks">
+                <li><a id="userSettings" href="#">User Settings</a></li>
+                <li><a id="logout" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="adminFlexContainer">
+        <nav id="admin-menu">
             <ul>
+                <li class="activeMenu"><a href="#" id="home">Home</a></li>
                 <li><a href="#" id="views">Views</a></li>
                 <li><a href="#" id="content">Content</a></li>
                 <li><a href="#" id="assets">Assets</a></li>

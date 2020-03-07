@@ -11,9 +11,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index()
+    public function index(SettingManager $sm)
     {
         return $this->render('admin/index.html.twig', [
+            'siteName' => $sm->get('site_name'),
         ]);
     }
 }
