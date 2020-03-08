@@ -47,6 +47,7 @@ export class AdminController {
         this.view.bindNeedContent(this.handleNeedContent);
 
         // bind event handlers for model events
+        this.model.bindHelpDataReceived(this.onHelpDataReceived);
         this.model.bindViewsListLoaded(this.onViewsListLoaded);
         this.model.bindViewDataChanged(this.onViewDataChanged);
         this.model.bindVisualViewChanged(this.onVisualViewChanged);
@@ -65,14 +66,11 @@ export class AdminController {
      *
      * @callback AdminController~handleViewsHome
      */
-    handleClickHome = () =>
-    {
-        // TODO render the admin homepage
-        // - Get the informations about the site (name, user)
+    handleClickHome = () => {
         // - Get the notifications (not implemented yet (say 'No notification')
         // this.view.
         this.view.renderHomePage();
-        this.view.renderHelp('help data');
+        this.model.getHelpData('en', 'general');
     }
 
     /**
@@ -284,6 +282,15 @@ export class AdminController {
 
     handleAddContent = (contentData) => {
         this.model.submitContentForm(null, contentData);
+    }
+
+    /**
+     * Call this method from the model when the help data has been received
+     * 
+     * @callback AdminController~onHelpDataReceived
+     */
+    onHelpDataReceived = (helpData) => {
+        this.view.renderHelp(helpData);
     }
 
     /**

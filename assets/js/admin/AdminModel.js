@@ -10,6 +10,21 @@ export class AdminModel {
     }
 
     /**
+     * Fetch help data for a given name
+     *
+     * @param {string} locale The locale of the documentation to retrieve
+     * @param {string} name The name of the documentation to retrieve
+     */
+    getHelpData(locale, name)
+    {
+        fetch(`doc/${locale}/${name}`)
+            .then(response => response.json())
+            .then(helpData => {
+                this.onHelpDataReceived(helpData);
+            })
+    }
+
+    /**
      * Fetch the list of available views
      */
     async listViews()
@@ -234,6 +249,16 @@ export class AdminModel {
                 console.log('coucou');
                 console.log(response.status);
             })
+    }
+
+    /**
+     * Bind the controller callback to use when the help data has been received
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindHelpDataReceived(callback)
+    {
+        this.onHelpDataReceived = callback;
     }
 
     /**

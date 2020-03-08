@@ -174,8 +174,32 @@ export class AdminView {
      */
     renderHelp(helpData)
     {
-        // TODO render help messages
-        console.log(helpData);
+        const helpItems   = this.help.querySelector('#help-items');
+        const helpContent = this.help.querySelector('#help-content');
+
+        Utils.clear(helpItems);
+        Utils.clear(helpContent);
+
+        for (let property in helpData) {
+            const li  = Utils.createElement('li');
+            const a   = Utils.createElement('a', 'helpSection');
+            const div = Utils.createElement('div');
+            const p   = Utils.createElement('p');
+
+            a.href                = '#';
+            a.dataset.helpSection = property;
+            a.innerHTML           = helpData[property].name;
+            li.appendChild(a);
+            helpItems.appendChild(li);
+
+            p.innerHTML     = helpData[property].content;
+            div.dataset.for = property;
+            div.appendChild(p);
+            helpContent.appendChild(div);
+        }
+
+        helpItems.querySelector('a:first-of-type').classList.add('current');
+        helpContent.querySelector('div:first-of-type').classList.add('current');
     }
 
     /**
