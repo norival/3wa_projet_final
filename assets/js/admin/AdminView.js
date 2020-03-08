@@ -13,6 +13,7 @@ export class AdminView {
             userName:        Utils.getElement('#userName'),
             userSettings:    Utils.getElement('#userSettings')
         };
+        this.help = Utils.getElement('#help-panel');
     }
 
     /***************************************************************************
@@ -136,9 +137,46 @@ export class AdminView {
         this.menu.querySelector(`#${id}`).classList.add('currentMenuEntry');
     }
 
+    /**
+     * Toggle display of help section
+     *
+     * @param {string} section The name of the help section to display
+     */
+    toggleHelpSection(section)
+    {
+        const currentSection = this.help.querySelector(`[data-help-section="${section}"]`);
+        const currentContent = this.help.querySelector(`[data-for="${section}"]`);
+
+        this.help.querySelectorAll('.current').forEach((el) => {
+            el.classList.remove('current');
+        });
+
+        currentSection.classList.add('current');
+        currentContent.classList.add('current');
+    }
+
+    /**
+     * Toggle display of help panel
+     */
+    toggleHelp()
+    {
+        this.help.classList.toggle('hidden');
+    }
+
     /***************************************************************************
      * Methods to render views
      **************************************************************************/
+
+    /**
+     * Render help messages
+     *
+     * @param {Object} helpData The data to render
+     */
+    renderHelp(helpData)
+    {
+        // TODO render help messages
+        console.log(helpData);
+    }
 
     /**
      * Render admin home page
@@ -458,8 +496,40 @@ export class AdminView {
      **************************************************************************/
 
     /**
+     * Bind the controller callback to use when the user click on 'toggle-help'
+     * button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindClickToggleHelp(handler)
+    {
+        Utils.getElement('#toggle-help').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            handler();
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when the user click on a given help
+     * section
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindClickHelpSection(handler)
+    {
+        Utils.getElement('#help-items').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            handler(event.target.dataset.helpSection);
+        });
+    }
+
+    /**
      * Bind the controller callback to use when the user clicks on 'Home' menu
      * entry
+     *
+     * @param {function} handler The callback to bind
      */
     bindClickHome(handler)
     {

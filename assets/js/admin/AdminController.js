@@ -35,10 +35,12 @@ export class AdminController {
     {
         // bind event handlers for view events
         this.view.bindClickHome(this.handleClickHome);
-        this.view.bindViewsHome(this.handleViewsHome);
+        this.view.bindViewsHome(this.handleClickViews);
         this.view.bindAssetsHome(this.handleAssetsHome);
         this.view.bindUsersHome(this.handleUsersHome);
         this.view.bindStatsHome(this.handleStatsHome);
+        this.view.bindClickToggleHelp(this.handleClickToggleHelp);
+        this.view.bindClickHelpSection(this.handleClickHelpSection);
         // this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
         this.view.bindSearchContent(this.handleSearchContent);
@@ -70,6 +72,7 @@ export class AdminController {
         // - Get the notifications (not implemented yet (say 'No notification')
         // this.view.
         this.view.renderHomePage();
+        this.view.renderHelp('help data');
     }
 
     /**
@@ -77,7 +80,7 @@ export class AdminController {
      *
      * @callback AdminController~handleViewsHome
      */
-    handleViewsHome = async () => {
+    handleClickViews = async () => {
         this.view.renderViewsHome();
         await this.model.listViews();
         this.view.bindClickView(this.handleClickView);
@@ -109,6 +112,25 @@ export class AdminController {
      */
     handleStatsHome = () => {
         this.view.renderStatsHome();
+    }
+
+    /**
+     * Handle click on the 'toggle-help' button
+     *
+     * @callback AdminController~handleClickToggleHelp
+     */
+    handleClickToggleHelp = () => {
+        this.view.toggleHelp();
+    }
+
+    /**
+     * Handle click on a help section
+     *
+     * @param {string} section The name of the help section to display
+     * @callback AdminController~handleClickHelpSection
+     */
+    handleClickHelpSection = (section) => {
+        this.view.toggleHelpSection(section);
     }
 
     handleListViews = async () => {
