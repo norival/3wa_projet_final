@@ -11,12 +11,34 @@ class DocumentationFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $documentation = new Documentation();
-
+        $loremMessage =
+            'Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
         $documentation->setName('view')
                       ->setLocale('en')
                       ->setContent([
-                          'Overview' => 'Views are a group of contents',
-                          'Dtails'   => 'Blabla blabla bla blablabla bla blablabla blabla bla',
+                          'overview' => [
+                              'name'    => 'View management',
+                              'content' => $loremMessage,
+                          ],
+                          'details' => [
+                              'name'    => 'View details',
+                              'content' => $loremMessage,
+                          ],
+                      ]);
+        $manager->persist($documentation);
+
+        $documentation = new Documentation();
+        $documentation->setName('general')
+                      ->setLocale('en')
+                      ->setContent([
+                          'overview' => [
+                              'name'    => 'Administration panel',
+                              'content' => $loremMessage,
+                          ],
+                          'actions' => [
+                              'name'    => 'Available actions',
+                              'content' => $loremMessage,
+                          ],
                       ]);
         $manager->persist($documentation);
 
