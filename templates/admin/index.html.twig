@@ -30,7 +30,34 @@
                 <li><a href="#" id="stats">Stats</a></li>
             </ul>
         </nav>
-        <div id="admin-main">
+        <div id="admin-panel">
+            <div id="help-panel" class="help">
+                <ul id="help-items" class="helpItems">
+                    <li>
+                        <a class="helpSection current" href="#" data-help-section="overview">
+                            Overview
+                        </a>
+                    </li>
+                    <li>
+                        <a class="helpSection" href="#" data-help-section="details">
+                            Details
+                        </a>
+                    </li>
+                </ul>
+                <div class="helpContent">
+                    <div class="current" data-for="overview">
+                        <p>Overview content. Dolor ea tempore eius vel exercitationem quam. Voluptates nobis dolor distinctio voluptatem molestias? Quos iste reprehenderit quis omnis debitis! Molestiae atque aliquam corporis debitis eum facere odio Consectetur ea quam</p>
+                    </div>
+                    <div data-for="details">
+                        <p>Details content. Dolor ea tempore eius vel exercitationem quam. Voluptates nobis dolor distinctio voluptatem molestias? Quos iste reprehenderit quis omnis debitis! Molestiae atque aliquam corporis debitis eum facere odio Consectetur ea quam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="toggleHelp">
+                <a id="toggle-help" href="#">Help</a>
+            </div>
+            <div id="admin-main">
+            </div>
         </div>
     </div>
 </main>

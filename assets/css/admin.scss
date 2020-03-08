@@ -3,6 +3,10 @@ $paletteSecondary: #1687c4;
 $paletteDark: #1b1d2b;
 $paletteLight: #d5e0eb;
 
+body {
+    font-family: "Roboto", sans-serif;
+}
+
 ul {
     padding: 0;
     list-style: none;
@@ -96,6 +100,7 @@ ul {
 #admin-menu {
     $navPadding: 15px;
     width: 160px;
+    flex-shrink: 0;
 
     background-color: $paletteDark;
     color: white;
@@ -117,12 +122,90 @@ ul {
     }
 }
 
-#admin-main {
+#admin-panel {
     flex-grow: 1;
     overflow-y: scroll;
     overflow-x: hidden;
 
-    padding: 15px;
+    position: relative;
+
+    padding: 0 15px 15px;
+
+    .help {
+        display: flex;
+        justify-content: stretch;
+
+        border: 1px solid $palettePrimary;
+        border-top: none;
+        position: relative;
+        color: black;
+
+        min-height: 150px;
+
+        color: black;
+
+        .helpItems {
+            border-right: 1px solid $palettePrimary;
+            padding-top: 10px;
+            margin: 0;
+            background-color: $paletteDark;
+            color: white;
+        }
+
+        .helpSection {
+            width: 130px;
+            display: inline-block;
+        }
+
+        .helpContent {
+            background-color: $palettePrimary;
+            color: white;
+            padding: 0 10px 10px 10px;
+            line-height: 1.4em;
+            font-size: 0.9em;
+
+            div.current {
+                display: block;
+            }
+
+            div:not(.current) {
+                display: none;
+            }
+        }
+
+        li {
+            padding: 0;
+
+            a {
+                display: block;
+                padding: 10px 0px 10px 10px;
+            }
+        }
+
+        .helpSection  {
+            &.current, &:hover {
+                // border: 1px solid black;
+                border-right: none;
+                border-left: none;
+                background-color: $palettePrimary;
+                color: $paletteSecondary;
+            }
+        }
+    }
+
+    .toggleHelp {
+        text-align: right;
+
+        a {
+            border: 1px solid black;
+            border-top: none;
+            display: inline-block;
+            padding: 5px 10px;
+            border-bottom-left-radius: 10px;
+            background-color: $palettePrimary;
+            color: white;
+        }
+    }
 
     .beta::after {
         content: ' (beta feature)';
@@ -136,4 +219,8 @@ ul {
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
         border-radius: 6px;
     }
+}
+
+.hidden {
+    display: none!important;
 }
