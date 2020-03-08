@@ -11,33 +11,36 @@ class DocumentationFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $documentation = new Documentation();
-        $loremMessage =
-            'Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
+        $loremMessage1 =
+            'Overview: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
+        $loremMessage2 =
+            'Details: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
         $documentation->setName('view')
                       ->setLocale('en')
                       ->setContent([
                           'overview' => [
                               'name'    => 'View management',
-                              'content' => $loremMessage,
+                              'content' => $loremMessage1,
                           ],
                           'details' => [
                               'name'    => 'View details',
-                              'content' => $loremMessage,
+                              'content' => $loremMessage2,
                           ],
                       ]);
         $manager->persist($documentation);
 
         $documentation = new Documentation();
+            'Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
         $documentation->setName('general')
                       ->setLocale('en')
                       ->setContent([
                           'overview' => [
                               'name'    => 'Administration panel',
-                              'content' => $loremMessage,
+                              'content' => $loremMessage1,
                           ],
                           'actions' => [
                               'name'    => 'Available actions',
-                              'content' => $loremMessage,
+                              'content' => $loremMessage2,
                           ],
                       ]);
         $manager->persist($documentation);
