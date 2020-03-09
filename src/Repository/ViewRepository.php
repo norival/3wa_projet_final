@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\View;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method View|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,5 +18,23 @@ class ViewRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, View::class);
+    }
+
+    /**
+     * Return the query to get a list of available views
+     *
+     * @param bool $joinUser Whether to join the users informations or not
+     * @return QueryBuilder
+     */
+    public function list(bool $joinUser = true): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('v')
+                   ->orderBy('v.created_at', 'DESC');
+
+        if ($joinUser) {
+            $qb->innerJoin('v.user', 'u');
+        }
+
+        return $qb;
     }
 }

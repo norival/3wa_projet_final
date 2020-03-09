@@ -16,37 +16,37 @@ class View
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="views")
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $user;
 

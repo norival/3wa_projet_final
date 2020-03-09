@@ -17,13 +17,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"form"})
+     * @Groups({"form", "list"})
      */
     private $email;
 

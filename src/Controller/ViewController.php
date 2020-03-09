@@ -2,16 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Content;
 use App\Entity\View;
 use App\Entity\ViewAsset;
 use App\Entity\ViewContent;
-use App\Form\ViewContentType;
 use App\Form\ViewType;
 use App\Model\AssetModel;
 use App\Model\ContentModel;
-use App\Model\ViewModel;
-use Doctrine\Common\Collections\Criteria;
+use App\Repository\ViewRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,10 +21,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewController extends AbstractController
 {
     private $em;
+    private $viewRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ViewRepository $repo)
     {
-        $this->em = $em;
+        $this->em             = $em;
+        $this->viewRepository = $repo;
     }
 
     /**
@@ -90,23 +90,38 @@ class ViewController extends AbstractController
 
 
     /**
-     * @Route("/admin/list-view", name="view_list", methods={"GET"})
+     * List all the available views (with pagination) and return result as JSON data
      *
+     * @Route("/view/list", name="view_list", methods={"GET"})
+     *
+     * @param  Paginator $paginator
+     * @param  SerializerInterface $serializer
+     * @param  Request $request
      * @return JsonResponse
      */
-    public function list()
+    public function list(Paginator $paginator, SerializerInterface $serializer, Request $request)
     {
-        $views = $this->em->getRepository(View::class)->findAll();
+        // get query from repository
+        $listQuery = $this->viewRepository->list(true);
 
-        foreach ($views as $view) {
-            $titles[] = [
-                'id'    => $view->getId(),
-                'name'  => $view->getName(),
-                'title' => $view->getTitle(),
-            ];
-        }
+        // paginate results
+        $paginator->paginate(
+            $listQuery,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('itemsPerPage', 10)
+        );
 
-        return new JsonResponse(\json_encode($titles));
+        // serialize results
+        $json = $serializer->serialize(
+            [
+                'state'   => $paginator->getState(),
+                'results' => $paginator->getResults(),
+            ],
+            'json',
+            ['groups' => 'list']
+        );
+
+        return JsonResponse::fromJsonString($json, 200);
     }
 
     /**
