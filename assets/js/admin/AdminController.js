@@ -41,7 +41,6 @@ export class AdminController {
         this.view.bindStatsHome(this.handleStatsHome);
         this.view.bindClickToggleHelp(this.handleClickToggleHelp);
         this.view.bindClickHelpSection(this.handleClickHelpSection);
-        // this.view.bindListViews(this.handleListViews);
         this.view.bindListContent(this.handleListContent);
         this.view.bindSearchContent(this.handleSearchContent);
         this.view.bindNeedContent(this.handleNeedContent);
@@ -128,12 +127,6 @@ export class AdminController {
      */
     handleClickHelpSection = (section) => {
         this.view.toggleHelpSection(section);
-    }
-
-    handleListViews = async () => {
-        await this.model.listViews();
-        this.view.bindClickView(this.handleClickView);
-        this.view.bindClickViewVisual(this.handleClickViewVisual);
     }
 
     handleClickView = async (viewId) => {
@@ -302,6 +295,7 @@ export class AdminController {
      */
     onViewsListDataReceived = (viewListData, paginationState) => {
         this.view.renderViewsList(viewListData, paginationState);
+        this.view.bindClickViewList(this.handleClickViewList);
         // this.view.bindClickView(this.handleClickView);
         // this.view.bindClickViewVisual(this.handleClickViewVisual);
         this.model.getHelpData('en', 'view');
