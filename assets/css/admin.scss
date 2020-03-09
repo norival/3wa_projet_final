@@ -3,6 +3,11 @@ $paletteSecondary: #1687c4;
 $paletteDark: #1b1d2b;
 $paletteLight: #d5e0eb;
 
+$tableLightColor: #f9f9f9;
+$tableBorderColor: #ccd0d4;
+
+$deleteColor: #b11623;
+
 body {
     font-family: "Roboto", sans-serif;
 }
@@ -208,20 +213,155 @@ ul {
         }
     }
 
-    .beta::after {
-        content: ' (beta feature)';
+    .tools {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .search {
+            width: 150px;
+            transition: all ease 0.3s 0s;
+            border: 1px solid $tableBorderColor;
+            border-radius: 5px;
+            padding: 7px;
+
+            &:hover, &:focus {
+                width: 350px;
+                border: 1px solid $paletteSecondary;
+                box-shadow: 0 0 3px $paletteSecondary;
+            }
+        }
     }
 
-    .button {
-        margin: 3px;
-        padding: 8px;
-        background-color: $paletteSecondary;
-        color: white;
-        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-        border-radius: 6px;
+    .fullWidth {
+        width: 100%;
+    }
+
+    .adminTable {
+        margin-top: 30px;
+        border: 1px solid $tableBorderColor;
+        border-collapse: collapse;
+        font-size: 0.9em;
+        
+        td {
+            vertical-align: top;
+            padding: 10px 15px;
+        }
+
+        th, tr {
+            padding: 0;
+        }
+
+        th {
+            padding: 10px 15px;
+        }
+
+        thead {
+            border-bottom: 1px solid $tableBorderColor;
+        }
+
+        tbody tr:nth-of-type(odd) {
+            background-color: $tableLightColor;
+        }
+
+        .textCell {
+            text-align: left;
+        }
+        .numCell {
+            text-align: right;
+        }
+        .largeCell {
+            min-width: 300px;
+        }
+
+        tr:hover .actions {
+            opacity: 1;
+        }
+
+        .actions {
+            font-size: 0.9em;
+            opacity: 0.1;
+            transition: all ease 0.3s 0s;
+
+            li {
+                margin: 0;
+                padding: 0;
+                display: inline;
+            }
+        }
     }
 }
 
 .hidden {
     display: none!important;
+}
+
+.beta::after {
+    content: ' (beta feature)';
+}
+
+.button, .button:visited {
+    color: $paletteSecondary;
+    border: 1px solid $paletteSecondary;
+    border-radius: 3px;
+    padding: 0.15em 0.8em;
+    font-weight: bold;
+    transition: all ease 0.3s 0s;
+
+    &.delete {
+        color: $deleteColor;
+        border-color: $deleteColor;
+
+        &:hover {
+            color: white;
+            background-color: $deleteColor;
+        }
+    }
+
+    &:hover {
+        color: white;
+        background-color: $paletteSecondary;
+    }
+}
+
+.paginationPages {
+    font-size: 0.9em;
+    display: flex;
+    justify-content: right;
+
+    .navButton {
+        display: block;
+        color: $paletteSecondary;
+        padding: 5px 0px;
+        font-weight: bold;
+        width: 30px;
+        text-align: center;
+
+        // border: 1px solid $paletteSecondary;
+        // border-right: none;
+        border-radius: 3px;
+
+        transition: all ease 0.3s 0s;
+
+        &:hover, &.current {
+            color: white;
+            background-color: $paletteSecondary;
+        }
+    }
+}
+
+.paginationHead {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+    font-size: 0.9em;
+
+    select {
+        font-size: 0.9em;
+    }
+
+    li + li {
+        margin-left: 20px;
+    }
 }
