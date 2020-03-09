@@ -123,6 +123,10 @@ ul {
                 background-color: $palettePrimary;
                 color: $paletteSecondary;
             }
+
+            &.currentMenuEntry {
+                border-left: 6px solid $paletteSecondary;
+            }
         }
 
     }
@@ -287,6 +291,10 @@ ul {
                 margin: 0;
                 padding: 0;
                 display: inline;
+
+                & + li {
+                    margin-left: 6px;
+                }
             }
         }
     }
