@@ -153,7 +153,7 @@ class ViewController extends AbstractController
      * @param  string $id
      * @return JsonResponse The 
      */
-    public function update(Request $request, SerializerInterface $serializer, string $id)
+    public function update(Request $request, string $id)
     {
         $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
         $form = $this->createForm(ViewType::class, $view);
