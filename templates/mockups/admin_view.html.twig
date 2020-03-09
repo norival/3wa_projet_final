@@ -1,0 +1,42 @@
+<h1>Views</h1>
+<ul class="tools">
+    <li>
+        <a id="new-view" class="button" href="#">Create view</a>
+    </li>
+    <li>
+        <input class="search" type="text" placeholder="Search views">
+    </li>
+</ul>
+{{ include('drafts/pagination_head.html.twig') }}
+<table class="adminTable fullWidth" id="views-list">
+    <thead>
+        <th class="largeCell textCell">Name</th>
+        <th class="textCell">User</th>
+        <th class="numCell">Date</th>
+        <th class="numCell">Last updated</th>
+    </thead>
+    <tbody>
+        {% for i in 0..5 %}
+            <tr>
+                <td class="textCell">
+                    <strong>cv</strong>
+                    <ul class="actions">
+                        <li><a class="button" href="#">Edit</a></li>
+                        <li><a class="button delete" href="#">Delete</a></li>
+                        <li><a class="button" href="#">Show template</a></li>
+                    </ul>
+                </td>
+                <td class="textCell">
+                    <a href="#">test@test.com</a>
+                </td>
+                <td class="numCell">
+                    <time datetime="2020-02-21">2020/02/21</time>
+                </td>
+                <td class="numCell">
+                    <time datetime="2020-02-21">2020/02/21</time>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ include('drafts/pagination.html.twig') }}

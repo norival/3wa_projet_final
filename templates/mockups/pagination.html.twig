@@ -1,0 +1,22 @@
+<ul class="paginationPages">
+    <li>
+        <a id="first-page" class="navButton" href="#"><<</a>
+    </li>
+    <li>
+        <a id="previous-page" class="navButton" href="#"><</a>
+    </li>
+    <li>
+        <a id="current-page" class="navButton current" href="#">1</a>
+    </li>
+    {% for i in 2..5 %}
+        <li>
+            <a id="page-num" class="navButton" href="#">{{ i }}</a>
+        </li>
+    {% endfor %}
+    <li>
+        <a id="next-page" class="navButton" href="#">></a>
+    </li>
+    <li>
+        <a id="last-page" class="navButton" href="#">>></a>
+    </li>
+</ul>
