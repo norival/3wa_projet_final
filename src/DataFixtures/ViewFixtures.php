@@ -15,7 +15,6 @@ class ViewFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $view = new View();
-        /* $user = $manager->getRepository(User::class)->findOneBy(['email' => 'test@test.com']); */
         $user = $this->getReference(UserFixtures::USER_TEST);
 
         $view->setUser($user);
@@ -23,6 +22,21 @@ class ViewFixtures extends Fixture implements DependentFixtureInterface
         $view->setTitle('Xavier Laviron');
         $view->setCreatedAt(date_create());
         $manager->persist($view);
+
+        for ($i = 1; $i < 200; $i++) {
+            $viewDemo = new View();
+            $user = $this->getReference(UserFixtures::USER_TEST);
+
+            $date = date_create();
+            $dateInterval = new \DateInterval("P{$i}D");
+            $date->add($dateInterval);
+
+            $viewDemo->setUser($user);
+            $viewDemo->setName("demoView_$i");
+            $viewDemo->setTitle("Demo view $i");
+            $viewDemo->setCreatedAt($date);
+            $manager->persist($viewDemo);
+        }
 
         $manager->flush();
 
