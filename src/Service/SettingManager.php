@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
  *
  * Service that helps in managing website settings
  *
- * @author Xavier Laviron <cavier@norival.dev>
+ * @author Xavier Laviron <xavier@norival.dev>
  */
 class SettingManager
 {
