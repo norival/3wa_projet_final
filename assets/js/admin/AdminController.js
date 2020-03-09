@@ -35,7 +35,7 @@ export class AdminController {
     {
         // bind event handlers for view events
         this.view.bindClickHome(this.handleClickHome);
-        this.view.bindViewsHome(this.handleClickViews);
+        this.view.bindClickViews(this.handleClickViews);
         this.view.bindAssetsHome(this.handleAssetsHome);
         this.view.bindUsersHome(this.handleUsersHome);
         this.view.bindStatsHome(this.handleStatsHome);
@@ -48,7 +48,7 @@ export class AdminController {
 
         // bind event handlers for model events
         this.model.bindHelpDataReceived(this.onHelpDataReceived);
-        this.model.bindViewsListLoaded(this.onViewsListLoaded);
+        this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
         this.model.bindViewDataChanged(this.onViewDataChanged);
         this.model.bindVisualViewChanged(this.onVisualViewChanged);
         this.model.bindContentListChanged(this.onContentListChanged);
@@ -76,13 +76,12 @@ export class AdminController {
     /**
      * Handle click on the 'Views' menu entry
      *
+     * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
      * @callback AdminController~handleViewsHome
      */
-    handleClickViews = async () => {
+    handleClickViews = (pagination) => {
         this.view.renderViewsHome();
-        await this.model.listViews();
-        this.view.bindClickView(this.handleClickView);
-        this.view.bindClickViewVisual(this.handleClickViewVisual);
+        this.model.listViews(pagination);
     }
 
     /**
@@ -296,10 +295,16 @@ export class AdminController {
     /**
      * Call this method from the model when the list of view has been loaded.
      * 
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
      * @callback AdminController~onViewDataChanged
      */
-    onViewsListLoaded = (viewListData) => {
-        this.view.renderViewsList(viewListData);
+    onViewsListDataReceived = (viewListData, paginationState) => {
+        this.view.renderViewsList(viewListData, paginationState);
+        // this.view.bindClickView(this.handleClickView);
+        // this.view.bindClickViewVisual(this.handleClickViewVisual);
+        this.model.getHelpData('en', 'view');
     }
 
     /**

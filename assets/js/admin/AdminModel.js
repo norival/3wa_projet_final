@@ -26,18 +26,21 @@ export class AdminModel {
 
     /**
      * Fetch the list of available views
+     *
+     * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
      */
-    async listViews()
+    listViews(pagination)
     {
-        // fetch data from website and store the promise in this.views
-        await fetch('admin/list-view')
-            .then(response => response.json())
-            .then(json => {
-                // tell the controller to refresh the view
-                this.onViewsListLoaded(JSON.parse(json));
-            });
+        // build request URL
+        const url = '/view/list?' + new URLSearchParams(pagination);
 
-        return this;
+        // fetch data from website and store the promise in this.views
+        fetch(url)
+            .then(response => response.json())
+            .then(paginator => {
+                // tell the controller to refresh the view
+                this.onViewsListDataReceived(paginator.results, paginator.state);
+            });
     }
 
     async getViewForm(viewId)
@@ -267,9 +270,9 @@ export class AdminModel {
      *
      * @param {function} callback The callback to bind
      */
-    bindViewsListLoaded(callback)
+    bindViewsListDataReceived(callback)
     {
-        this.onViewsListLoaded = callback;
+        this.onViewsListDataReceived = callback;
     }
 
     bindViewDataChanged(callback)

@@ -258,15 +258,24 @@ export class AdminView {
     renderViewsHome()
     {
         Utils.clear(this.output);
+        this.help.classList.add('hidden');
+
+        this.toggleCurrentMenuEntry('views');
 
         this.output.appendChild(Components.viewsHome());
     }
 
-    renderViewsList(viewList)
+    /**
+     * Render the list of views
+     *
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     */
+    renderViewsList(viewListData, paginationState)
     {
-        const element = Utils.getElement('#viewOutput');
-
-        element.appendChild(Components.viewList(viewList));
+        this.output.appendChild(Components.viewList(viewListData, paginationState));
+        // element.appendChild(Components.viewList(viewList));
     }
 
     /**
@@ -591,12 +600,15 @@ export class AdminView {
         });
     }
 
-    bindViewsHome(handler)
+    bindClickViews(handler)
     {
         Utils.getElement('#views').addEventListener('click', event => {
             event.preventDefault();
 
-            handler();
+            handler({
+                page: 1,
+                itemsPerPage: 5
+            });
         });
     }
 
