@@ -113,10 +113,10 @@ export class Components {
     static paginationHead(listLength, paginationState)
     {
         // available options for number of elements per page
-        const pageOptions = [5, 10, 20, 30];
+        const pageOptions = [5, 10, 20, 30, 50];
 
         const paginationHead = Utils.createElement('ul', 'paginationHead');
-        const select         = Utils.createElement('select');
+        const select         = Utils.createElement('select', null, 'choose-items-per-page');
 
         let li       = Utils.createElement('li');
         li.innerHTML = `${listLength}/${paginationState.total} elements`;
@@ -134,6 +134,7 @@ export class Components {
 
             select.appendChild(option);
         });
+        select.dataset.onScreen = 'viewList';
         li.appendChild(select);
 
         const text = document.createTextNode('entries per page');

@@ -54,6 +54,9 @@ export class AdminController {
         this.view.bindOnClickEditView(this.onClickEditView);
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
 
+        // pagination related events
+        this.view.bindOnChangeChooseItemsPerPage(this.onChangeChooseItemsPerPage);
+
 
         // bind callbacks for model events -------------------------------------
         this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
@@ -163,6 +166,18 @@ export class AdminController {
         this.view.toggleHelpSection(section);
     }
 
+
+    // handlers for pagination events ------------------------------------------
+    onChangeChooseItemsPerPage = (target) => {
+        switch (target.dataset.onScreen) {
+            case 'viewList':
+                this.model.listViews({
+                    page:         1,
+                    itemsPerPage: event.target.value
+                });
+                break;
+        }
+    }
 
     // handlers for views related events ---------------------------------------
 

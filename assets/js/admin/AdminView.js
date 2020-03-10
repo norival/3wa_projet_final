@@ -310,9 +310,15 @@ export class AdminView {
             }
         });
 
-        // TODO bind event listeners for search field
-        // TODO bind event listeners for pagination select
+        // bind event listeners for pagination select
+        Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
+            event.preventDefault();
+
+            this.onChangeChooseItemsPerPage(event.target);
+        });
+
         // TODO bind event listeners for pagination pages
+        // TODO bind event listeners for search field
     }
 
     /**
@@ -515,6 +521,21 @@ export class AdminView {
         this.onClickDeleteView = handler;
     }
 
+
+    /***************************************************************************
+     * Handlers related to pagination
+     */
+
+    /**
+     * Bind the controller callback to use when the 'itemsPerPage' select menu
+     * has changed
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnChangeChooseItemsPerPage(handler)
+    {
+        this.onChangeChooseItemsPerPage = handler;
+    }
 
 
     // -------------------------------------------------------------------------
