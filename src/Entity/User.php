@@ -48,10 +48,16 @@ class User implements UserInterface
      */
     private $assets;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Content", mappedBy="user")
+     */
+    private $contents;
+
     public function __construct()
     {
         $this->views = new ArrayCollection();
         $this->assets = new ArrayCollection();
+        $this->contents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +194,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($asset->getUser() === $this) {
                 $asset->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Content[]
+     */
+    public function getContents(): Collection
+    {
+        return $this->contents;
+    }
+
+    public function addContent(Content $content): self
+    {
+        if (!$this->contents->contains($content)) {
+            $this->contents[] = $content;
+            $content->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContent(Content $content): self
+    {
+        if ($this->contents->contains($content)) {
+            $this->contents->removeElement($content);
+            // set the owning side to null (unless already changed)
+            if ($content->getUser() === $this) {
+                $content->setUser(null);
             }
         }
 

@@ -4,12 +4,18 @@ namespace App\DataFixtures;
 
 use App\Entity\Content;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ContentFixtures extends Fixture
+class ContentFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $user = $this->getReference(UserFixtures::USER_TEST);
+
+        $loremMessage =
+            'Overview: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
+
         // $product = new Product();
         // $manager->persist($product);
         $content = new Content();
@@ -20,6 +26,7 @@ class ContentFixtures extends Fixture
             'title'    => 'Xavier Laviron',
             'subtitle' => 'Full stack web developer',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -31,6 +38,7 @@ class ContentFixtures extends Fixture
             'level'   => 'expert',
             'section' => 'technical',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -42,6 +50,7 @@ class ContentFixtures extends Fixture
             'level'   => 'beginner',
             'section' => 'technical',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -53,6 +62,7 @@ class ContentFixtures extends Fixture
             'level'   => 'beginner',
             'section' => 'web',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -64,6 +74,7 @@ class ContentFixtures extends Fixture
             'level'   => 'beginner',
             'section' => 'web',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -75,6 +86,7 @@ class ContentFixtures extends Fixture
             'level'   => 'fluent',
             'section' => 'other',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -87,6 +99,7 @@ class ContentFixtures extends Fixture
             'description' => 'Ecology blabla',
             'year'        => '2017',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -99,6 +112,7 @@ class ContentFixtures extends Fixture
             'description' => 'Intensive training in web development',
             'year'        => '2019',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -112,6 +126,7 @@ class ContentFixtures extends Fixture
             'year_start'  => '2017',
             'year_end'    => null,
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -125,6 +140,7 @@ class ContentFixtures extends Fixture
             'year_start'  => '2017',
             'year_end'    => '2019',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -136,6 +152,7 @@ class ContentFixtures extends Fixture
             'description' => 'R library blabla',
             'year'        => '2019',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
         $content = new Content();
@@ -147,8 +164,30 @@ class ContentFixtures extends Fixture
             'description' => 'My book about writing a book',
             'year'        => '2017',
         ]);
+        $content->setUser($user);
         $manager->persist($content);
 
+        // other dummy content
+        for ($i = 1; $i <= 100; $i++) {
+            $content = new Content();
+            $content->setCreatedAt(date_create());
+            $content->setName("dummy_content_$i");
+            $content->setType('dummy');
+            $content->setContent([
+                'name'        => 'My dummy content ' . $i,
+                'description' => $loremMessage,
+            ]);
+            $content->setUser($user);
+            $manager->persist($content);
+        }
+
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
     }
 }
