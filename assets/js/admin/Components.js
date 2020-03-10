@@ -154,21 +154,25 @@ export class Components {
      */
     static paginationPages(paginationState)
     {
-        const pagination = Utils.createElement('ul', 'paginationPages');
+        const pagination = Utils.createElement('ul', 'paginationPages', 'pagination-links');
 
-        let li      = Utils.createElement('li');
-        let a       = Utils.createElement('a', 'navButton', 'first-page');
-        a.href      = '#';
-        a.innerHTML = '<<';
-        li.appendChild(a);
-        pagination.appendChild(li);
+        if (paginationState.page > 1) {
+            let li         = Utils.createElement('li');
+            let a          = Utils.createElement('a', 'navButton', 'first-page');
+            a.href         = '#';
+            a.innerHTML    = '<<';
+            a.dataset.page = 1;
+            li.appendChild(a);
+            pagination.appendChild(li);
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'previous-page');
-        a.href      = '#';
-        a.innerHTML = '<';
-        li.appendChild(a);
-        pagination.appendChild(li);
+            li             = Utils.createElement('li');
+            a              = Utils.createElement('a', 'navButton', 'previous-page');
+            a.href         = '#';
+            a.innerHTML    = '<';
+            a.dataset.page = paginationState.page - 1;
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
 
         for (let i = paginationState.page - 3; i <= paginationState.page + 3; i++) {
             if (i < 1 || i > paginationState.numberOfPages) {
@@ -178,8 +182,10 @@ export class Components {
             let li = Utils.createElement('li');
             let a  = Utils.createElement('a', 'navButton');
             
-            a.href      = '#';
-            a.innerHTML = i;
+            a.href             = '#';
+            a.innerHTML        = i;
+            a.dataset.page     = i;
+            a.dataset.disabled = false;
 
             if (i === paginationState.page) {
                 a.classList.add('current');
@@ -190,19 +196,23 @@ export class Components {
             pagination.appendChild(li);
         }
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'next-page');
-        a.href      = '#';
-        a.innerHTML = '>';
-        li.appendChild(a);
-        pagination.appendChild(li);
+        if (paginationState.page < paginationState.numberOfPages) {
+            let li         = Utils.createElement('li');
+            let a          = Utils.createElement('a', 'navButton', 'next-page');
+            a.href         = '#';
+            a.innerHTML    = '>';
+            a.dataset.page = paginationState.page + 1;
+            li.appendChild(a);
+            pagination.appendChild(li);
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'last-page');
-        a.href      = '#';
-        a.innerHTML = '>>';
-        li.appendChild(a);
-        pagination.appendChild(li);
+            li             = Utils.createElement('li');
+            a              = Utils.createElement('a', 'navButton', 'last-page');
+            a.href         = '#';
+            a.innerHTML    = '>>';
+            a.dataset.page = paginationState.numberOfPages;
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
 
         return pagination;
     }

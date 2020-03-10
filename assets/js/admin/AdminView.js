@@ -310,14 +310,27 @@ export class AdminView {
             }
         });
 
-        // bind event listeners for pagination select
+        // bind event listener for pagination select
         Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
             event.preventDefault();
 
-            this.onChangeChooseItemsPerPage(event.target);
+            this.onChangeChooseItemsPerPage('viewList', {
+                page: 1,
+                itemsPerPage: event.target.value
+            });
         });
 
-        // TODO bind event listeners for pagination pages
+
+        // bind event listener for pagination pages
+        Utils.getElement('#pagination-links').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.onClickPaginationPage('viewList', {
+                page: event.target.dataset.page,
+                itemsPerPage: Utils.getElement('#choose-items-per-page').value
+            });
+        });
+
         // TODO bind event listeners for search field
     }
 
@@ -535,6 +548,16 @@ export class AdminView {
     bindOnChangeChooseItemsPerPage(handler)
     {
         this.onChangeChooseItemsPerPage = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when a page link has been clicked
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickPaginationPage(handler)
+    {
+        this.onClickPaginationPage = handler;
     }
 
 

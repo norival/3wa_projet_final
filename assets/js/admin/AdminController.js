@@ -56,6 +56,7 @@ export class AdminController {
 
         // pagination related events
         this.view.bindOnChangeChooseItemsPerPage(this.onChangeChooseItemsPerPage);
+        this.view.bindOnClickPaginationPage(this.onClickPaginationPage);
 
 
         // bind callbacks for model events -------------------------------------
@@ -168,13 +169,32 @@ export class AdminController {
 
 
     // handlers for pagination events ------------------------------------------
-    onChangeChooseItemsPerPage = (target) => {
-        switch (target.dataset.onScreen) {
+
+    /**
+     * Handle change on the select menu to change number of items per page
+     *
+     * @param {string} screen The screen from which the call is coming
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @callback AdminController~handleClickHelpSection
+     */
+    onChangeChooseItemsPerPage = (screen, paginationState) => {
+        switch (screen) {
             case 'viewList':
-                this.model.listViews({
-                    page:         1,
-                    itemsPerPage: event.target.value
-                });
+                this.model.listViews(paginationState);
+                break;
+        }
+    }
+
+    /**
+     * Handle click on a page link
+     *
+     * @callback AdminController~handleClickHelpSection
+     */
+    onClickPaginationPage = (screen, paginationState) => {
+        switch (screen) {
+            case 'viewList':
+                this.model.listViews(paginationState);
                 break;
         }
     }
