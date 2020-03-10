@@ -61,8 +61,15 @@ export class AdminController {
 
 
         // bind callbacks for model events -------------------------------------
-        this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
+        // help related events
         this.model.bindHelpDataReceived(this.onHelpDataReceived);
+
+        // views related events
+        this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
+
+        // content related events
+        this.model.bindContentListDataReceived(this.onContentListDataReceived);
+
         // this.model.bindViewDataChanged(this.onViewDataChanged);
         // this.model.bindVisualViewChanged(this.onVisualViewChanged);
         // this.model.bindContentListChanged(this.onContentListChanged);
@@ -109,12 +116,14 @@ export class AdminController {
     /**
      * Handle click on the 'Content' menu entry
      * 
+     * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
      * @callback AdminController~handleClickContentHome
      * @async
      */
-    handleClickContentHome = () => {
+    handleClickContentHome = (pagination) => {
         // TODO refactor this method. Should not use async/await
         this.view.renderContentHome();
+        this.model.listContent(pagination);
         // await this.model.listContent();
         // this.view.bindClickContent(this.handleClickContent);
         // this.view.bindClickNewContent(this.handleClickNewContent);
@@ -243,6 +252,10 @@ export class AdminController {
      * Callbacks for Model events
     ***************************************************************************/
 
+    /***************************************************************************
+     * Handlers related to help data
+     */
+
     /**
      * Call this method from the model when the help data has been received
      * 
@@ -251,6 +264,11 @@ export class AdminController {
     onHelpDataReceived = (helpData) => {
         this.view.renderHelp(helpData);
     }
+
+
+    /***************************************************************************
+     * Handlers related to view data
+     */
 
     /**
      * Call this method from the model when the list of view has been loaded.
@@ -268,6 +286,22 @@ export class AdminController {
         // this.model.getHelpData('en', 'view');
     }
 
+
+    /***************************************************************************
+     * Handlers related to content data
+     */
+
+    /**
+     * Call this method from the model when the list of content has been loaded.
+     * 
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @callback AdminController~onViewDataChanged
+     */
+    onContentListDataReceived = (contentListData, paginationState) => {
+        this.view.renderContentList(contentListData, paginationState);
+    }
 
     // -------------------------------------------------------------------------
     // not refactored yet ------------------------------------------------------

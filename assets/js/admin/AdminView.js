@@ -28,7 +28,10 @@ export class AdminView {
                     });
                     break;
                 case 'content-home':
-                    this.onClickContentHome();
+                    this.onClickContentHome({
+                        page: 1,
+                        itemsPerPage: 5
+                    });
                     break;
                 case 'assets-home':
                     this.onClickAssetsHome();
@@ -305,6 +308,8 @@ export class AdminView {
 
         this.output.appendChild(Components.viewList(viewListData, paginationState));
 
+        // add event listeners -------------------------------------------------
+        // event listener for clicks on view-list
         Utils.getElement('#views-list').addEventListener('click', (event) => {
             event.preventDefault();
 
@@ -318,7 +323,7 @@ export class AdminView {
             }
         });
 
-        // bind event listener for pagination select
+        // event listener for pagination select
         Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
             event.preventDefault();
 
@@ -377,7 +382,7 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Render stuff for view management
+     * Render stuff for content management
      */
 
     /**
@@ -394,6 +399,26 @@ export class AdminView {
         this.toggleCurrentMenuEntry('content');
 
         this.output.appendChild(Components.contentHome());
+
+        // TODO add event listeners
+    }
+
+    /**
+     * Render the list of content
+     * 
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     */
+    renderContentList(contentListData, paginationState)
+    {
+        // remove old view list if present
+        const oldDiv = Utils.getElement('#content-list-div');
+        if (oldDiv) {
+            oldDiv.remove();
+        }
+
+        this.output.appendChild(Components.contentListForContent(contentListData, paginationState));
 
         // TODO add event listeners
     }

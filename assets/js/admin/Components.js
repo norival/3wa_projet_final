@@ -281,7 +281,7 @@ export class Components {
      *
      * @param {Object} viewListData The list of views
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *
+     *      state of the pagination
      * @returns {Element}
      */
     static viewList(viewListData, paginationState)
@@ -544,11 +544,7 @@ export class Components {
     /**
      * Create a list of content
      *
-     * @param {Object} contentList The content list
-     * @param {number} id The html id of the content list
-     * @param {bool} forViewScreen Whether the content is nested inside
-     * the content list. Used when rendering content list from the View screen.
-     *
+     * @param {?Object} contentListData The content list
      * @returns {Element}
      * static contentList(contentList, id, forViewScreen = false)
      */
@@ -587,65 +583,133 @@ export class Components {
 
         return table;
     }
+    static contentListForView(contentListData)
+    {
+        // TODO refacto: 2 separate methods for content list in view screen or
+        // content screen
+        return this.contentList(contentListData);
+    }
+
+    /**
+     * Create a list of available content
+     *
+     * @param {Object} contentListData The list of content
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @returns {Element}
+     */
+    static contentListForContent(contentListData, paginationState)
+    {
+        const outputDiv = Utils.createElement('div', null, 'content-list-div');
+        const table = Utils.createElement('table', ['adminTable', 'fullWidth'], 'content-list');
+        const thead = Utils.createElement('thead');
+        const tbody = Utils.createElement('tbody');
+
+        // upper pagination
+        outputDiv.appendChild(this.paginationHead(contentListData.length, paginationState));
+        outputDiv.appendChild(this.paginationPages(paginationState));
+
+        // table head ----------------------------------------------------------
+        let th       = Utils.createElement('th', ['largeCell', 'textCell']);
+        th.innerHTML = 'Name';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['textCell']);
+        th.innerHTML = 'User';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['numCell']);
+        th.innerHTML = 'Date';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['numCell']);
+        th.innerHTML = 'Last updated';
+        thead.appendChild(th);
+
+        table.appendChild(thead);
+
+        // table body ----------------------------------------------------------
+        contentListData.forEach((contentData) => {
+            const tr = Utils.createElement('tr');
+
+            // first column
+            let td     = Utils.createElement('td', 'textCell');
+            let strong = Utils.createElement('strong');
+            let ul     = Utils.createElement('ul', 'actions');
+
+            strong.innerHTML = contentData.name;
+            td.appendChild(strong);
+
+            let li              = Utils.createElement('li');
+            let a               = Utils.createElement('a', 'button', 'edit-content');
+            a.href              = '#';
+            a.innerHTML         = 'Edit';
+            a.dataset.action    = 'edit-content';
+            a.dataset.contentId = contentData.id;
+            li.appendChild(a);
+            ul.appendChild(li);
+
+            li                  = Utils.createElement('li');
+            a                   = Utils.createElement('a', ['button', 'delete'], 'delete-content');
+            a.href              = '#';
+            a.innerHTML         = 'Delete';
+            a.dataset.action    = 'delete-content';
+            a.dataset.contentId = contentData.id;
+            li.appendChild(a);
+            ul.appendChild(li);
+
+            td.appendChild(ul);
+            tr.appendChild(td);
+
+            // second column
+            td          = Utils.createElement('td', 'textCell');
+            a           = Utils.createElement('a');
+            a.href      = '#';
+            a.innerHTML = contentData.user.email;
+            td.appendChild(a);
+            tr.appendChild(td);
+
+            // third column
+            td             = Utils.createElement('td', 'numCell');
+            let time       = Utils.createElement('time');
+            time.innerHTML = Utils.formatDate(contentData.created_at);
+            time.setAttribute('datetime', contentData.created_at);
+            td.appendChild(time);
+            tr.appendChild(td);
+
+            // fourth column
+            td             = Utils.createElement('td', 'numCell');
+            time           = Utils.createElement('time');
+            if (contentData.updated_at) {
+                time.innerHTML = Utils.formatDate(contentData.updated_at);
+                time.setAttribute('datetime', contentData.updated_at);
+            } else {
+                time.innerHTML = 'Never';
+                time.setAttribute('datetime', null);
+            }
+            td.appendChild(time);
+            tr.appendChild(td);
+
+            tbody.appendChild(tr)
+        });
+
+        table.appendChild(tbody);
+        outputDiv.appendChild(table);
+
+        // lower navigation
+        outputDiv.appendChild(this.paginationPages(paginationState));
+
+        return outputDiv;
+    }
+
+    static contentListRow()
+    {
+    }
 
 
     /***************************************************************************
      * no refacto yet
      **************************************************************************/
-
-    /**
-     * Create a single row for the content list
-     *
-     * @param {Object} content An object representation of the content
-     * @param {bool} forViewScreen Whether the content is nested inside
-     * @returns {Element}
-     */
-    static contentListRow(content, forViewScreen = false)
-    {
-        let tr = Utils.createElement('tr');
-        let td = Utils.createElement('td');
-        let a  = Utils.createElement('a');
-
-        tr.dataset.contentId = content.id;
-
-        a.text              = content.name;
-        a.href              = '#';
-        a.dataset.action    = 'edit';
-        a.dataset.contentId = content.id;
-
-        td.appendChild(a)
-        tr.appendChild(td);
-
-        td = Utils.createElement('td');
-        a  = Utils.createElement('a');
-
-        a.text               = content.type;
-        a.href               = '#';
-        a.dataset.contentId  = content.id;
-        td.dataset.contentId = content.id;
-
-        td.appendChild(a)
-        tr.appendChild(td);
-
-        td = Utils.createElement('td');
-
-
-        a  = Utils.createElement('a', [
-            'button',
-            forViewScreen ? 'remove' : 'delete'
-        ]);
-
-        a.text               = forViewScreen ? 'Remove' : 'Delete';
-        a.href               = '#';
-        a.dataset.contentId  = content.id;
-        a.dataset.action     = forViewScreen ? 'removeFromView' : 'delete';
-        td.dataset.contentId = content.id;
-
-        td.appendChild(a)
-        tr.appendChild(td);
-
-        return tr;
-    }
 
     /**
      * Create a form to modify a content

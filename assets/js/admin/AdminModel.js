@@ -75,6 +75,29 @@ export class AdminModel {
             });
     }
 
+    /***************************************************************************
+     * Methods related to content data
+     */
+
+    /**
+     * Fetch the list of available views
+     *
+     * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
+     */
+    listContent(pagination)
+    {
+        // build request URL
+        const url = '/content/list?' + new URLSearchParams(pagination);
+
+        // fetch data from website and store the promise in this.views
+        fetch(url)
+            .then(response => response.json())
+            .then(paginator => {
+                // tell the controller to refresh the view
+                this.onContentListDataReceived(paginator.results, paginator.state);
+            });
+    }
+
 
     /***************************************************************************
      * Methods to bind handlers
@@ -113,6 +136,21 @@ export class AdminModel {
         this.onViewsListDataReceived = callback;
     }
 
+
+    /***************************************************************************
+     * Handlers related to content data
+     */
+
+    /**
+     * Bind the controller callback to use when the list of content has been
+     * loaded
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindContentListDataReceived(callback)
+    {
+        this.onContentListDataReceived = callback
+    }
 
 
     /***************************************************************************
@@ -188,16 +226,6 @@ export class AdminModel {
                 console.log('data sent')
                 this.onViewDataChanged(JSON.parse(json));
                 // this.form.remove();
-            })
-    }
-
-    async listContent()
-    {
-        await fetch('admin/content')
-            .then(response => response.json())
-            .then(json => JSON.parse(json))
-            .then(contentList => {
-                this.onContentListChanged(contentList);
             })
     }
 
