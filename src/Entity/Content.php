@@ -16,19 +16,19 @@ class Content
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"default", "form", "content_form"})
+     * @Groups({"default", "form", "content_form", "list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"default", "form", "content_form"})
+     * @Groups({"default", "form", "content_form", "list"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form", "default", "content_form"})
+     * @Groups({"form", "default", "content_form", "list"})
      */
     private $type;
 
@@ -40,13 +40,13 @@ class Content
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"default"})
+     * @Groups({"default", "list"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"default"})
+     * @Groups({"default", "list"})
      */
     private $updated_at;
 
@@ -57,6 +57,7 @@ class Content
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="contents")
+     * @Groups({"list"})
      */
     private $user;
 

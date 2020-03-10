@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Content;
 use App\Form\ContentType;
+use App\Repository\ContentRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,32 +22,44 @@ class ContentController extends AbstractController
 {
     /** @var \Doctrine\ORM\EntityManagerInterface $em */
     private $em;
+    private $contentRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ContentRepository $repo)
     {
-        $this->em = $em;
+        $this->em                = $em;
+        $this->contentRepository = $repo;
     }
 
     /**
-     * @Route("/admin/content", name="content_list", methods={"GET"})
+     * @Route("/content/list", name="content_list", methods={"GET"})
      *
+     * @param  Paginator $paginator
+     * @param  SerializerInterface $serializer
+     * @param  Request $request
      * @return JsonResponse
      */
-    public function list()
+    public function list(Paginator $paginator, SerializerInterface $serializer, Request $request): JsonResponse
     {
-        // TODO get only one column from db
-        $content = $this->em->getRepository(Content::class)->findAll();
+        $listQuery = $this->contentRepository->list(true);
 
-        foreach ($content as $item) {
-            $data[] = [
-                'name'       => $item->getName(),
-                'type'       => $item->getType(),
-                'id'         => $item->getId(),
-                'created_at' => $item->getCreatedAt(),
-            ];
-        }
+        // paginate results
+        $paginator->paginate(
+            $listQuery,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('itemsPerPage', 10)
+        );
 
-        return new JsonResponse(\json_encode($data));
+        // serialize results
+        $json = $serializer->serialize(
+            [
+                'state'   => $paginator->getState(),
+                'results' => $paginator->getResults(),
+            ],
+            'json',
+            ['groups' => 'list']
+        );
+
+        return JsonResponse::fromJsonString($json, 200);
     }
 
     /**

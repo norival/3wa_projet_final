@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Content;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Content|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,24 @@ class ContentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Content::class);
+    }
+
+    /**
+     * Return the query to get a list of available content
+     *
+     * @param bool $joinUser Whether to join the users informations or not
+     * @return QueryBuilder
+     */
+    public function list(bool $joinUser = true): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('c')
+                   ->orderBy('c.created_at', 'DESC');
+
+        if ($joinUser) {
+            $qb->innerJoin('c.user', 'u');
+        }
+
+        return $qb;
     }
 
     /**
