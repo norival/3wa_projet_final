@@ -268,6 +268,12 @@ ul {
             background-color: $tableLightColor;
         }
 
+        .emptyTable {
+            text-align: center;
+            width: 100%;
+            font-style: italic;
+            padding: 20px;
+        }
         .textCell {
             text-align: left;
         }
@@ -278,22 +284,62 @@ ul {
             min-width: 300px;
         }
 
+        .tinyCell {
+            width: 45px;
+            text-align: left;
+        }
+
         tr:hover .actions {
             opacity: 1;
         }
+    }
 
-        .actions {
-            font-size: 0.9em;
-            opacity: 0.1;
-            transition: all ease 0.3s 0s;
+    .actions {
+        font-size: 0.9em;
+        opacity: 0.1;
+        transition: all ease 0.3s 0s;
+
+        li {
+            margin: 0;
+            padding: 0;
+            display: inline;
+
+            & + li {
+                margin-left: 6px;
+            }
+        }
+    }
+
+    .adminForm {
+        width: 100%;
+        margin-bottom: 100px;
+
+        fieldset {
+            border: 1px solid $tableBorderColor;
+            margin-bottom: 20px;
+
+            legend {
+                font-size: 1.2em;
+                font-weight: bold;
+                padding: 0 8px;
+            }
+        }
+
+        .inputList {
+            // max-width: 500px;
 
             li {
-                margin: 0;
-                padding: 0;
-                display: inline;
+                display: flex;
+                justify-content: left;
+                text-align: left;
 
-                & + li {
-                    margin-left: 6px;
+                padding-bottom: 15px;
+
+                label {
+                    width: 15%;
+                }
+                input, textarea {
+                    width: 60%;
                 }
             }
         }
@@ -316,7 +362,7 @@ ul {
     font-weight: bold;
     transition: all ease 0.3s 0s;
 
-    &.delete {
+    &.delete, &.cancel {
         color: $deleteColor;
         border-color: $deleteColor;
 
@@ -329,6 +375,19 @@ ul {
     &:hover {
         color: white;
         background-color: $paletteSecondary;
+    }
+
+    &.big {
+        font-size: 1.2em;
+    }
+}
+
+.buttonList {
+    display: flex;
+    justify-content: left;
+
+    li + li {
+        margin-left: 5px;
     }
 }
 
