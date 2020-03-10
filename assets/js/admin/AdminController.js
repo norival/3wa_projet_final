@@ -49,15 +49,21 @@ export class AdminController {
         // this.view.bindSearchContent(this.handleSearchContent);
         // this.view.bindNeedContent(this.handleNeedContent);
 
+        // pagination related events
+        this.view.bindOnChangeChooseItemsPerPage(this.onChangeChooseItemsPerPage);
+        this.view.bindOnClickPaginationPage(this.onClickPaginationPage);
+
         // views related events
         this.view.bindOnClickNewView(this.onClickNewView);
         this.view.bindOnKeyUpSearchView(this.onKeyUpSearchView);
         this.view.bindOnClickEditView(this.onClickEditView);
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
 
-        // pagination related events
-        this.view.bindOnChangeChooseItemsPerPage(this.onChangeChooseItemsPerPage);
-        this.view.bindOnClickPaginationPage(this.onClickPaginationPage);
+        // content related events
+        this.view.bindOnClickNewContent(this.onClickNewContent);
+        this.view.bindOnKeyUpSearchContent(this.onKeyUpSearchContent);
+        this.view.bindOnClickEditContent(this.onClickEditContent);
+        this.view.bindOnClickDeleteContent(this.onClickDeleteContent);
 
 
         // bind callbacks for model events -------------------------------------
@@ -195,6 +201,9 @@ export class AdminController {
             case 'viewList':
                 this.model.listViews(paginationState);
                 break;
+            case 'contentList':
+                this.model.listContent(paginationState);
+                break;
         }
     }
 
@@ -208,8 +217,12 @@ export class AdminController {
             case 'viewList':
                 this.model.listViews(paginationState);
                 break;
+            case 'contentList':
+                this.model.listContent(paginationState);
+                break;
         }
     }
+
 
     // handlers for views related events ---------------------------------------
 
@@ -246,6 +259,48 @@ export class AdminController {
     onClickDeleteView = (viewId) => {
         console.log(`Deleting ${viewId}`);
     }
+
+
+    // handlers for content related events -------------------------------------
+
+    /**
+     * Handle click on the 'new-content' button
+     */
+    onClickNewContent = () => {
+        console.log('creating new content');
+        // TODO
+        // this.view.renderViewForm(null);
+    }
+
+    /**
+     * Handle key press on search content input
+     *
+     * @param {Object} query The query
+     */
+    onKeyUpSearchContent = (query) => {
+        console.log(query);
+        // TODO
+        // this.model.searchView(query);
+    }
+
+    /**
+     * Handle click on the 'edit-content' button
+     *
+     * @param {int} contentId The id of the view to edit
+     */
+    onClickEditContent = (contentId) => {
+        console.log(`Editing ${contentId}`);
+    }
+
+    /**
+     * Handle click on the 'delete-content' button
+     *
+     * @param {int} contentId The id of the view to delete
+     */
+    onClickDeleteContent = (contentId) => {
+        console.log(`Deleting ${contentId}`);
+    }
+
 
 
     /***************************************************************************

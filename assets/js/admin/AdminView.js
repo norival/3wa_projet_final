@@ -400,7 +400,23 @@ export class AdminView {
 
         this.output.appendChild(Components.contentHome());
 
-        // TODO add event listeners
+        // add event listeners -------------------------------------------------
+        // bind event listener for create view button
+        Utils.getElement('#new-content').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.onClickNewContent();
+        });
+
+        // add event listener for search field
+        Utils.getElement('#search-content').addEventListener('keyup', (event) => {
+            event.preventDefault();
+
+            this.onKeyUpSearchContent({
+                name: event.target.value,
+                itemsPerPage: Utils.getElement('#choose-items-per-page').value
+            });
+        });
     }
 
     /**
@@ -420,7 +436,59 @@ export class AdminView {
 
         this.output.appendChild(Components.contentListForContent(contentListData, paginationState));
 
-        // TODO add event listeners
+        // add event listeners -------------------------------------------------
+        // event listener for clicks on view-list
+        Utils.getElement('#content-list').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            switch (event.target.dataset.action) {
+                case 'edit-content':
+                    this.onClickEditContent(event.target.dataset.contentId);
+                    break;
+                case 'delete-content':
+                    this.onClickDeleteContent(event.target.dataset.contentId);
+                    break;
+            }
+        });
+
+        // event listener for pagination select
+        Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
+            event.preventDefault();
+
+            const searchTerm = Utils.getElement('#search-content').value;
+
+            // if a term is currently searched, use onKeyUpSearchContent callback
+            // instead
+            if (searchTerm) {
+                this.onKeyUpSearchContent({
+                    name: searchTerm,
+                    itemsPerPage: event.target.value
+                });
+
+                return;
+            }
+
+            this.onChangeChooseItemsPerPage('contentList', {
+                page: 1,
+                itemsPerPage: event.target.value
+            });
+        });
+
+        // bind event listener for pagination pages
+        document.querySelectorAll('.paginationPages').forEach((element) => {
+            element.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                if (!event.target.dataset.page) {
+                    return;
+                }
+
+                this.onClickPaginationPage('contentList', {
+                    page: event.target.dataset.page,
+                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                });
+            });
+        });
     }
 
 
@@ -617,6 +685,56 @@ export class AdminView {
     {
         this.onClickDeleteView = handler;
     }
+
+
+    /***************************************************************************
+     * Handlers related to content management
+     */
+
+    /**
+     * Bind the controller callback to use when the user clicks on
+     * 'new-content' button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickNewContent(handler)
+    {
+        this.onClickNewContent = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user type a letter in the
+     * content search field
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnKeyUpSearchContent(handler)
+    {
+        this.onKeyUpSearchContent = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on
+     * 'edit-content' button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickEditContent(handler)
+    {
+        this.onClickEditContent = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on
+     * 'delete-content' button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickDeleteContent(handler)
+    {
+        this.onClickDeleteContent = handler;
+    }
+
 
 
     /***************************************************************************

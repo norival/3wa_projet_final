@@ -30,7 +30,6 @@ class DocumentationFixtures extends Fixture
         $manager->persist($documentation);
 
         $documentation = new Documentation();
-            'Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
         $documentation->setName('general')
                       ->setLocale('en')
                       ->setContent([
@@ -40,6 +39,21 @@ class DocumentationFixtures extends Fixture
                           ],
                           'actions' => [
                               'name'    => 'Available actions',
+                              'content' => $loremMessage2,
+                          ],
+                      ]);
+        $manager->persist($documentation);
+
+        $documentation = new Documentation();
+        $documentation->setName('content')
+                      ->setLocale('en')
+                      ->setContent([
+                          'overview' => [
+                              'name'    => 'Content management',
+                              'content' => $loremMessage1,
+                          ],
+                          'actions' => [
+                              'name'    => 'Content details',
                               'content' => $loremMessage2,
                           ],
                       ]);
