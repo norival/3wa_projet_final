@@ -128,13 +128,9 @@ export class AdminController {
      * @async
      */
     handleClickContentHome = (pagination) => {
-        // TODO refactor this method. Should not use async/await
         this.view.renderContentHome();
         this.model.listContent(pagination);
-        // await this.model.listContent();
-        // this.view.bindClickContent(this.handleClickContent);
-        // this.view.bindClickNewContent(this.handleClickNewContent);
-        // this.view.bindClickDeleteContent(this.handleClickDeleteContent);
+        this.model.getHelpData('en', 'content');
     }
 
     /**
