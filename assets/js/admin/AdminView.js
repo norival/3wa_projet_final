@@ -15,6 +15,8 @@ export class AdminView {
         };
         this.help = Utils.getElement('#help-panel');
 
+        this.currentScreen = '';
+
         // add event listener for navigation menu
         this.menu.addEventListener('click', (event) => {
             switch (event.target.dataset.action) {
@@ -243,6 +245,9 @@ export class AdminView {
      */
     renderHomePage()
     {
+        // store the current screen id to check if it did not changed
+        this.currentScreen = 'home';
+
         const dataset      = Utils.getElement('main').dataset;
         const informations = {
             siteName: dataset.siteName,
@@ -266,6 +271,9 @@ export class AdminView {
      */
     renderViewsHome()
     {
+        // store the current screen id to check if it did not changed
+        this.currentScreen = 'view';
+
         Utils.clear(this.output);
         this.help.classList.add('hidden');
 
@@ -300,6 +308,13 @@ export class AdminView {
      */
     renderViewsList(viewListData, paginationState)
     {
+        // check if screen has not been changed: if user click on other meny
+        // entry before the async fetch has arrived, it is displayed on the
+        // wrong screen
+        if (this.currentScreen !== 'view') {
+            return ;
+        }
+
         // remove old view list if present
         const oldDiv = Utils.getElement('#view-list-div');
         if (oldDiv) {
@@ -393,6 +408,9 @@ export class AdminView {
      */
     renderContentHome()
     {
+        // store the current screen id to check if it did not changed
+        this.currentScreen = 'content';
+
         // clear output
         Utils.clear(this.output);
 
@@ -432,6 +450,13 @@ export class AdminView {
      */
     renderContentList(contentListData, paginationState)
     {
+        // check if screen has not been changed: if user click on other meny
+        // entry before the async fetch has arrived, it is displayed on the
+        // wrong screen
+        if (this.currentScreen !== 'content') {
+            return ;
+        }
+
         // remove old view list if present
         const oldDiv = Utils.getElement('#content-list-div');
         if (oldDiv) {
@@ -500,7 +525,7 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Render stuff for assests management
+     * Render stuff for assets management
      */
 
     /**
@@ -509,7 +534,9 @@ export class AdminView {
     renderAssestsHome()
     {
         Utils.clear(this.output);
+        this.help.classList.add('hidden');
 
+        this.toggleCurrentMenuEntry('assets');
         this.output.appendChild(Components.notImplementedFeature());
     }
 
@@ -524,7 +551,9 @@ export class AdminView {
     renderUsersHome()
     {
         Utils.clear(this.output);
+        this.help.classList.add('hidden');
 
+        this.toggleCurrentMenuEntry('users');
         this.output.appendChild(Components.notImplementedFeature());
     }
 
@@ -539,7 +568,9 @@ export class AdminView {
     renderStatsHome()
     {
         Utils.clear(this.output);
+        this.help.classList.add('hidden');
 
+        this.toggleCurrentMenuEntry('stats');
         this.output.appendChild(Components.notImplementedFeature());
     }
 
