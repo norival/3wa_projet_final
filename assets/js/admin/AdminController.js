@@ -57,12 +57,14 @@ export class AdminController {
         // views related events
         this.view.bindOnClickNewView(this.onClickNewView);
         this.view.bindOnKeyUpSearchView(this.onKeyUpSearchView);
+        this.view.bindOnClickShowView(this.onClickShowView);
         this.view.bindOnClickEditView(this.onClickEditView);
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
 
         // content related events
         this.view.bindOnClickNewContent(this.onClickNewContent);
         this.view.bindOnKeyUpSearchContent(this.onKeyUpSearchContent);
+        this.view.bindOnClickShowContent(this.onClickShowContent);
         this.view.bindOnClickEditContent(this.onClickEditContent);
         this.view.bindOnClickDeleteContent(this.onClickDeleteContent);
 
@@ -240,6 +242,15 @@ export class AdminController {
     }
 
     /**
+     * Handle click on the 'show-view' button
+     *
+     * @param {int} viewId The id of the view to edit
+     */
+    onClickShowView = (viewId) => {
+        console.log(`Showing ${viewId}`);
+    }
+
+    /**
      * Handle click on the 'edit-view' button
      *
      * @param {int} viewId The id of the view to edit
@@ -276,6 +287,15 @@ export class AdminController {
      */
     onKeyUpSearchContent = (query) => {
         this.model.searchContent(query);
+    }
+
+    /**
+     * Handle click on the 'show-content' button
+     *
+     * @param {int} contentId The id of the view to edit
+     */
+    onClickShowContent = (contentId) => {
+        console.log(`Showing ${contentId}`);
     }
 
     /**

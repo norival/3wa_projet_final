@@ -6,25 +6,40 @@ export class Components {
      **************************************************************************/
 
     /**
-     * Create a list of action buttons for tables (edit end delete)
+     * Create a list of action buttons for tables (show, edit end delete)
      *
-     * @returns {undefined}
+     * @param {string} forTable The table for which it is created
+     * @param {{name: string, id: int}} data The data to bind to the dataset
+     * @returns {Element}
      */
-    static actionButtonList()
+    static actionButtonList(forTable, data)
     {
         const ul = Utils.createElement('ul', 'actions');
 
-        let li      = Utils.createElement('li');
-        let a       = Utils.createElement('a', 'button', 'edit-view');
-        a.href      = '#';
-        a.innerHTML = 'Edit';
+        let li               = Utils.createElement('li');
+        let a                = Utils.createElement('a', 'button', `show-${forTable}`);
+        a.href               = '#';
+        a.innerHTML          = 'Show';
+        a.dataset.action     = `show-${forTable}`;
+        a.dataset[data.name] = data.id;
         li.appendChild(a);
         ul.appendChild(li);
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'button', 'delete-view');
-        a.href      = '#';
-        a.innerHTML = 'Delete';
+        li                   = Utils.createElement('li');
+        a                    = Utils.createElement('a', 'button', `edit-${forTable}`);
+        a.href               = '#';
+        a.innerHTML          = 'Edit';
+        a.dataset.action     = `edit-${forTable}`;
+        a.dataset[data.name] = data.id;
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        li                    = Utils.createElement('li');
+        a                     = Utils.createElement('a', ['button', 'delete'], `delete-${forTable}`);
+        a.href                = '#';
+        a.innerHTML           = 'Delete';
+        a.dataset.action      = `delete-${forTable}`;
+        a.dataset[data.name] = data.id;
         li.appendChild(a);
         ul.appendChild(li);
 
@@ -321,35 +336,16 @@ export class Components {
             // first column
             let td     = Utils.createElement('td', 'textCell');
             let strong = Utils.createElement('strong');
-            let ul     = Utils.createElement('ul', 'actions');
 
             strong.innerHTML = viewData.name;
             td.appendChild(strong);
 
-            let li           = Utils.createElement('li');
-            let a            = Utils.createElement('a', 'button', 'edit-view');
-            a.href           = '#';
-            a.innerHTML      = 'Edit';
-            a.dataset.action = 'edit-view';
-            a.dataset.viewId = viewData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            li               = Utils.createElement('li');
-            a                = Utils.createElement('a', ['button', 'delete'], 'delete-view');
-            a.href           = '#';
-            a.innerHTML      = 'Delete';
-            a.dataset.action = 'delete-view';
-            a.dataset.viewId = viewData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            td.appendChild(ul);
+            td.appendChild(this.actionButtonList('view', {name: 'viewId', id: viewData.id}));
             tr.appendChild(td);
 
             // second column
             td          = Utils.createElement('td', 'textCell');
-            a           = Utils.createElement('a');
+            let a       = Utils.createElement('a');
             a.href      = '#';
             a.innerHTML = viewData.user.email;
             td.appendChild(a);
@@ -635,35 +631,16 @@ export class Components {
             // first column
             let td     = Utils.createElement('td', 'textCell');
             let strong = Utils.createElement('strong');
-            let ul     = Utils.createElement('ul', 'actions');
 
             strong.innerHTML = contentData.name;
             td.appendChild(strong);
 
-            let li              = Utils.createElement('li');
-            let a               = Utils.createElement('a', 'button', 'edit-content');
-            a.href              = '#';
-            a.innerHTML         = 'Edit';
-            a.dataset.action    = 'edit-content';
-            a.dataset.contentId = contentData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            li                  = Utils.createElement('li');
-            a                   = Utils.createElement('a', ['button', 'delete'], 'delete-content');
-            a.href              = '#';
-            a.innerHTML         = 'Delete';
-            a.dataset.action    = 'delete-content';
-            a.dataset.contentId = contentData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            td.appendChild(ul);
+            td.appendChild(this.actionButtonList('content', {name: 'contentId', id: contentData.id}));
             tr.appendChild(td);
 
             // second column
             td          = Utils.createElement('td', 'textCell');
-            a           = Utils.createElement('a');
+            let a       = Utils.createElement('a');
             a.href      = '#';
             a.innerHTML = contentData.user.email;
             td.appendChild(a);

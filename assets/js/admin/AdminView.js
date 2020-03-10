@@ -314,6 +314,9 @@ export class AdminView {
             event.preventDefault();
 
             switch (event.target.dataset.action) {
+                case 'show-view':
+                    this.onClickShowView(event.target.dataset.viewId);
+                    break;
                 case 'edit-view':
                     this.onClickEditView(event.target.dataset.viewId);
                     break;
@@ -443,6 +446,9 @@ export class AdminView {
             event.preventDefault();
 
             switch (event.target.dataset.action) {
+                case 'show-content':
+                    this.onClickShowContent(event.target.dataset.contentId);
+                    break;
                 case 'edit-content':
                     this.onClickEditContent(event.target.dataset.contentId);
                     break;
@@ -677,6 +683,17 @@ export class AdminView {
     }
 
     /**
+     * Bind the controller callback to use when the user clicks on 'show-view'
+     * button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickShowView(handler)
+    {
+        this.onClickShowView = handler;
+    }
+
+    /**
      * Bind the controller callback to use when the user clicks on 'edit-view'
      * button
      *
@@ -723,6 +740,17 @@ export class AdminView {
     bindOnKeyUpSearchContent(handler)
     {
         this.onKeyUpSearchContent = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on
+     * 'show-content' button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickShowContent(handler)
+    {
+        this.onClickShowContent = handler;
     }
 
     /**
