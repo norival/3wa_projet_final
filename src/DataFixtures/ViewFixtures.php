@@ -28,11 +28,15 @@ class ViewFixtures extends Fixture implements DependentFixtureInterface
             $user = $this->getReference(UserFixtures::USER_TEST);
 
             $date = date_create();
-            $dateInterval = new \DateInterval("P{$i}D");
+            $interval = rand(1, 11111);
+            $interval = "P{$interval}D";
+            $dateInterval = new \DateInterval($interval);
+            $dateInterval->invert = 1;
             $date->add($dateInterval);
 
             $viewDemo->setUser($user);
-            $viewDemo->setName("demoView_$i");
+            /* $viewDemo->setName("demoView_$i"); */
+            $viewDemo->setName(uniqid('view_'));
             $viewDemo->setTitle("Demo view $i");
             $viewDemo->setCreatedAt($date);
             $manager->persist($viewDemo);
