@@ -39,6 +39,7 @@ export class AdminController {
         this.view.bindOnClickViewsHome(this.handleClickViewsHome);
         this.view.bindOnClickContentHome(this.handleClickContentHome);
         this.view.bindOnClickAssetsHome(this.handleClickAssetsHome);
+        this.view.bindOnClickUsersHome(this.handleClickUsersHome);
         this.view.bindOnClickStatsHome(this.handleClickStatsHome);
 
         // help related events
@@ -148,9 +149,9 @@ export class AdminController {
     /**
      * Handle click on the 'Users' menu entry
      *
-     * @callback AdminController~handleUsersHome
+     * @callback AdminController~handleClickUsersHome
      */
-    handleUsersHome = () => {
+    handleClickUsersHome = () => {
         this.view.renderUsersHome();
     }
 

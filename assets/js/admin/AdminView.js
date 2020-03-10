@@ -269,9 +269,9 @@ export class AdminView {
         Utils.clear(this.output);
         this.help.classList.add('hidden');
 
-        this.toggleCurrentMenuEntry('views');
-
         this.output.appendChild(Components.viewsHome());
+        this.toggleCurrentMenuEntry('views');
+        document.title = 'Administration - Views';
 
         // bind event listener for create view button
         Utils.getElement('#new-view').addEventListener('click', (event) => {
@@ -399,6 +399,7 @@ export class AdminView {
         this.toggleCurrentMenuEntry('content');
 
         this.output.appendChild(Components.contentHome());
+        document.title = 'Administration - Content';
 
         // add event listeners -------------------------------------------------
         // bind event listener for create view button
@@ -589,6 +590,17 @@ export class AdminView {
     bindOnClickAssetsHome(handler)
     {
         this.onClickAssetsHome = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Users' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickUsersHome(handler)
+    {
+        this.onClickUsersHome = handler;
     }
 
     /**
