@@ -22,12 +22,12 @@
     <div class="adminFlexContainer">
         <nav id="admin-menu">
             <ul>
-                <li><a class="currentMenuEntry" href="#" id="home">Home</a></li>
-                <li><a href="#" id="views">Views</a></li>
-                <li><a href="#" id="content">Content</a></li>
-                <li><a href="#" id="assets">Assets</a></li>
-                <li><a href="#" id="users">Users</a></li>
-                <li><a href="#" id="stats">Stats</a></li>
+                <li><a class="currentMenuEntry" href="#" id="home" data-action="homepage">Home</a></li>
+                <li><a href="#" id="views" data-action="views-home">Views</a></li>
+                <li><a href="#" id="content" data-action="content-home">Content</a></li>
+                <li><a href="#" id="assets" data-action="assets-home">Assets</a></li>
+                <li><a href="#" id="users" data-action="users-home">Users</a></li>
+                <li><a href="#" id="stats" data-action="stats-home">Stats</a></li>
             </ul>
         </nav>
         <div id="admin-panel">
@@ -57,7 +57,9 @@
                 <a id="toggle-help" href="#">Help</a>
             </div>
             <div id="admin-main">
-                {{ include('drafts/admin_view.html.twig') }}
+                <!-- {{ include('mockups/admin_view.html.twig') }} -->
+                <!-- {{ include('mockups/admin_new_view.html.twig') }} -->
+                {{ include('mockups/admin_content_home.html.twig') }}
             </div>
         </div>
     </div>

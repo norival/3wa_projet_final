@@ -1,19 +1,41 @@
 <table class="adminTable fullWidth">
     <thead>
-        <th class="tinyCell"><input type="checkbox"></th>
+        {% if not contentView %}
+            <th class="tinyCell"><input type="checkbox"></th>
+        {% endif %}
         <th class="largeCell textCell">Name</th>
         <th class="textCell">User</th>
+        {% if contentView %}
+            <th class="numCell">Date</th>
+            <th class="numCell">Last updated</th>
+        {% endif %}
     </thead>
     <tbody>
         {% for i in 0..5 %}
             <tr>
-                <td class="tinyCell"><input type="checkbox"></td>
+                {% if not contentView %}
+                    <td class="tinyCell"><input type="checkbox"></td>
+                {% endif %}
                 <td class="textCell">
                     <a href="#"><strong>cv</strong></a>
+                    {% if contentView %}
+                        <ul class="actions">
+                            <li><a class="button" href="#">Edit</a></li>
+                            <li><a class="button delete" href="#">Delete</a></li>
+                        </ul>
+                    {% endif %}
                 </td>
                 <td class="textCell">
                     <a href="#">test@test.com</a>
                 </td>
+                {% if contentView %}
+                    <td class="numCell">
+                        <time datetime="2020-02-21">2020/02/21</time>
+                    </td>
+                    <td class="numCell">
+                        <time datetime="2020-02-21">2020/02/21</time>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

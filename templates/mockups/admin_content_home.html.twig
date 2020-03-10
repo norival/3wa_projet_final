@@ -1,0 +1,19 @@
+{% set contentView = true %}
+
+<h1>Content</h1>
+
+<ul class="tools">
+    <li>
+        <a id="new-content" class="button" href="#">Create content</a>
+    </li>
+    <li>
+        <input class="search" type="text" placeholder="Search content">
+    </li>
+</ul>
+
+{{ include('mockups/pagination_head.html.twig') }}
+{{ include('mockups/pagination.html.twig') }}
+
+{{ include('mockups/admin_content_list.html.twig') }}
+
+{{ include('mockups/pagination.html.twig') }}
