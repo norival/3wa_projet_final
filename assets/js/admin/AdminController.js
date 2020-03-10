@@ -112,8 +112,9 @@ export class AdminController {
      * @callback AdminController~handleClickContentHome
      * @async
      */
-    handleClickContentHome = async () => {
+    handleClickContentHome = () => {
         // TODO refactor this method. Should not use async/await
+        this.view.renderContentHome();
         // await this.model.listContent();
         // this.view.bindClickContent(this.handleClickContent);
         // this.view.bindClickNewContent(this.handleClickNewContent);

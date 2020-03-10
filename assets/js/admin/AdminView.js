@@ -260,8 +260,6 @@ export class AdminView {
 
     /**
      * Render home page layout for views management
-     *
-     * @returns {undefined}
      */
     renderViewsHome()
     {
@@ -375,6 +373,29 @@ export class AdminView {
         }
 
         this.output.appendChild(Components.viewForm(viewData));
+    }
+
+
+    /***************************************************************************
+     * Render stuff for view management
+     */
+
+    /**
+     * Render home page layout for content management
+     */
+    renderContentHome()
+    {
+        // clear output
+        Utils.clear(this.output);
+
+        // hide help div if not already
+        this.help.classList.add('hidden');
+        // toggle style for menu entries
+        this.toggleCurrentMenuEntry('content');
+
+        this.output.appendChild(Components.contentHome());
+
+        // TODO add event listeners
     }
 
 
@@ -655,20 +676,20 @@ export class AdminView {
         this.output.appendChild(div);
     }
 
-    renderContentList(contentList)
-    {
-        const button = Utils.createElement('a', 'button', 'newContentButton');
+    // renderContentList(contentList)
+    // {
+    //     const button = Utils.createElement('a', 'button', 'newContentButton');
 
-        // clear admin output
-        Utils.clear(this.output);
+    //     // clear admin output
+    //     Utils.clear(this.output);
 
-        // create a button to add a new content
-        button.href      = '#';
-        button.innerHTML = 'New content';
+    //     // create a button to add a new content
+    //     button.href      = '#';
+    //     button.innerHTML = 'New content';
 
-        this.output.appendChild(Components.contentList(contentList, 'contentList', false));
-        this.output.appendChild(button);
-    }
+    //     this.output.appendChild(Components.contentList(contentList, 'contentList', false));
+    //     this.output.appendChild(button);
+    // }
 
     /**
      * Render a content form and attach event listeners

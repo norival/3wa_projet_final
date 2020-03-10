@@ -509,6 +509,39 @@ export class Components {
      **************************************************************************/
 
     /**
+     * Create the content homepage
+     *
+     * @returns {Element}
+     */
+    static contentHome()
+    {
+        const outputDiv     = Utils.createElement('div', null, 'content-home-div');
+        const title         = Utils.createElement('h1');
+        const toolsList     = Utils.createElement('ul', 'tools');
+        const newContent    = Utils.createElement('a', 'button', 'new-content');
+        const contentSearch = Utils.createElement('input', 'search', 'search-content');
+
+        title.innerHTML = 'Content';
+        outputDiv.appendChild(title);
+
+        let li               = Utils.createElement('li');
+        newContent.href      = '#';
+        newContent.innerHTML = 'Create content';
+        li.appendChild(newContent);
+        toolsList.appendChild(li);
+
+        li = Utils.createElement('li');
+        contentSearch.setAttribute('type', 'text');
+        contentSearch.setAttribute('placeholder', 'Search content');
+        li.appendChild(contentSearch);
+        toolsList.appendChild(li);
+
+        outputDiv.appendChild(toolsList);
+
+        return outputDiv;
+    }
+
+    /**
      * Create a list of content
      *
      * @param {Object} contentList The content list
