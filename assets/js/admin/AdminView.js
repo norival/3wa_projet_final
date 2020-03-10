@@ -218,6 +218,87 @@ export class AdminView {
         this.output.appendChild(Components.homePage(informations));
         this.toggleCurrentMenuEntry('home');
         document.title = 'Administration - Home';
+
+        this.menu.addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'homepage':
+                    this.onClickHomePage();
+                    break;
+                case 'views-home':
+                    this.onClickViewsHome({
+                        page: 1,
+                        itemsPerPage: 5
+                    });
+                    break;
+                case 'content-home':
+                    this.onClickContentHome();
+                    break;
+                case 'assets-home':
+                    this.onClickAssetsHome();
+                    break;
+                case 'users-home':
+                    this.onClickUsersHome();
+                    break;
+                case 'stats-home':
+                    this.onClickStatsHome();
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Home' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickHomePage(handler)
+    {
+        this.onClickHomePage = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Views' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickViewsHome(handler)
+    {
+        this.onClickViewsHome = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Content' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickContentHome(handler)
+    {
+        this.onClickContentHome = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Assets' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickAssetsHome(handler)
+    {
+        this.onClickAssetsHome = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Stats' menu
+     * entry
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickStatsHome(handler)
+    {
+        this.onClickStatsHome = handler;
     }
 
     /**
@@ -263,6 +344,13 @@ export class AdminView {
         this.toggleCurrentMenuEntry('views');
 
         this.output.appendChild(Components.viewsHome());
+
+        // TODO bind event listener for create view button
+        Utils.getElement('#new-view').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.onClickNewView();
+        });
     }
 
     /**
@@ -274,8 +362,45 @@ export class AdminView {
      */
     renderViewsList(viewListData, paginationState)
     {
+        // remove old view list if present
+        const oldDiv = Utils.getElement('#view-list-div');
+        if (oldDiv) {
+            oldDiv.remove();
+        }
+
         this.output.appendChild(Components.viewList(viewListData, paginationState));
-        // element.appendChild(Components.viewList(viewList));
+
+        Utils.getElement('#views-list').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            switch (event.target.dataset.action) {
+                case 'edit-view':
+                    this.onClickEditView(event.target.dataset.viewId);
+                    break;
+                case 'delete-view':
+                    this.onClickDeleteView(event.target.dataset.viewId);
+                    break;
+            }
+        });
+
+        // TODO bind event listeners for search field
+        // TODO bind event listeners for pagination select
+        // TODO bind event listeners for pagination pages
+    }
+
+    // TODO continue code this way. I should be able to bind all event handlers
+    // in the AdminController constructor because
+    bindOnClickNewView(handler)
+    {
+        this.onClickNewView = handler;
+    }
+    bindOnClickEditView(handler)
+    {
+        this.onClickEditView = handler;
+    }
+    bindOnClickDeleteView(handler)
+    {
+        this.onClickDeleteView = handler;
     }
 
     /**
@@ -558,59 +683,6 @@ export class AdminView {
         });
     }
 
-    /**
-     * Bind the controller callback to use when the user clicks on 'Home' menu
-     * entry
-     *
-     * @param {function} handler The callback to bind
-     */
-    bindClickHome(handler)
-    {
-        Utils.getElement('a#home').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler();
-        });
-    }
-
-    bindAssetsHome(handler)
-    {
-        Utils.getElement('#assets').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler();
-        });
-    }
-
-    bindUsersHome(handler)
-    {
-        Utils.getElement('#users').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler();
-        });
-    }
-
-    bindStatsHome(handler)
-    {
-        Utils.getElement('#stats').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler();
-        });
-    }
-
-    bindClickViews(handler)
-    {
-        Utils.getElement('#views').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler({
-                page: 1,
-                itemsPerPage: 5
-            });
-        });
-    }
 
     bindClickView(handler)
     {

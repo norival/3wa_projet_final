@@ -455,10 +455,10 @@ export class Components {
      */
     static viewList(viewListData, paginationState)
     {
-        const outputDiv      = Utils.createElement('div');
-        const table          = Utils.createElement('table', ['adminTable', 'fullWidth'], 'views-list');
-        const thead          = Utils.createElement('thead');
-        const tbody          = Utils.createElement('tbody');
+        const outputDiv = Utils.createElement('div', null, 'view-list-div');
+        const table     = Utils.createElement('table', ['adminTable', 'fullWidth'], 'views-list');
+        const thead     = Utils.createElement('thead');
+        const tbody     = Utils.createElement('tbody');
 
         // upper pagination
         outputDiv.appendChild(this.paginationHead(viewListData.length, paginationState));
@@ -494,17 +494,21 @@ export class Components {
             strong.innerHTML = viewData.name;
             td.appendChild(strong);
 
-            let li      = Utils.createElement('li');
-            let a       = Utils.createElement('a', 'button', 'edit-view');
-            a.href      = '#';
-            a.innerHTML = 'Edit';
+            let li           = Utils.createElement('li');
+            let a            = Utils.createElement('a', 'button', 'edit-view');
+            a.href           = '#';
+            a.innerHTML      = 'Edit';
+            a.dataset.action = 'edit-view';
+            a.dataset.viewId = viewData.id;
             li.appendChild(a);
             ul.appendChild(li);
 
-            li          = Utils.createElement('li');
-            a           = Utils.createElement('a', ['button', 'delete'], 'delete-view');
-            a.href      = '#';
-            a.innerHTML = 'Delete';
+            li               = Utils.createElement('li');
+            a                = Utils.createElement('a', ['button', 'delete'], 'delete-view');
+            a.href           = '#';
+            a.innerHTML      = 'Delete';
+            a.dataset.action = 'delete-view';
+            a.dataset.viewId = viewData.id;
             li.appendChild(a);
             ul.appendChild(li);
 

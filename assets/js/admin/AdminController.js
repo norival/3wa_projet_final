@@ -33,39 +33,56 @@ export class AdminController {
      */
     start()
     {
-        // bind event handlers for view events
-        this.view.bindClickHome(this.handleClickHome);
-        this.view.bindClickViews(this.handleClickViews);
-        this.view.bindAssetsHome(this.handleAssetsHome);
-        this.view.bindUsersHome(this.handleUsersHome);
-        this.view.bindStatsHome(this.handleStatsHome);
+        // bind event handlers for view events ---------------------------------
+        // events for clicks on navigation menu
+        this.view.bindOnClickHomePage(this.handleClickHomePage);
+        this.view.bindOnClickViewsHome(this.handleClickViewsHome);
+        this.view.bindOnClickContentHome(this.handleClickContentHome);
+        this.view.bindOnClickAssetsHome(this.handleClickAssetsHome);
+        this.view.bindOnClickStatsHome(this.handleClickStatsHome);
+
+        // help related events
         this.view.bindClickToggleHelp(this.handleClickToggleHelp);
         this.view.bindClickHelpSection(this.handleClickHelpSection);
-        this.view.bindListContent(this.handleListContent);
-        this.view.bindSearchContent(this.handleSearchContent);
-        this.view.bindNeedContent(this.handleNeedContent);
 
-        // bind event handlers for model events
-        this.model.bindHelpDataReceived(this.onHelpDataReceived);
+        // this.view.bindListContent(this.handleListContent);
+        // this.view.bindSearchContent(this.handleSearchContent);
+        // this.view.bindNeedContent(this.handleNeedContent);
+
+        // views related events
+        this.view.bindOnClickNewView(this.onClickNewView);
+        this.view.bindOnClickEditView(this.onClickEditView);
+        this.view.bindOnClickDeleteView(this.onClickDeleteView);
+
+
+        // bind callbacks for model events -------------------------------------
         this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
-        this.model.bindViewDataChanged(this.onViewDataChanged);
-        this.model.bindVisualViewChanged(this.onVisualViewChanged);
-        this.model.bindContentListChanged(this.onContentListChanged);
-        this.model.bindContentFormChanged(this.onContentFormChanged);
-        this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
-        this.model.bindContentReceived(this.onContentReceived);
-        this.model.bindContentCreatedForView(this.onContentCreatedForView);
+        this.model.bindHelpDataReceived(this.onHelpDataReceived);
+        // this.model.bindViewDataChanged(this.onViewDataChanged);
+        // this.model.bindVisualViewChanged(this.onVisualViewChanged);
+        // this.model.bindContentListChanged(this.onContentListChanged);
+        // this.model.bindContentFormChanged(this.onContentFormChanged);
+        // this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
+        // this.model.bindContentReceived(this.onContentReceived);
+        // this.model.bindContentCreatedForView(this.onContentCreatedForView);
 
         // render the home page
-        this.handleClickHome();
+        this.handleClickHomePage();
     }
 
+
+    /***************************************************************************
+     * Handlers for View events
+    ***************************************************************************/
+
+    // handlers for navigation menu --------------------------------------------
+
     /**
-     * Handle click on the 'Views' menu entry
+     * Handle click on the 'Home' menu entry
      *
-     * @callback AdminController~handleViewsHome
+     * @callback AdminController~handleClickHomePage
      */
-    handleClickHome = () => {
+    handleClickHomePage = () => {
         // - Get the notifications (not implemented yet (say 'No notification')
         // this.view.
         this.view.renderHomePage();
@@ -76,19 +93,33 @@ export class AdminController {
      * Handle click on the 'Views' menu entry
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
-     * @callback AdminController~handleViewsHome
+     * @callback AdminController~handleClickViewsHome
      */
-    handleClickViews = (pagination) => {
+    handleClickViewsHome = (pagination) => {
         this.view.renderViewsHome();
         this.model.listViews(pagination);
     }
 
     /**
+     * Handle click on the 'Content' menu entry
+     * 
+     * @callback AdminController~handleClickContentHome
+     * @async
+     */
+    handleClickContentHome = async () => {
+        // TODO refactor this method. Should not use async/await
+        await this.model.listContent();
+        this.view.bindClickContent(this.handleClickContent);
+        this.view.bindClickNewContent(this.handleClickNewContent);
+        this.view.bindClickDeleteContent(this.handleClickDeleteContent);
+    }
+
+    /**
      * Handle click on the 'Assets' menu entry
      *
-     * @callback AdminController~handleAssetsHome
+     * @callback AdminController~handleClickAssetsHome
      */
-    handleAssetsHome = () => {
+    handleClickAssetsHome = () => {
         this.view.renderAssestsHome();
     }
 
@@ -104,11 +135,14 @@ export class AdminController {
     /**
      * Handle click on the 'Stats' menu entry
      *
-     * @callback AdminController~handleStatsHome
+     * @callback AdminController~handleClickStatsHome
      */
-    handleStatsHome = () => {
+    handleClickStatsHome = () => {
         this.view.renderStatsHome();
     }
+
+    
+    // handlers for help related events ----------------------------------------
 
     /**
      * Handle click on the 'toggle-help' button
@@ -128,6 +162,69 @@ export class AdminController {
     handleClickHelpSection = (section) => {
         this.view.toggleHelpSection(section);
     }
+
+
+    // handlers for views related events ---------------------------------------
+
+    /**
+     * Handle click on the 'new-view' button
+     */
+    onClickNewView = () => {
+        console.log('creating new view');
+    }
+
+    /**
+     * Handle click on the 'edit-view' button
+     *
+     * @param {int} viewId The id of the view to edit
+     */
+    onClickEditView = (viewId) => {
+        console.log(`Editing ${viewId}`);
+    }
+
+    /**
+     * Handle click on the 'delete-view' button
+     *
+     * @param {int} viewId The id of the view to delete
+     */
+    onClickDeleteView = (viewId) => {
+        console.log(`Deleting ${viewId}`);
+    }
+
+
+    /***************************************************************************
+     * Callbacks for Model events
+    ***************************************************************************/
+
+    /**
+     * Call this method from the model when the help data has been received
+     * 
+     * @callback AdminController~onHelpDataReceived
+     */
+    onHelpDataReceived = (helpData) => {
+        this.view.renderHelp(helpData);
+    }
+
+    /**
+     * Call this method from the model when the list of view has been loaded.
+     * 
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @callback AdminController~onViewDataChanged
+     */
+    onViewsListDataReceived = (viewListData, paginationState) => {
+        this.view.renderViewsList(viewListData, paginationState);
+        // this.view.bindClickViewList(this.handleClickViewList);
+        // this.view.bindClickView(this.handleClickView);
+        // this.view.bindClickViewVisual(this.handleClickViewVisual);
+        this.model.getHelpData('en', 'view');
+    }
+
+
+    // -------------------------------------------------------------------------
+    // not refactored yet ------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     handleClickView = async (viewId) => {
         await this.model.getViewForm(viewId);
@@ -162,19 +259,6 @@ export class AdminController {
 
         // send the errors back to the view
         this.view.renderFormErrors(form, formValidator.errors);
-    }
-
-    /**
-     * Call this when the user clicks on the content link in the menu
-     * 
-     * @callback AdminController~handleListContent
-     * @async
-     */
-    handleListContent = async () => {
-        await this.model.listContent();
-        this.view.bindClickContent(this.handleClickContent);
-        this.view.bindClickNewContent(this.handleClickNewContent);
-        this.view.bindClickDeleteContent(this.handleClickDeleteContent);
     }
 
     handleClickContent = async (contentId) => {
@@ -275,32 +359,6 @@ export class AdminController {
     handleAddContent = (contentData) => {
         this.model.submitContentForm(null, contentData);
     }
-
-    /**
-     * Call this method from the model when the help data has been received
-     * 
-     * @callback AdminController~onHelpDataReceived
-     */
-    onHelpDataReceived = (helpData) => {
-        this.view.renderHelp(helpData);
-    }
-
-    /**
-     * Call this method from the model when the list of view has been loaded.
-     * 
-     * @param {Object} viewListData The list of views
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *      state of the pagination
-     * @callback AdminController~onViewDataChanged
-     */
-    onViewsListDataReceived = (viewListData, paginationState) => {
-        this.view.renderViewsList(viewListData, paginationState);
-        this.view.bindClickViewList(this.handleClickViewList);
-        // this.view.bindClickView(this.handleClickView);
-        // this.view.bindClickViewVisual(this.handleClickViewVisual);
-        this.model.getHelpData('en', 'view');
-    }
-
     /**
      * Call this method from the model when the view data has been loaded. It
      * will render the view form and attach event listeners to it
