@@ -14,6 +14,33 @@ export class AdminView {
             userSettings:    Utils.getElement('#userSettings')
         };
         this.help = Utils.getElement('#help-panel');
+
+        // add event listener for navigation menu
+        this.menu.addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'homepage':
+                    this.onClickHomePage();
+                    break;
+                case 'views-home':
+                    this.onClickViewsHome({
+                        page: 1,
+                        itemsPerPage: 5
+                    });
+                    break;
+                case 'content-home':
+                    this.onClickContentHome();
+                    break;
+                case 'assets-home':
+                    this.onClickAssetsHome();
+                    break;
+                case 'users-home':
+                    this.onClickUsersHome();
+                    break;
+                case 'stats-home':
+                    this.onClickStatsHome();
+                    break;
+            }
+        });
     }
 
     /***************************************************************************
@@ -163,6 +190,7 @@ export class AdminView {
         this.help.classList.toggle('hidden');
     }
 
+
     /***************************************************************************
      * Methods to render views
      **************************************************************************/
@@ -202,6 +230,11 @@ export class AdminView {
         helpContent.querySelector('div:first-of-type').classList.add('current');
     }
 
+
+    /***************************************************************************
+     * Render stuff for home page
+     */
+
     /**
      * Render admin home page
      */
@@ -218,33 +251,141 @@ export class AdminView {
         this.output.appendChild(Components.homePage(informations));
         this.toggleCurrentMenuEntry('home');
         document.title = 'Administration - Home';
+    }
 
-        this.menu.addEventListener('click', (event) => {
+
+    /***************************************************************************
+     * Render stuff for view management
+     */
+
+    /**
+     * Render home page layout for views management
+     *
+     * @returns {undefined}
+     */
+    renderViewsHome()
+    {
+        Utils.clear(this.output);
+        this.help.classList.add('hidden');
+
+        this.toggleCurrentMenuEntry('views');
+
+        this.output.appendChild(Components.viewsHome());
+
+        // bind event listener for create view button
+        Utils.getElement('#new-view').addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.onClickNewView();
+        });
+    }
+
+    /**
+     * Render the list of views
+     *
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     */
+    renderViewsList(viewListData, paginationState)
+    {
+        // remove old view list if present
+        const oldDiv = Utils.getElement('#view-list-div');
+        if (oldDiv) {
+            oldDiv.remove();
+        }
+
+        this.output.appendChild(Components.viewList(viewListData, paginationState));
+
+        Utils.getElement('#views-list').addEventListener('click', (event) => {
+            event.preventDefault();
+
             switch (event.target.dataset.action) {
-                case 'homepage':
-                    this.onClickHomePage();
+                case 'edit-view':
+                    this.onClickEditView(event.target.dataset.viewId);
                     break;
-                case 'views-home':
-                    this.onClickViewsHome({
-                        page: 1,
-                        itemsPerPage: 5
-                    });
-                    break;
-                case 'content-home':
-                    this.onClickContentHome();
-                    break;
-                case 'assets-home':
-                    this.onClickAssetsHome();
-                    break;
-                case 'users-home':
-                    this.onClickUsersHome();
-                    break;
-                case 'stats-home':
-                    this.onClickStatsHome();
+                case 'delete-view':
+                    this.onClickDeleteView(event.target.dataset.viewId);
                     break;
             }
         });
+
+        // TODO bind event listeners for search field
+        // TODO bind event listeners for pagination select
+        // TODO bind event listeners for pagination pages
     }
+
+    /**
+     * Render a view form and attach event listeners
+     *
+     * @param {?Object} viewData The view data for the form
+     */
+    renderViewForm(viewData)
+    {
+        Utils.clear(this.output);
+
+        if (viewData) {
+            // TODO form to update a view
+        }
+
+        this.output.appendChild(Components.viewForm(viewData));
+    }
+
+
+    /***************************************************************************
+     * Render stuff for assests management
+     */
+
+    /**
+     * Render home page for assets management
+     */
+    renderAssestsHome()
+    {
+        Utils.clear(this.output);
+
+        this.output.appendChild(Components.notImplementedFeature());
+    }
+
+
+    /***************************************************************************
+     * Render stuff for users management
+     */
+
+    /**
+     * Render home page for users management
+     */
+    renderUsersHome()
+    {
+        Utils.clear(this.output);
+
+        this.output.appendChild(Components.notImplementedFeature());
+    }
+
+
+    /***************************************************************************
+     * Render stuff for stats management
+     */
+
+    /**
+     * Render home page for stats management
+     */
+    renderStatsHome()
+    {
+        Utils.clear(this.output);
+
+        this.output.appendChild(Components.notImplementedFeature());
+    }
+
+
+    /***************************************************************************
+     * Methods to bind event handler
+     *
+     * These methods are called by the controller to bind event handlers
+     **************************************************************************/
+
+    /***************************************************************************
+     * Handlers for clicks on the menu
+     */
 
     /**
      * Bind the controller callback to use when the user clicks on 'Home' menu
@@ -301,122 +442,83 @@ export class AdminView {
         this.onClickStatsHome = handler;
     }
 
-    /**
-     * Render home page for assets management
+
+    /***************************************************************************
+     * Handlers for clicks on the help view
      */
-    renderAssestsHome()
-    {
-        Utils.clear(this.output);
-
-        this.output.appendChild(Components.notImplementedFeature());
-    }
 
     /**
-     * Render home page for users management
-     */
-    renderUsersHome()
-    {
-        Utils.clear(this.output);
-
-        this.output.appendChild(Components.notImplementedFeature());
-    }
-
-    /**
-     * Render home page for stats management
-     */
-    renderStatsHome()
-    {
-        Utils.clear(this.output);
-
-        this.output.appendChild(Components.notImplementedFeature());
-    }
-
-    /**
-     * Render home page layout for views management
+     * Bind the controller callback to use when the user click on 'toggle-help'
+     * button
      *
-     * @returns {undefined}
+     * @param {function} handler The callback to bind
      */
-    renderViewsHome()
+    bindClickToggleHelp(handler)
     {
-        Utils.clear(this.output);
-        this.help.classList.add('hidden');
-
-        this.toggleCurrentMenuEntry('views');
-
-        this.output.appendChild(Components.viewsHome());
-
-        // TODO bind event listener for create view button
-        Utils.getElement('#new-view').addEventListener('click', (event) => {
+        Utils.getElement('#toggle-help').addEventListener('click', (event) => {
             event.preventDefault();
 
-            this.onClickNewView();
+            handler();
         });
     }
 
     /**
-     * Render the list of views
+     * Bind the controller callback to use when the user click on a given help
+     * section
      *
-     * @param {Object} viewListData The list of views
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *      state of the pagination
+     * @param {function} handler The callback to bind
      */
-    renderViewsList(viewListData, paginationState)
+    bindClickHelpSection(handler)
     {
-        // remove old view list if present
-        const oldDiv = Utils.getElement('#view-list-div');
-        if (oldDiv) {
-            oldDiv.remove();
-        }
-
-        this.output.appendChild(Components.viewList(viewListData, paginationState));
-
-        Utils.getElement('#views-list').addEventListener('click', (event) => {
+        Utils.getElement('#help-items').addEventListener('click', (event) => {
             event.preventDefault();
 
-            switch (event.target.dataset.action) {
-                case 'edit-view':
-                    this.onClickEditView(event.target.dataset.viewId);
-                    break;
-                case 'delete-view':
-                    this.onClickDeleteView(event.target.dataset.viewId);
-                    break;
-            }
+            handler(event.target.dataset.helpSection);
         });
-
-        // TODO bind event listeners for search field
-        // TODO bind event listeners for pagination select
-        // TODO bind event listeners for pagination pages
     }
 
-    // TODO continue code this way. I should be able to bind all event handlers
-    // in the AdminController constructor because
+
+    /***************************************************************************
+     * Handlers for clicks on the view management screen
+     */
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'new-view'
+     * button
+     *
+     * @param {function} handler The callback to bind
+     */
     bindOnClickNewView(handler)
     {
         this.onClickNewView = handler;
     }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'edit-view'
+     * button
+     *
+     * @param {function} handler The callback to bind
+     */
     bindOnClickEditView(handler)
     {
         this.onClickEditView = handler;
     }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'edit-view'
+     * button
+     *
+     * @param {function} handler The callback to bind
+     */
     bindOnClickDeleteView(handler)
     {
         this.onClickDeleteView = handler;
     }
 
-    /**
-     * Render a view form and attach event listeners
-     *
-     * @param {object} viewData The view data for the form
-     */
-    renderViewForm(viewData)
-    {
-        if (Utils.getElement('#viewFormOutput')) {
-            Utils.getElement('#viewFormOutput').remove();
-        }
-        this.output.appendChild(Components.viewForm(viewData));
 
-        this._bindClickCancelButtons();
-    }
+
+    // -------------------------------------------------------------------------
+    // no refacto yet
 
     /**
      * Render form errors
@@ -653,54 +755,23 @@ export class AdminView {
      * Methods to bind event Listeners
      **************************************************************************/
 
-    /**
-     * Bind the controller callback to use when the user click on 'toggle-help'
-     * button
-     *
-     * @param {function} handler The callback to bind
-     */
-    bindClickToggleHelp(handler)
-    {
-        Utils.getElement('#toggle-help').addEventListener('click', (event) => {
-            event.preventDefault();
+    // bindClickView(handler)
+    // {
+    //     Utils.getElement('#editView').addEventListener('click', event => {
+    //         event.preventDefault();
 
-            handler();
-        });
-    }
+    //         handler(event.target.dataset.id);
+    //     });
+    // }
 
-    /**
-     * Bind the controller callback to use when the user click on a given help
-     * section
-     *
-     * @param {function} handler The callback to bind
-     */
-    bindClickHelpSection(handler)
-    {
-        Utils.getElement('#help-items').addEventListener('click', (event) => {
-            event.preventDefault();
+    // bindClickViewVisual(handler)
+    // {
+    //     Utils.getElement('#editViewVisual').addEventListener('click', event => {
+    //         event.preventDefault();
 
-            handler(event.target.dataset.helpSection);
-        });
-    }
-
-
-    bindClickView(handler)
-    {
-        Utils.getElement('#editView').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler(event.target.dataset.id);
-        });
-    }
-
-    bindClickViewVisual(handler)
-    {
-        Utils.getElement('#editViewVisual').addEventListener('click', event => {
-            event.preventDefault();
-
-            handler(event.target.dataset.id);
-        });
-    }
+    //         handler(event.target.dataset.id);
+    //     });
+    // }
 
     /**
      * Bind the controller callback to use to submit a view form

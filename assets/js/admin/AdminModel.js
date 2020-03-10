@@ -9,6 +9,18 @@ export class AdminModel {
     {
     }
 
+
+    /***************************************************************************
+     * Methods to fetch data and post data
+     *
+     * This methods use the fetch API to fetch data from the database or to
+     * post data
+     **************************************************************************/
+
+    /***************************************************************************
+     * Methods related to help data
+     */
+
     /**
      * Fetch help data for a given name
      *
@@ -23,6 +35,11 @@ export class AdminModel {
                 this.onHelpDataReceived(helpData);
             })
     }
+
+
+    /***************************************************************************
+     * Methods related to view data
+     */
 
     /**
      * Fetch the list of available views
@@ -42,6 +59,50 @@ export class AdminModel {
                 this.onViewsListDataReceived(paginator.results, paginator.state);
             });
     }
+
+
+    /***************************************************************************
+     * Methods to bind handlers
+     *
+     * These methods are called by the controller to bind callbaks used when
+     * events happen (for example: when data have been received)
+     **************************************************************************/
+
+    /***************************************************************************
+     * Handlers related to help data
+     */
+
+    /**
+     * Bind the controller callback to use when the help data has been received
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindHelpDataReceived(callback)
+    {
+        this.onHelpDataReceived = callback;
+    }
+
+
+    /***************************************************************************
+     * Handlers related to view data
+     */
+
+    /**
+     * Bind the controller callback to use when the list of view has been
+     * loaded
+     *
+     * @param {function} callback The callback to bind
+     */
+    bindViewsListDataReceived(callback)
+    {
+        this.onViewsListDataReceived = callback;
+    }
+
+
+
+    /***************************************************************************
+     * no refacto yet
+     **************************************************************************/
 
     async getViewForm(viewId)
     {
@@ -252,27 +313,6 @@ export class AdminModel {
                 console.log('coucou');
                 console.log(response.status);
             })
-    }
-
-    /**
-     * Bind the controller callback to use when the help data has been received
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindHelpDataReceived(callback)
-    {
-        this.onHelpDataReceived = callback;
-    }
-
-    /**
-     * Bind the controller callback to use when the list of view have been
-     * loaded
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindViewsListDataReceived(callback)
-    {
-        this.onViewsListDataReceived = callback;
     }
 
     bindViewDataChanged(callback)

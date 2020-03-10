@@ -1,8 +1,38 @@
 import {Utils} from '../utils/Utils';
 
 export class Components {
+    /***************************************************************************
+     * Generic components
+     **************************************************************************/
+
     /**
-     * Create an element to render in not implemented features
+     * Create a list of action buttons for tables (edit end delete)
+     *
+     * @returns {undefined}
+     */
+    static actionButtonList()
+    {
+        const ul = Utils.createElement('ul', 'actions');
+
+        let li      = Utils.createElement('li');
+        let a       = Utils.createElement('a', 'button', 'edit-view');
+        a.href      = '#';
+        a.innerHTML = 'Edit';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', 'button', 'delete-view');
+        a.href      = '#';
+        a.innerHTML = 'Delete';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        return ul;
+    }
+
+    /**
+     * Create an element to render a not implemented features
      *
      * @returns {Element}
      */
@@ -21,6 +51,11 @@ export class Components {
 
         return div;
     }
+
+
+    /***************************************************************************
+     * Components related to home page screen
+     **************************************************************************/
 
     /**
      * Create the home page for the admin panel
@@ -61,10 +96,387 @@ export class Components {
         return div;
     }
 
+
+    /***************************************************************************
+     * Components related to pagination
+     **************************************************************************/
+
     /**
-     * contentList
+     * Create the upper hand of the pagination: number of elements displayed,
+     * total number of elements and selection of elements per page
      *
-     * The content list component.
+     * @param {int} listLength The length of the current list
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @returns {Element}
+     */
+    static paginationHead(listLength, paginationState)
+    {
+        // available options for number of elements per page
+        const pageOptions = [5, 10, 20, 30];
+
+        const paginationHead = Utils.createElement('ul', 'paginationHead');
+        const select         = Utils.createElement('select');
+
+        let li       = Utils.createElement('li');
+        li.innerHTML = `${listLength}/${paginationState.total} elements`;
+        paginationHead.appendChild(li)
+
+        li = Utils.createElement('li');
+        pageOptions.forEach((opt) => {
+            const option = Utils.createElement('option');
+            option.value = opt;
+            option.innerHTML = opt;
+
+            if (opt === paginationState.itemsPerPage) {
+                option.setAttribute('selected', true);
+            }
+
+            select.appendChild(option);
+        });
+        li.appendChild(select);
+
+        const text = document.createTextNode('entries per page');
+
+        li.appendChild(text);
+        paginationHead.appendChild(li);
+
+        return paginationHead;
+    }
+
+    /**
+     * Create the lower hand of the pagination: the navigation buttons
+     *
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @returns {Element}
+     */
+    static paginationPages(paginationState)
+    {
+        const pagination = Utils.createElement('ul', 'paginationPages');
+
+        let li      = Utils.createElement('li');
+        let a       = Utils.createElement('a', 'navButton', 'first-page');
+        a.href      = '#';
+        a.innerHTML = '<<';
+        li.appendChild(a);
+        pagination.appendChild(li);
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', 'navButton', 'previous-page');
+        a.href      = '#';
+        a.innerHTML = '<';
+        li.appendChild(a);
+        pagination.appendChild(li);
+
+        for (let i = paginationState.page - 3; i <= paginationState.page + 3; i++) {
+            if (i < 1 || i > paginationState.numberOfPages) {
+                continue;
+            }
+
+            let li = Utils.createElement('li');
+            let a  = Utils.createElement('a', 'navButton');
+            
+            a.href      = '#';
+            a.innerHTML = i;
+
+            if (i === paginationState.page) {
+                a.classList.add('current');
+            }
+
+            li.appendChild(a);
+
+            pagination.appendChild(li);
+        }
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', 'navButton', 'next-page');
+        a.href      = '#';
+        a.innerHTML = '>';
+        li.appendChild(a);
+        pagination.appendChild(li);
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', 'navButton', 'last-page');
+        a.href      = '#';
+        a.innerHTML = '>>';
+        li.appendChild(a);
+        pagination.appendChild(li);
+
+        return pagination;
+    }
+
+
+    /***************************************************************************
+     * Components related to view screen
+     **************************************************************************/
+
+    /**
+     * Create the view homepage
+     *
+     * @returns {Element}
+     */
+    static viewsHome()
+    {
+        const outputDiv  = Utils.createElement('div', null, 'viewsHomeDiv');
+        const title      = Utils.createElement('h1');
+        const toolsList  = Utils.createElement('ul', 'tools');
+        const newView    = Utils.createElement('a', 'button', 'new-view');
+        const viewSearch = Utils.createElement('input', 'search');
+
+        title.innerHTML = 'Views';
+        outputDiv.appendChild(title);
+
+        let li            = Utils.createElement('li');
+        newView.href      = '#';
+        newView.innerHTML = 'Create view';
+        li.appendChild(newView);
+        toolsList.appendChild(li);
+
+        li = Utils.createElement('li');
+        viewSearch.setAttribute('type', 'text');
+        viewSearch.setAttribute('placeholder', 'Search Views');
+        li.appendChild(viewSearch);
+        toolsList.appendChild(li);
+
+        outputDiv.appendChild(toolsList);
+
+        return outputDiv;
+    }
+
+    /**
+     * Create a list of available views
+     *
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *
+     * @returns {Element}
+     */
+    static viewList(viewListData, paginationState)
+    {
+        const outputDiv = Utils.createElement('div', null, 'view-list-div');
+        const table     = Utils.createElement('table', ['adminTable', 'fullWidth'], 'views-list');
+        const thead     = Utils.createElement('thead');
+        const tbody     = Utils.createElement('tbody');
+
+        // upper pagination
+        outputDiv.appendChild(this.paginationHead(viewListData.length, paginationState));
+
+        // table header
+        let th       = Utils.createElement('th', ['largeCell', 'textCell']);
+        th.innerHTML = 'Name';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['textCell']);
+        th.innerHTML = 'User';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['numCell']);
+        th.innerHTML = 'Date';
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['numCell']);
+        th.innerHTML = 'Last Update';
+        thead.appendChild(th);
+
+        table.appendChild(thead);
+
+        // table body
+        viewListData.forEach((viewData) => {
+            const tr = Utils.createElement('tr');
+
+            // first column
+            let td     = Utils.createElement('td', 'textCell');
+            let strong = Utils.createElement('strong');
+            let ul     = Utils.createElement('ul', 'actions');
+
+            strong.innerHTML = viewData.name;
+            td.appendChild(strong);
+
+            let li           = Utils.createElement('li');
+            let a            = Utils.createElement('a', 'button', 'edit-view');
+            a.href           = '#';
+            a.innerHTML      = 'Edit';
+            a.dataset.action = 'edit-view';
+            a.dataset.viewId = viewData.id;
+            li.appendChild(a);
+            ul.appendChild(li);
+
+            li               = Utils.createElement('li');
+            a                = Utils.createElement('a', ['button', 'delete'], 'delete-view');
+            a.href           = '#';
+            a.innerHTML      = 'Delete';
+            a.dataset.action = 'delete-view';
+            a.dataset.viewId = viewData.id;
+            li.appendChild(a);
+            ul.appendChild(li);
+
+            td.appendChild(ul);
+            tr.appendChild(td);
+
+            // second column
+            td          = Utils.createElement('td', 'textCell');
+            a           = Utils.createElement('a');
+            a.href      = '#';
+            a.innerHTML = viewData.user.email;
+            td.appendChild(a);
+            tr.appendChild(td);
+
+            // third column
+            td             = Utils.createElement('td', 'numCell');
+            let time       = Utils.createElement('time');
+            time.innerHTML = Utils.formatDate(viewData.created_at);
+            time.setAttribute('datetime', viewData.created_at);
+            td.appendChild(time);
+            tr.appendChild(td);
+
+            // fourth column
+            td             = Utils.createElement('td', 'numCell');
+            time           = Utils.createElement('time');
+            if (viewData.updated_at) {
+                time.innerHTML = Utils.formatDate(viewData.updated_at);
+                time.setAttribute('datetime', viewData.updated_at);
+            } else {
+                time.innerHTML = 'Never';
+                time.setAttribute('datetime', null);
+            }
+            td.appendChild(time);
+            tr.appendChild(td);
+
+            tbody.appendChild(tr)
+        });
+
+        table.appendChild(tbody);
+        outputDiv.appendChild(table);
+
+        // lower navigation
+        outputDiv.appendChild(this.paginationPages(paginationState));
+
+        return outputDiv;
+    }
+
+    /**
+     * Create a form to modify a View or create a new one
+     *
+     * @param {?object} viewData The view data
+     *
+     * @returns {Element}
+     */
+    static viewForm(viewData)
+    {
+        const outputDiv = Utils.createElement('div', null, 'view-form-div');
+        const title     = Utils.createElement('h1');
+        const form      = Utils.createElement('form', 'adminForm', 'view-form');
+
+        let fieldset  = Utils.createElement('fieldset');
+        let legend    = Utils.createElement('legend');
+        let inputList = Utils.createElement('ul', 'inputList');
+
+        if (viewData) {
+            // TODO do something when updating an existing view
+        }
+
+        title.innerHTML = 'Create a new view';
+        outputDiv.appendChild(title);
+
+        // view informations fieldset ------------------------------------------
+        legend.innerHTML = 'View informations';
+        fieldset.appendChild(legend);
+
+        // view name field
+        let li            = Utils.createElement('li');
+        let label         = Utils.createElement('label');
+        let input         = Utils.createElement('input', null, 'view-name');
+        label.innerHTML   = 'Name';
+        input.setAttribute('name', 'viewName');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View name');
+        input.setAttribute('required', true);
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        // view title field
+        li                = Utils.createElement('li');
+        label             = Utils.createElement('label');
+        input             = Utils.createElement('input', null, 'view-title');
+        label.innerHTML   = 'Title';
+        input.setAttribute('name', 'viewTitle');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View title');
+        input.setAttribute('required', true);
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        // view description field
+        li                = Utils.createElement('li');
+        label             = Utils.createElement('label');
+        input             = Utils.createElement('textarea', null, 'view-description');
+        label.innerHTML   = 'Description';
+        input.setAttribute('name', 'viewDescription');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View description');
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        fieldset.appendChild(inputList);
+        form.appendChild(fieldset);
+
+        // view content fieldset -----------------------------------------------
+        fieldset = Utils.createElement('fieldset');
+        legend   = Utils.createElement('legend');
+        let ul   = Utils.createElement('ul');
+        let a    = Utils.createElement('a', 'button', 'add-content');
+
+        legend.innerHTML = 'View content';
+        fieldset.appendChild(legend);
+
+        li          = Utils.createElement('li');
+        a.href      = '#';
+        a.innerHTML = 'Add content';
+        li.appendChild(a);
+        ul.appendChild(li);
+        fieldset.appendChild(ul);
+
+        // add content list
+        const contentListData = viewData ? viewData.content : null;
+        fieldset.appendChild(this.contentList(contentListData));
+
+        form.appendChild(fieldset);
+
+        // add button list
+        ul = Utils.createElement('ul', 'buttonList');
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', ['button', 'save', 'big']);
+        a.href      = '#';
+        a.innerHTML = 'Save';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', ['button', 'cancel', 'big']);
+        a.href      = '#';
+        a.innerHTML = 'Cancel';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        form.appendChild(ul);
+
+        outputDiv.appendChild(form)
+
+        return outputDiv;
+    }
+
+
+    /***************************************************************************
+     * Components related to content
+     **************************************************************************/
+
+    /**
+     * Create a list of content
      *
      * @param {Object} contentList The content list
      * @param {number} id The html id of the content list
@@ -72,36 +484,48 @@ export class Components {
      * the content list. Used when rendering content list from the View screen.
      *
      * @returns {Element}
+     * static contentList(contentList, id, forViewScreen = false)
      */
-    static contentList(contentList, id, forViewScreen = false)
+    static contentList(contentListData)
     {
-        const table = Utils.createElement('table', ['adminTable', 'fullWidth'], id);
+        const table = Utils.createElement('table', ['adminTable', 'fullWidth']);
+        const thead = Utils.createElement('thead');
         const tbody = Utils.createElement('tbody');
 
-        const thead = Utils.createElement('thead');
-        let th      = Utils.createElement('th');
+        let th    = Utils.createElement('th', 'tinyCell');
+        let input = Utils.createElement('input');
+        input.setAttribute('type', 'checkbox');
+        th.appendChild(input);
+        thead.appendChild(th);
 
+        th           = Utils.createElement('th', 'textCell');
         th.innerHTML = 'Name';
         thead.appendChild(th);
 
-        th = Utils.createElement('th');
-        th.innerHTML = 'Type';
+        th           = Utils.createElement('th', 'textCell');
+        th.innerHTML = 'User';
         thead.appendChild(th);
 
         table.appendChild(thead);
 
-        contentList.forEach(element => {
-            if (forViewScreen) {
-                element = element.content;
-            }
+        if (!contentListData) {
+            // create empty table and hide it
+            table.classList.add('hidden');
+            table.appendChild(tbody);
 
-            tbody.appendChild(this.contentListRow(element, forViewScreen));
-        });
+            return table;
+        }
 
+        // TODO create the content list when contentListData is not null
         table.appendChild(tbody);
 
         return table;
     }
+
+
+    /***************************************************************************
+     * no refacto yet
+     **************************************************************************/
 
     /**
      * Create a single row for the content list
@@ -281,366 +705,6 @@ export class Components {
         return div;
     }
 
-    /**
-     * Create the upper hand of the pagination: number of elements displayed,
-     * total number of elements and selection of elements per page
-     *
-     * @param {int} listLength The length of the current list
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *      state of the pagination
-     * @returns {Element}
-     */
-    static paginationHead(listLength, paginationState)
-    {
-        // available options for number of elements per page
-        const pageOptions = [5, 10, 20, 30];
-
-        const paginationHead = Utils.createElement('ul', 'paginationHead');
-        const select         = Utils.createElement('select');
-
-        let li       = Utils.createElement('li');
-        li.innerHTML = `${listLength}/${paginationState.total} elements`;
-        paginationHead.appendChild(li)
-
-        li = Utils.createElement('li');
-        pageOptions.forEach((opt) => {
-            const option = Utils.createElement('option');
-            option.value = opt;
-            option.innerHTML = opt;
-
-            if (opt === paginationState.itemsPerPage) {
-                option.setAttribute('selected', true);
-            }
-
-            select.appendChild(option);
-        });
-        li.appendChild(select);
-
-        const text = document.createTextNode('entries per page');
-
-        li.appendChild(text);
-        paginationHead.appendChild(li);
-
-        return paginationHead;
-    }
-
-    /**
-     * Create the lower hand of the pagination: the navigation buttons
-     *
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *      state of the pagination
-     * @returns {Element}
-     */
-    static paginationPages(paginationState)
-    {
-        const pagination = Utils.createElement('ul', 'paginationPages');
-
-        let li      = Utils.createElement('li');
-        let a       = Utils.createElement('a', 'navButton', 'first-page');
-        a.href      = '#';
-        a.innerHTML = '<<';
-        li.appendChild(a);
-        pagination.appendChild(li);
-
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'previous-page');
-        a.href      = '#';
-        a.innerHTML = '<';
-        li.appendChild(a);
-        pagination.appendChild(li);
-
-        for (let i = paginationState.page - 3; i <= paginationState.page + 3; i++) {
-            if (i < 1 || i > paginationState.numberOfPages) {
-                continue;
-            }
-
-            let li = Utils.createElement('li');
-            let a  = Utils.createElement('a', 'navButton');
-            
-            a.href      = '#';
-            a.innerHTML = i;
-
-            if (i === paginationState.page) {
-                a.classList.add('current');
-            }
-
-            li.appendChild(a);
-
-            pagination.appendChild(li);
-        }
-
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'next-page');
-        a.href      = '#';
-        a.innerHTML = '>';
-        li.appendChild(a);
-        pagination.appendChild(li);
-
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'navButton', 'last-page');
-        a.href      = '#';
-        a.innerHTML = '>>';
-        li.appendChild(a);
-        pagination.appendChild(li);
-
-        return pagination;
-    }
-
-    /**
-     * Create the view homepage
-     *
-     * @returns {Element}
-     */
-    static viewsHome()
-    {
-        const outputDiv  = Utils.createElement('div', null, 'viewsHomeDiv');
-        const title      = Utils.createElement('h1');
-        const toolsList  = Utils.createElement('ul', 'tools');
-        const newView    = Utils.createElement('a', 'button', 'new-view');
-        const viewSearch = Utils.createElement('input', 'search');
-
-        title.innerHTML = 'Views';
-        outputDiv.appendChild(title);
-
-        let li            = Utils.createElement('li');
-        newView.href      = '#';
-        newView.innerHTML = 'Create view';
-        li.appendChild(newView);
-        toolsList.appendChild(li);
-
-        li = Utils.createElement('li');
-        viewSearch.setAttribute('type', 'text');
-        viewSearch.setAttribute('placeholder', 'Search Views');
-        li.appendChild(viewSearch);
-        toolsList.appendChild(li);
-
-        outputDiv.appendChild(toolsList);
-
-        return outputDiv;
-    }
-
-    /**
-     * Create a list of action buttons for tables (edit end delete)
-     *
-     * @returns {undefined}
-     */
-    static actionButtonList()
-    {
-        const ul = Utils.createElement('ul', 'actions');
-
-        let li      = Utils.createElement('li');
-        let a       = Utils.createElement('a', 'button', 'edit-view');
-        a.href      = '#';
-        a.innerHTML = 'Edit';
-        li.appendChild(a);
-        ul.appendChild(li);
-
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', 'button', 'delete-view');
-        a.href      = '#';
-        a.innerHTML = 'Delete';
-        li.appendChild(a);
-        ul.appendChild(li);
-
-        return ul;
-    }
-
-    /**
-     * Create a list of available views
-     *
-     * @param {Object} viewListData The list of views
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
-     *
-     * @returns {Element}
-     */
-    static viewList(viewListData, paginationState)
-    {
-        const outputDiv = Utils.createElement('div', null, 'view-list-div');
-        const table     = Utils.createElement('table', ['adminTable', 'fullWidth'], 'views-list');
-        const thead     = Utils.createElement('thead');
-        const tbody     = Utils.createElement('tbody');
-
-        // upper pagination
-        outputDiv.appendChild(this.paginationHead(viewListData.length, paginationState));
-
-        // table header
-        let th       = Utils.createElement('th', ['largeCell', 'textCell']);
-        th.innerHTML = 'Name';
-        thead.appendChild(th);
-
-        th           = Utils.createElement('th', ['textCell']);
-        th.innerHTML = 'User';
-        thead.appendChild(th);
-
-        th           = Utils.createElement('th', ['numCell']);
-        th.innerHTML = 'Date';
-        thead.appendChild(th);
-
-        th           = Utils.createElement('th', ['numCell']);
-        th.innerHTML = 'Last Update';
-        thead.appendChild(th);
-
-        table.appendChild(thead);
-
-        // table body
-        viewListData.forEach((viewData) => {
-            const tr = Utils.createElement('tr');
-
-            // first column
-            let td     = Utils.createElement('td', 'textCell');
-            let strong = Utils.createElement('strong');
-            let ul     = Utils.createElement('ul', 'actions');
-
-            strong.innerHTML = viewData.name;
-            td.appendChild(strong);
-
-            let li           = Utils.createElement('li');
-            let a            = Utils.createElement('a', 'button', 'edit-view');
-            a.href           = '#';
-            a.innerHTML      = 'Edit';
-            a.dataset.action = 'edit-view';
-            a.dataset.viewId = viewData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            li               = Utils.createElement('li');
-            a                = Utils.createElement('a', ['button', 'delete'], 'delete-view');
-            a.href           = '#';
-            a.innerHTML      = 'Delete';
-            a.dataset.action = 'delete-view';
-            a.dataset.viewId = viewData.id;
-            li.appendChild(a);
-            ul.appendChild(li);
-
-            td.appendChild(ul);
-            tr.appendChild(td);
-
-            // second column
-            td          = Utils.createElement('td', 'textCell');
-            a           = Utils.createElement('a');
-            a.href      = '#';
-            a.innerHTML = viewData.user.email;
-            td.appendChild(a);
-            tr.appendChild(td);
-
-            // third column
-            td             = Utils.createElement('td', 'numCell');
-            let time       = Utils.createElement('time');
-            time.innerHTML = Utils.formatDate(viewData.created_at);
-            time.setAttribute('datetime', viewData.created_at);
-            td.appendChild(time);
-            tr.appendChild(td);
-
-            // fourth column
-            td             = Utils.createElement('td', 'numCell');
-            time           = Utils.createElement('time');
-            if (viewData.updated_at) {
-                time.innerHTML = Utils.formatDate(viewData.updated_at);
-                time.setAttribute('datetime', viewData.updated_at);
-            } else {
-                time.innerHTML = 'Never';
-                time.setAttribute('datetime', null);
-            }
-            td.appendChild(time);
-            tr.appendChild(td);
-
-            tbody.appendChild(tr)
-        });
-
-        table.appendChild(tbody);
-        outputDiv.appendChild(table);
-
-        // lower navigation
-        outputDiv.appendChild(this.paginationPages(paginationState));
-
-        return outputDiv;
-    }
-
-    /**
-     * Create a form to modify a View
-     *
-     * @param {object} viewData The view data
-     *
-     * @returns {Element}
-     */
-    static viewForm(viewData)
-    {
-        const viewDiv = Utils.createElement('div', null, 'viewFormOutput');
-        const form    = Utils.createElement('form', null, 'viewForm');
-
-        let h3       = Utils.createElement('h3');
-        h3.innerHTML = `View: ${viewData.name}`;
-        viewDiv.appendChild(h3);
-
-        let fieldset = Utils.createElement('fieldset');
-        let h4       = Utils.createElement('h4');
-        h4.innerHTML = 'Informations';
-
-        fieldset.appendChild(h4);
-
-        let ul      = Utils.createElement('ul');
-        const infos = {'name': viewData.name, 'title': viewData.title}
-
-        for (const key in infos) {
-            let li    = Utils.createElement('li');
-            let input = Utils.createElement('input');
-            let label = Utils.createElement('label');
-
-            input.setAttribute('type', 'text');
-            input.setAttribute('name', key);
-            input.value = infos[key];
-            label.innerHTML = Utils.capitalizeFirst(key);
-            label.setAttribute('for', key);
-
-            input.dataset.required = true;
-            input.dataset.type     = 'text';
-            input.dataset.name     = Utils.capitalizeFirst(key);
-
-            li.appendChild(label);
-            li.appendChild(input);
-            ul.appendChild(li);
-        }
-
-        fieldset.appendChild(ul);
-        form.appendChild(fieldset);
-
-        form.dataset.viewId = viewData.id;
-        viewDiv.appendChild(form);
-
-        h3           = Utils.createElement('h3');
-        h3.innerHTML = 'Content list';
-        viewDiv.appendChild(h3);
-
-        viewDiv.appendChild(this.contentList(viewData.viewContents, 'contentList', true));
-
-        ul = Utils.createElement('ul', null, 'buttonList');
-
-        let li = Utils.createElement('li');
-
-        let button            = Utils.createElement('button', null, 'addContentButton');
-        button.innerHTML      = 'Add content';
-        button.dataset.viewId = viewData.id;
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        li                    = Utils.createElement('li');
-        button                = Utils.createElement('button', null, 'submitViewButton');
-        button.innerHTML      = 'Save';
-        button.dataset.viewId = viewData.id;
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        li                      = Utils.createElement('li');
-        button                  = Utils.createElement('button', 'cancelButton', 'cancelContentEditButton');
-        button.innerHTML        = 'Cancel';
-        button.dataset.parentId = 'viewFormOutput';
-        li.appendChild(button);
-        ul.appendChild(li);
-
-        viewDiv.appendChild(ul);
-
-        return viewDiv;
-    }
 
     /**
      * Create form to ask which type of content must be added

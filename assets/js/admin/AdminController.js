@@ -67,7 +67,7 @@ export class AdminController {
         // this.model.bindContentCreatedForView(this.onContentCreatedForView);
 
         // render the home page
-        this.handleClickHomePage();
+        // this.handleClickHomePage();
     }
 
 
@@ -108,10 +108,10 @@ export class AdminController {
      */
     handleClickContentHome = async () => {
         // TODO refactor this method. Should not use async/await
-        await this.model.listContent();
-        this.view.bindClickContent(this.handleClickContent);
-        this.view.bindClickNewContent(this.handleClickNewContent);
-        this.view.bindClickDeleteContent(this.handleClickDeleteContent);
+        // await this.model.listContent();
+        // this.view.bindClickContent(this.handleClickContent);
+        // this.view.bindClickNewContent(this.handleClickNewContent);
+        // this.view.bindClickDeleteContent(this.handleClickDeleteContent);
     }
 
     /**
@@ -170,7 +170,7 @@ export class AdminController {
      * Handle click on the 'new-view' button
      */
     onClickNewView = () => {
-        console.log('creating new view');
+        this.view.renderViewForm(null);
     }
 
     /**
