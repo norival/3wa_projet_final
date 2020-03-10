@@ -39,26 +39,19 @@ class ContentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Search a content by its name and return content's id and name 
+     * Search a content by its name and return the QueryBuilder for use with
+     * the pagination
      *
-     * @param  string $value
+     * @param  string $name The name to look for in the database
      *
-     * @return array
+     * @return QueryBuilder
      */
-    public function searchByName(string $value)
+    public function searchByName(string $name): QueryBuilder
     {
-        $em = $this->getEntityManager();
+        $qb = $this->createQueryBuilder('c')
+                   ->where('c.name LIKE :name')
+                   ->setParameter(':name', '%' . $name . '%');
 
-        $query = $em
-            ->createQuery(
-                'SELECT c.id, c.name
-                FROM App\Entity\Content c
-                WHERE c.name LIKE :value'
-            )
-            ->setParameters([
-                'value' => '%' . $value . '%',
-            ]);
-
-        return $query->getResult();
+        return $qb;
     }
 }

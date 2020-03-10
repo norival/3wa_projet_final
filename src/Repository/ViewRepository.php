@@ -39,8 +39,8 @@ class ViewRepository extends ServiceEntityRepository
     }
 
     /**
-     * Search a view by its name and return content's id and name and return
-     * the QueryBuilder for use with the pagination
+     * Search a view by its name and return the QueryBuilder for use with the
+     * pagination
      *
      * @param  string $name The name to look for in the database
      *

@@ -171,16 +171,34 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/content/search", name="content_search", methods={"GET"})
+     * Search available content by name
      *
-     * Search a content's id and name by its name
+     * @Route("/content/search", name="content_search", methods="GET")
      *
+     * @param  Request $request
+     * @param  Paginator $paginator
+     * @param  SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function searchByName(Request $request)
+    public function searchByName(Request $request, Paginator $paginator, SerializerInterface $serializer): JsonResponse
     {
-        $contentList = $this->em->getRepository(Content::class)->searchByName($request->get('search'));
+        $searchQuery = $this->contentRepository->searchByName($request->query->get('name'));
 
-        return new JsonResponse(\json_encode($contentList));
+        $paginator->paginate(
+            $searchQuery,
+            1,
+            $request->query->getInt('itemsPerPage', 10)
+        );
+
+        $json = $serializer->serialize(
+            [
+                'state'   => $paginator->getState(),
+                'results' => $paginator->getResults(),
+            ],
+            'json',
+            ['groups' => 'list']
+        );
+
+        return JsonResponse::fromJsonString($json);
     }
 }

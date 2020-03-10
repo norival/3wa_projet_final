@@ -98,6 +98,21 @@ export class AdminModel {
             });
     }
 
+    /**
+     * Search content from the database
+     *
+     * @param {Object} query The query to look for
+     * @returns {undefined}
+     */
+    searchContent(query)
+    {
+        fetch('/content/search?' + new URLSearchParams(query))
+            .then(response => response.json())
+            .then(paginator => {
+                this.onContentListDataReceived(paginator.results, paginator.state);
+            });
+    }
+
 
     /***************************************************************************
      * Methods to bind handlers
@@ -315,25 +330,6 @@ export class AdminModel {
             .then(json => {
                 return JSON.parse(json);
                 // this.onContentReceived(JSON.parse(json));
-            })
-    }
-
-    /**
-     * Search a content by name
-     *
-     * @param {string} searchTerm The string to look for in database
-     */
-    searchContent(searchTerm)
-    {
-        const url = '/content/search?' + encodeURI(`search=${searchTerm}`);
-        // console.log(`I'm looking for: ${url}`);
-
-        fetch(url, {
-                method: 'GET',
-            })
-            .then(response => response.json())
-            .then(json => {
-                this.onContentSuggestionChanged(JSON.parse(json));
             })
     }
 

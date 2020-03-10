@@ -266,7 +266,7 @@ export class AdminController {
     onClickNewContent = () => {
         console.log('creating new content');
         // TODO
-        // this.view.renderViewForm(null);
+        // this.view.renderContentForm(null);
     }
 
     /**
@@ -275,9 +275,7 @@ export class AdminController {
      * @param {Object} query The query
      */
     onKeyUpSearchContent = (query) => {
-        console.log(query);
-        // TODO
-        // this.model.searchView(query);
+        this.model.searchContent(query);
     }
 
     /**
