@@ -278,6 +278,16 @@ export class AdminView {
 
             this.onClickNewView();
         });
+
+        // add event listener for search field
+        Utils.getElement('#search-view').addEventListener('keyup', (event) => {
+            event.preventDefault();
+
+            this.onKeyUpSearchView({
+                name: event.target.value,
+                itemsPerPage: Utils.getElement('#choose-items-per-page').value
+            });
+        });
     }
 
     /**
@@ -314,6 +324,19 @@ export class AdminView {
         Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
             event.preventDefault();
 
+            const searchTerm = Utils.getElement('#search-view').value;
+
+            // if a term is currently searched, use onKeyUpSearchView callback
+            // instead
+            if (searchTerm) {
+                this.onKeyUpSearchView({
+                    name: searchTerm,
+                    itemsPerPage: event.target.value
+                });
+
+                return;
+            }
+
             this.onChangeChooseItemsPerPage('viewList', {
                 page: 1,
                 itemsPerPage: event.target.value
@@ -336,8 +359,6 @@ export class AdminView {
                 });
             });
         });
-
-        // TODO bind event listeners for search field
     }
 
     /**
@@ -516,6 +537,17 @@ export class AdminView {
     bindOnClickNewView(handler)
     {
         this.onClickNewView = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user type a letter in the
+     * view search field
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnKeyUpSearchView(handler)
+    {
+        this.onKeyUpSearchView = handler;
     }
 
     /**

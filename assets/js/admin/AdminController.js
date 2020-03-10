@@ -51,6 +51,7 @@ export class AdminController {
 
         // views related events
         this.view.bindOnClickNewView(this.onClickNewView);
+        this.view.bindOnKeyUpSearchView(this.onKeyUpSearchView);
         this.view.bindOnClickEditView(this.onClickEditView);
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
 
@@ -102,6 +103,7 @@ export class AdminController {
     handleClickViewsHome = (pagination) => {
         this.view.renderViewsHome();
         this.model.listViews(pagination);
+        this.model.getHelpData('en', 'view');
     }
 
     /**
@@ -209,6 +211,15 @@ export class AdminController {
     }
 
     /**
+     * Handle key press on search view input
+     *
+     * @param {Object} query The query
+     */
+    onKeyUpSearchView = (query) => {
+        this.model.searchView(query);
+    }
+
+    /**
      * Handle click on the 'edit-view' button
      *
      * @param {int} viewId The id of the view to edit
@@ -253,7 +264,7 @@ export class AdminController {
         // this.view.bindClickViewList(this.handleClickViewList);
         // this.view.bindClickView(this.handleClickView);
         // this.view.bindClickViewVisual(this.handleClickViewVisual);
-        this.model.getHelpData('en', 'view');
+        // this.model.getHelpData('en', 'view');
     }
 
 

@@ -60,6 +60,21 @@ export class AdminModel {
             });
     }
 
+    /**
+     * Search views from the database
+     *
+     * @param {Object} query The query to look for
+     * @returns {undefined}
+     */
+    searchView(query)
+    {
+        fetch('/view/search?' + new URLSearchParams(query))
+            .then(response => response.json())
+            .then(paginator => {
+                this.onViewsListDataReceived(paginator.results, paginator.state);
+            });
+    }
+
 
     /***************************************************************************
      * Methods to bind handlers

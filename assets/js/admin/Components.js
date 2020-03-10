@@ -254,7 +254,7 @@ export class Components {
         const title      = Utils.createElement('h1');
         const toolsList  = Utils.createElement('ul', 'tools');
         const newView    = Utils.createElement('a', 'button', 'new-view');
-        const viewSearch = Utils.createElement('input', 'search');
+        const viewSearch = Utils.createElement('input', 'search', 'search-view');
 
         title.innerHTML = 'Views';
         outputDiv.appendChild(title);
