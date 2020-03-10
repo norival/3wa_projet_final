@@ -326,6 +326,10 @@ export class AdminView {
             element.addEventListener('click', (event) => {
                 event.preventDefault();
 
+                if (!event.target.dataset.page) {
+                    return;
+                }
+
                 this.onClickPaginationPage('viewList', {
                     page: event.target.dataset.page,
                     itemsPerPage: Utils.getElement('#choose-items-per-page').value
