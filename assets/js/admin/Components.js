@@ -154,7 +154,7 @@ export class Components {
      */
     static paginationPages(paginationState)
     {
-        const pagination = Utils.createElement('ul', 'paginationPages', 'pagination-links');
+        const pagination = Utils.createElement('ul', 'paginationPages');
 
         if (paginationState.page > 1) {
             let li         = Utils.createElement('li');
@@ -170,6 +170,16 @@ export class Components {
             a.href         = '#';
             a.innerHTML    = '<';
             a.dataset.page = paginationState.page - 1;
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
+
+        if (paginationState.page >= 5) {
+            let li         = Utils.createElement('li');
+            let a          = Utils.createElement('a', 'navButton', 'previous-page');
+            a.href         = '#';
+            a.innerHTML    = '&#8230;';
+            a.dataset.page = paginationState.page - 4;
             li.appendChild(a);
             pagination.appendChild(li);
         }
@@ -195,6 +205,17 @@ export class Components {
 
             pagination.appendChild(li);
         }
+
+        if (paginationState.page <= paginationState.numberOfPages - 5) {
+            let li         = Utils.createElement('li');
+            let a          = Utils.createElement('a', 'navButton', 'previous-page');
+            a.href         = '#';
+            a.innerHTML    = '&#8230;';
+            a.dataset.page = paginationState.page + 4;
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
+
 
         if (paginationState.page < paginationState.numberOfPages) {
             let li         = Utils.createElement('li');
@@ -272,6 +293,7 @@ export class Components {
 
         // upper pagination
         outputDiv.appendChild(this.paginationHead(viewListData.length, paginationState));
+        outputDiv.appendChild(this.paginationPages(paginationState));
 
         // table header
         let th       = Utils.createElement('th', ['largeCell', 'textCell']);

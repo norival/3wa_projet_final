@@ -322,12 +322,14 @@ export class AdminView {
 
 
         // bind event listener for pagination pages
-        Utils.getElement('#pagination-links').addEventListener('click', (event) => {
-            event.preventDefault();
+        document.querySelectorAll('.paginationPages').forEach((element) => {
+            element.addEventListener('click', (event) => {
+                event.preventDefault();
 
-            this.onClickPaginationPage('viewList', {
-                page: event.target.dataset.page,
-                itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                this.onClickPaginationPage('viewList', {
+                    page: event.target.dataset.page,
+                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                });
             });
         });
 
