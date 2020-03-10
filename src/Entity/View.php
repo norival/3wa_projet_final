@@ -61,6 +61,11 @@ class View
      */
     private $viewAssets;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function __construct()
     {
         $this->viewContents = new ArrayCollection();
@@ -190,6 +195,18 @@ class View
                 $viewAsset->setView(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
