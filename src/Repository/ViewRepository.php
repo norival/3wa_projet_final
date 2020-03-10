@@ -37,4 +37,21 @@ class ViewRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    /**
+     * Search a view by its name and return content's id and name and return
+     * the QueryBuilder for use with the pagination
+     *
+     * @param  string $name The name to look for in the database
+     *
+     * @return QueryBuilder
+     */
+    public function searchByName(string $name): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('v')
+                   ->where('v.name LIKE :name')
+                   ->setParameter(':name', '%' . $name . '%');
+
+        return $qb;
+    }
 }

@@ -125,6 +125,38 @@ class ViewController extends AbstractController
     }
 
     /**
+     * Search available views by name
+     *
+     * @Route("/view/search", name="view_search", methods="GET")
+     *
+     * @param  Request $request
+     * @param  Paginator $paginator
+     * @param  SerializerInterface $serializer
+     * @return JsonResponse
+     */
+    public function searchByName(Request $request, Paginator $paginator, SerializerInterface $serializer): JsonResponse
+    {
+        $searchQuery = $this->viewRepository->searchByName($request->query->get('name'));
+
+        $paginator->paginate(
+            $searchQuery,
+            1,
+            $request->query->getInt('itemsPerPage', 10)
+        );
+
+        $json = $serializer->serialize(
+            [
+                'state'   => $paginator->getState(),
+                'results' => $paginator->getResults(),
+            ],
+            'json',
+            ['groups' => 'list']
+        );
+
+        return JsonResponse::fromJsonString($json);
+    }
+
+    /**
      * getForm
      *
      * Get the view information and send it to the admin as JSON data

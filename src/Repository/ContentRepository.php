@@ -20,8 +20,6 @@ class ContentRepository extends ServiceEntityRepository
     }
 
     /**
-     * searchByName
-     *
      * Search a content by its name and return content's id and name 
      *
      * @param  string $value
