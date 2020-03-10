@@ -42,7 +42,7 @@ class Paginator implements Countable
         $this->state['total']        = (int)$query->select("COUNT($rootAlias)")
                                                   ->getQuery()
                                                   ->getSingleScalarResult();
-        $this->state['numberOfPages'] = $this->state['total'] / $itemsPerPage;
+        $this->state['numberOfPages'] = \ceil($this->state['total'] / $itemsPerPage);
 
         // fetch results from database
         $this->results = $query->select($rootAlias)
