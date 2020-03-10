@@ -1,0 +1,36 @@
+<h1>Create a new view</h1>
+
+<form action="#" id="view-form" class="adminForm">
+    <fieldset>
+        <legend>View informations</legend>
+        <ul class="inputList">
+            <li>
+                <label for="view-name">Name</label>
+                <input type="text" id="view-name" placeholder="View name" required>
+            </li>
+            <li>
+                <label for="view-title">Title</label>
+                <input type="text" id="view-title" placeholder="View title" required>
+            </li>
+            <li>
+                <label for="view-description">Description</label>
+                <textarea id="view-description" name="" cols="30" rows="10" placeholder="View description"></textarea>
+            </li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>View content</legend>
+        <ul>
+            <li>
+                <a id="add-content" class="button" href="#">Add content</a>
+            </li>
+        </ul>
+        {{ include('mockups/admin_content_list.html.twig') }}
+    </fieldset>
+    <ul class="buttonList">
+        <li>
+            <a class="button save big" href="#">Save</a>
+            <a class="button cancel big" href="#">Cancel</a>
+        </li>
+    </ul>
+</form>

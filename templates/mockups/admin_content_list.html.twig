@@ -1,0 +1,20 @@
+<table class="adminTable fullWidth">
+    <thead>
+        <th class="tinyCell"><input type="checkbox"></th>
+        <th class="largeCell textCell">Name</th>
+        <th class="textCell">User</th>
+    </thead>
+    <tbody>
+        {% for i in 0..5 %}
+            <tr>
+                <td class="tinyCell"><input type="checkbox"></td>
+                <td class="textCell">
+                    <a href="#"><strong>cv</strong></a>
+                </td>
+                <td class="textCell">
+                    <a href="#">test@test.com</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
