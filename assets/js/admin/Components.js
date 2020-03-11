@@ -6,6 +6,41 @@ export class Components {
      **************************************************************************/
 
     /**
+     * Create a 'button' element
+     *
+     * @param {(string|string[])} classList A class name or an array of class names
+     * @param {string} id An id
+     * @param {string} html The innerHtml
+     * @returns {Element} the created NodeElement
+     */
+    static button(classList, id, html)
+    {
+        const element = document.createElement('a');
+
+        // if (classList) {
+            if (!Array.isArray(classList)) {
+                // put in an array if not already
+                classList = [classList];
+            }
+
+            // always add the 'button' class
+            classList.push('button');
+
+            // use spread syntax to assign all classes names
+            element.classList.add(...classList);
+        // }
+
+        if (id) {
+            element.id = id;
+        }
+
+        element.innerHTML = html;
+        element.href      = '#';
+
+        return element;
+    }
+
+    /**
      * Create a list of action buttons for tables (show, edit end delete)
      *
      * @param {string} forTable The table for which it is created
@@ -19,20 +54,20 @@ export class Components {
         let li               = Utils.createElement('li');
         let a                = Utils.createElement('a', 'button', `show-${forTable}`);
         a.href               = '#';
-        a.innerHTML          = 'Show';
+        a.innerHTML          = 'Show/Edit';
         a.dataset.action     = `show-${forTable}`;
         a.dataset[data.name] = data.id;
         li.appendChild(a);
         ul.appendChild(li);
 
-        li                   = Utils.createElement('li');
-        a                    = Utils.createElement('a', 'button', `edit-${forTable}`);
-        a.href               = '#';
-        a.innerHTML          = 'Edit';
-        a.dataset.action     = `edit-${forTable}`;
-        a.dataset[data.name] = data.id;
-        li.appendChild(a);
-        ul.appendChild(li);
+        // li                   = Utils.createElement('li');
+        // a                    = Utils.createElement('a', 'button', `edit-${forTable}`);
+        // a.href               = '#';
+        // a.innerHTML          = 'Edit';
+        // a.dataset.action     = `edit-${forTable}`;
+        // a.dataset[data.name] = data.id;
+        // li.appendChild(a);
+        // ul.appendChild(li);
 
         li                    = Utils.createElement('li');
         a                     = Utils.createElement('a', ['button', 'delete'], `delete-${forTable}`);
@@ -385,6 +420,158 @@ export class Components {
     }
 
     /**
+     * Create the view details element
+     *
+     * @param {Object} viewData The data for the given view
+     * @returns {Element}
+     */
+    static viewDetails(viewData)
+    {
+        const outputDiv = Utils.createElement('div', null, 'view-details-div');
+        const title     = Utils.createElement('h1');
+        const viewUser  = Utils.createElement('div', 'viewUser');
+
+        // title ---------------------------------------------------------------
+        title.innerHTML = `${viewData.title} (${viewData.name})`;
+        outputDiv.appendChild(title);
+
+        // user informations ---------------------------------------------------
+        let a       = Utils.createElement('a');
+        a.href      = '#';
+        a.innerHTML = `User: ${viewData.user.email}`;
+        viewUser.appendChild(a);
+        outputDiv.appendChild(viewUser);
+
+        // view informations ---------------------------------------------------
+        let section = Utils.createElement('section', 'adminSection');
+        let secTitle = Utils.createElement('h2');
+
+        secTitle.innerHTML = 'Informations';
+        section.appendChild(secTitle);
+
+        // list of informations
+        let artList = Utils.createElement('ul');
+
+        //// title
+        let li         = Utils.createElement('li');
+        let article    = Utils.createElement('article', 'adminItem');
+        let artHeader  = Utils.createElement('header');
+        let artTitle   = Utils.createElement('h3');
+        let editButton = this.button('small', null, 'Edit');
+        let p          = Utils.createElement('p');
+
+        artTitle.innerHTML = 'Title';
+        artHeader.appendChild(artTitle);
+        artHeader.appendChild(editButton);
+        article.appendChild(artHeader);
+
+        p.innerHTML = viewData.title;
+        article.appendChild(p);
+        li.appendChild(article);
+        artList.appendChild(li);
+
+        //// name
+        li         = Utils.createElement('li');
+        article    = Utils.createElement('article', 'adminItem');
+        artHeader  = Utils.createElement('header');
+        artTitle   = Utils.createElement('h3');
+        editButton = this.button('small', null, 'Edit');
+        p          = Utils.createElement('p');
+
+        artTitle.innerHTML = 'Name';
+        artHeader.appendChild(artTitle);
+        artHeader.appendChild(editButton);
+        article.appendChild(artHeader);
+
+        p.innerHTML = viewData.name;
+        article.appendChild(p);
+        li.appendChild(article);
+        artList.appendChild(li);
+
+        //// description
+        li         = Utils.createElement('li');
+        article    = Utils.createElement('article', 'adminItem');
+        artHeader  = Utils.createElement('header');
+        artTitle   = Utils.createElement('h3');
+        editButton = this.button('small', null, 'Edit');
+        p          = Utils.createElement('p');
+
+        artTitle.innerHTML = 'Description';
+        artHeader.appendChild(artTitle);
+        artHeader.appendChild(editButton);
+        article.appendChild(artHeader);
+
+        p.innerHTML = viewData.description;
+        article.appendChild(p);
+        li.appendChild(article);
+        artList.appendChild(li);
+
+        section.appendChild(artList);
+
+        // add button list: 'Save' and 'Cancel'
+        let ul = Utils.createElement('ul', 'buttonList');
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', ['button', 'save', 'big']);
+        a.href      = '#';
+        a.innerHTML = 'Save';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        li          = Utils.createElement('li');
+        a           = Utils.createElement('a', ['button', 'cancel', 'big']);
+        a.href      = '#';
+        a.innerHTML = 'Cancel';
+        li.appendChild(a);
+        ul.appendChild(li);
+
+        section.appendChild(ul);
+        outputDiv.appendChild(section);
+
+        // view content --------------------------------------------------------
+        section        = Utils.createElement('section', 'adminSection');
+        secTitle       = Utils.createElement('h2');
+        let buttonList = Utils.createElement('ul', 'buttonList');
+
+        secTitle.innerHTML = 'Content';
+        section.appendChild(secTitle);
+
+        li         = Utils.createElement('li');
+        let button = this.button('delete', null, 'Remove selected content');
+        li.appendChild(button);
+        buttonList.appendChild(li);
+
+        li     = Utils.createElement('li');
+        button = this.button(null, null, 'Add content');
+        li.appendChild(button);
+        buttonList.appendChild(li);
+
+        section.appendChild(buttonList);
+
+        // content list
+        section.appendChild(this.contentListForContent(viewData.viewContents));
+
+        buttonList = Utils.createElement('ul', 'buttonList');
+
+        li     = Utils.createElement('li');
+        button = this.button('delete', null, 'Remove selected content');
+        li.appendChild(button);
+        buttonList.appendChild(li);
+
+        li     = Utils.createElement('li');
+        button = this.button(null, null, 'Add content');
+        li.appendChild(button);
+        buttonList.appendChild(li);
+
+        section.appendChild(buttonList);
+
+        outputDiv.appendChild(section);
+
+        // return
+        return outputDiv;
+    }
+
+    /**
      * Create a form to modify a View or create a new one
      *
      * @param {?object} viewData The view data
@@ -590,7 +777,7 @@ export class Components {
      * Create a list of available content
      *
      * @param {Object} contentListData The list of content
-     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}?} paginationState The current
      *      state of the pagination
      * @returns {Element}
      */
@@ -602,11 +789,21 @@ export class Components {
         const tbody = Utils.createElement('tbody');
 
         // upper pagination
-        outputDiv.appendChild(this.paginationHead(contentListData.length, paginationState));
-        outputDiv.appendChild(this.paginationPages(paginationState));
+        if (paginationState) {
+            // only output if paginationState is given
+            // NOTE is it good idea to make a JS pagination?
+            outputDiv.appendChild(this.paginationHead(contentListData.length, paginationState));
+            outputDiv.appendChild(this.paginationPages(paginationState));
+        }
 
         // table head ----------------------------------------------------------
-        let th       = Utils.createElement('th', ['largeCell', 'textCell']);
+        let th    = Utils.createElement('th', 'tinyCell');
+        let input = Utils.createElement('input');
+        input.setAttribute('type', 'checkbox');
+        th.appendChild(input);
+        thead.appendChild(th);
+
+        th           = Utils.createElement('th', ['largeCell', 'textCell']);
         th.innerHTML = 'Name';
         thead.appendChild(th);
 
@@ -626,10 +823,23 @@ export class Components {
 
         // table body ----------------------------------------------------------
         contentListData.forEach((contentData) => {
+            if (!contentData.user) {
+                // check if content data is nested (ie when it comes from a
+                // join in view table) and un-nest it
+                contentData = contentData.content;
+            }
+
             const tr = Utils.createElement('tr');
 
             // first column
-            let td     = Utils.createElement('td', 'textCell');
+            let td    = Utils.createElement('th', 'tinyCell');
+            let input = Utils.createElement('input');
+            input.setAttribute('type', 'checkbox');
+            td.appendChild(input);
+            tr.appendChild(td);
+
+            // second column
+            td         = Utils.createElement('td', 'textCell');
             let strong = Utils.createElement('strong');
 
             strong.innerHTML = contentData.name;
@@ -638,7 +848,7 @@ export class Components {
             td.appendChild(this.actionButtonList('content', {name: 'contentId', id: contentData.id}));
             tr.appendChild(td);
 
-            // second column
+            // third column
             td          = Utils.createElement('td', 'textCell');
             let a       = Utils.createElement('a');
             a.href      = '#';
@@ -646,7 +856,7 @@ export class Components {
             td.appendChild(a);
             tr.appendChild(td);
 
-            // third column
+            // fourth column
             td             = Utils.createElement('td', 'numCell');
             let time       = Utils.createElement('time');
             time.innerHTML = Utils.formatDate(contentData.created_at);
@@ -654,7 +864,7 @@ export class Components {
             td.appendChild(time);
             tr.appendChild(td);
 
-            // fourth column
+            // fifth column
             td             = Utils.createElement('td', 'numCell');
             time           = Utils.createElement('time');
             if (contentData.updated_at) {
@@ -674,7 +884,9 @@ export class Components {
         outputDiv.appendChild(table);
 
         // lower navigation
-        outputDiv.appendChild(this.paginationPages(paginationState));
+        if (paginationState) {
+            outputDiv.appendChild(this.paginationPages(paginationState));
+        }
 
         return outputDiv;
     }

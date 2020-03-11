@@ -383,6 +383,23 @@ export class AdminView {
     }
 
     /**
+     * Render the details of a view
+     *
+     * @param {Object} viewData The data for the given view
+     */
+    renderViewDetails(viewData)
+    {
+        // check if screen has not been changed: if user click on other menu entry
+        if (this.currentScreen !== 'view') {
+            return ;
+        }
+
+        Utils.clear(this.output);
+
+        this.output.appendChild(Components.viewDetails(viewData));
+    }
+
+    /**
      * Render a view form and attach event listeners
      *
      * @param {?Object} viewData The view data for the form

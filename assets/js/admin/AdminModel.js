@@ -64,7 +64,6 @@ export class AdminModel {
      * Search views from the database
      *
      * @param {Object} query The query to look for
-     * @returns {undefined}
      */
     searchView(query)
     {
@@ -74,6 +73,23 @@ export class AdminModel {
                 this.onViewsListDataReceived(paginator.results, paginator.state);
             });
     }
+
+    /**
+     * Get view data from the database and call the given callback
+     *
+     * @param {int} viewId The id of the view to get
+     * @param {function} callback The function to call when data has been
+     * received
+     */
+    getViewData(viewId, callback)
+    {
+        fetch(`/view/${viewId}`)
+            .then(response => response.json())
+            .then(viewData => {
+                callback(viewData);
+            });
+    }
+
 
     /***************************************************************************
      * Methods related to content data
@@ -172,17 +188,17 @@ export class AdminModel {
      * no refacto yet
      **************************************************************************/
 
-    async getViewForm(viewId)
-    {
-        await fetch('/admin/view/form/' + viewId)
-            .then(response => response.json())
-            .then(json => JSON.parse(json))
-            .then(viewData => {
-                this.onViewDataChanged(viewData);
-            });
+    // async getViewForm(viewId)
+    // {
+    //     await fetch('/admin/view/form/' + viewId)
+    //         .then(response => response.json())
+    //         .then(json => JSON.parse(json))
+    //         .then(viewData => {
+    //             this.onViewDataChanged(viewData);
+    //         });
 
-        return this;
-    }
+    //     return this;
+    // }
 
     /**
      * Submit the form to update a view

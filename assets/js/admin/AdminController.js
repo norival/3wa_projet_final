@@ -8,6 +8,11 @@
  * TODO Users view
  * TODO Create a new view
  * TODO Add inner content in content modification form
+ *
+ * NOTE For model methods that can be called to fill different part of the View
+ * (for example teh content list can be rendered in the content screen or the
+ * view screen), I could set an argument 'callback', so it could use a
+ * different callback each time
  */
 
 import {AdminModel} from './AdminModel';
@@ -247,7 +252,7 @@ export class AdminController {
      * @param {int} viewId The id of the view to edit
      */
     onClickShowView = (viewId) => {
-        console.log(`Showing ${viewId}`);
+        this.model.getViewData(viewId, this.onViewDataReceivedForViewScreen);
     }
 
     /**
@@ -354,6 +359,19 @@ export class AdminController {
         // this.view.bindClickView(this.handleClickView);
         // this.view.bindClickViewVisual(this.handleClickViewVisual);
         // this.model.getHelpData('en', 'view');
+    }
+
+    /**
+     * Call this method from the model when the data for a specific view has
+     * been received and must be displayed in the view screen
+     * 
+     * @param {Object} viewListData The list of views
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     * @callback AdminController~onViewDataChanged
+     */
+    onViewDataReceivedForViewScreen = (viewData) => {
+        this.view.renderViewDetails(viewData);
     }
 
 
