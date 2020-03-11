@@ -14,7 +14,7 @@ class ViewContent
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form"})
+     * @Groups({"default", "form"})
      */
     private $id;
 
@@ -27,7 +27,7 @@ class ViewContent
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="viewContents")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"form"})
+     * @Groups({"default", "form"})
      */
     private $content;
 

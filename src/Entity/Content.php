@@ -57,7 +57,7 @@ class Content
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="contents")
-     * @Groups({"list"})
+     * @Groups({"default", "list"})
      */
     private $user;
 

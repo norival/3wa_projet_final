@@ -16,43 +16,43 @@ class View
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $updated_at;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="views")
-     * @Groups({"form", "list"})
+     * @Groups({"default", "form", "list"})
      */
     private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true, cascade={"persist"})
-     * @Groups({"form"})
+     * @Groups({"default", "form"})
      */
     private $viewContents;
 
@@ -63,6 +63,7 @@ class View
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"default"})
      */
     private $description;
 

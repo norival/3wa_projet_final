@@ -21,11 +21,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ViewController extends AbstractController
 {
     private $em;
+    private $serializer;
     private $viewRepository;
 
-    public function __construct(EntityManagerInterface $em, ViewRepository $repo)
+    public function __construct(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer,
+        ViewRepository $repo
+    )
     {
         $this->em             = $em;
+        $this->serializer     = $serializer;
         $this->viewRepository = $repo;
     }
 
@@ -173,6 +179,26 @@ class ViewController extends AbstractController
         $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
 
         return new JsonResponse($json);
+    }
+
+    /**
+     * Get a view by its id
+     *
+     * @Route("/view/{id}", name="view_get", requirements={"id"="\d+"})
+     *
+     * @param  int $id
+     * @return JsonResponse
+     */
+    public function get(string $id): JsonResponse
+    {
+        $view = $this->viewRepository->find($id);
+        $json = $this->serializer->serialize(
+            $view,
+            'json',
+            ['groups' => 'default']
+        );
+
+        return JsonResponse::fromJsonString($json);
     }
 
     /**
