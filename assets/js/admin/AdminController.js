@@ -65,6 +65,8 @@ export class AdminController {
         this.view.bindOnClickShowView(this.onClickShowView);
         this.view.bindOnClickEditView(this.onClickEditView);
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
+        this.view.bindOnClickSaveViewDetails(this.onClickSaveViewDetails);
+        this.view.bindOnClickCancelViewDetails(this.onClickCancelViewDetails);
 
         // content related events
         this.view.bindOnClickNewContent(this.onClickNewContent);
@@ -261,6 +263,7 @@ export class AdminController {
      * @param {int} viewId The id of the view to edit
      */
     onClickEditView = (viewId) => {
+        // TODO
         console.log(`Editing ${viewId}`);
     }
 
@@ -270,7 +273,25 @@ export class AdminController {
      * @param {int} viewId The id of the view to delete
      */
     onClickDeleteView = (viewId) => {
+        // TODO
         console.log(`Deleting ${viewId}`);
+    }
+
+    /**
+     * Handle click on the 'save' button in view details
+     *
+     * @param {int} viewId The id of the view to delete
+     */
+    onClickSaveViewDetails = (viewId) => {
+        // TODO
+        console.log(`Saving ${viewId}`);
+    }
+
+    /**
+     * Handle click on the 'cancel' button in view details
+     */
+    onClickCancelViewDetails = () => {
+        this.handleClickViewsHome();
     }
 
 

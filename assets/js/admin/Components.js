@@ -503,19 +503,22 @@ export class Components {
         section.appendChild(artList);
 
         // add button list: 'Save' and 'Cancel'
-        let ul = Utils.createElement('ul', 'buttonList');
+        let ul = Utils.createElement('ul', 'buttonList', 'view-info-actions');
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', ['button', 'save', 'big']);
-        a.href      = '#';
-        a.innerHTML = 'Save';
+        li               = Utils.createElement('li');
+        a                = Utils.createElement('a', ['button', 'save', 'big']);
+        a.href           = '#';
+        a.innerHTML      = 'Save';
+        a.dataset.action = 'save';
+        a.dataset.viewId = viewData.id;
         li.appendChild(a);
         ul.appendChild(li);
 
-        li          = Utils.createElement('li');
-        a           = Utils.createElement('a', ['button', 'cancel', 'big']);
-        a.href      = '#';
-        a.innerHTML = 'Cancel';
+        li               = Utils.createElement('li');
+        a                = Utils.createElement('a', ['button', 'cancel', 'big']);
+        a.href           = '#';
+        a.innerHTML      = 'Cancel';
+        a.dataset.action = 'cancel';
         li.appendChild(a);
         ul.appendChild(li);
 

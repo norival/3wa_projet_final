@@ -397,6 +397,18 @@ export class AdminView {
         Utils.clear(this.output);
 
         this.output.appendChild(Components.viewDetails(viewData));
+
+        // TODO event listeners
+        Utils.getElement('#view-info-actions').addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'save':
+                    this.onClickSaveViewDetails(event.target.dataset.viewId);
+                    break;
+                case 'cancel':
+                    this.onClickCancelViewDetails(event.target.dataset.viewId);
+                    break;
+            }
+        });
     }
 
     /**
@@ -761,6 +773,28 @@ export class AdminView {
     bindOnClickDeleteView(handler)
     {
         this.onClickDeleteView = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'save' in
+     * the view details screen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickSaveViewDetails(handler)
+    {
+        this.onClickSaveViewDetails = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'cancel' in
+     * the view details screen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickCancelViewDetails(handler)
+    {
+        this.onClickCancelViewDetails = handler;
     }
 
 
