@@ -450,59 +450,53 @@ export class Components {
         section.appendChild(secTitle);
 
         // list of informations
-        let artList = Utils.createElement('ul');
+        let artList = Utils.createElement('ul', null, 'view-informations');
 
         //// title
-        let li         = Utils.createElement('li');
-        let article    = Utils.createElement('article', 'adminItem');
-        let artHeader  = Utils.createElement('header');
-        let artTitle   = Utils.createElement('h3');
-        let editButton = this.button('small', null, 'Edit');
-        let p          = Utils.createElement('p');
+        let li        = Utils.createElement('li');
+        let article   = Utils.createElement('article', 'adminItem');
+        let artHeader = Utils.createElement('header');
+        let artTitle  = Utils.createElement('h3');
+        let input     = Utils.createElement('input');
 
         artTitle.innerHTML = 'Title';
         artHeader.appendChild(artTitle);
-        artHeader.appendChild(editButton);
         article.appendChild(artHeader);
 
-        p.innerHTML = viewData.title;
-        article.appendChild(p);
+        input.value = viewData.title;
+        article.appendChild(input);
         li.appendChild(article);
         artList.appendChild(li);
 
         //// name
-        li         = Utils.createElement('li');
-        article    = Utils.createElement('article', 'adminItem');
-        artHeader  = Utils.createElement('header');
-        artTitle   = Utils.createElement('h3');
-        editButton = this.button('small', null, 'Edit');
-        p          = Utils.createElement('p');
+        li        = Utils.createElement('li');
+        article   = Utils.createElement('article', 'adminItem');
+        artHeader = Utils.createElement('header');
+        artTitle  = Utils.createElement('h3');
+        input     = Utils.createElement('input');
 
         artTitle.innerHTML = 'Name';
         artHeader.appendChild(artTitle);
-        artHeader.appendChild(editButton);
         article.appendChild(artHeader);
 
-        p.innerHTML = viewData.name;
-        article.appendChild(p);
+        input.value = viewData.name;
+        article.appendChild(input);
         li.appendChild(article);
         artList.appendChild(li);
 
         //// description
-        li         = Utils.createElement('li');
-        article    = Utils.createElement('article', 'adminItem');
-        artHeader  = Utils.createElement('header');
-        artTitle   = Utils.createElement('h3');
-        editButton = this.button('small', null, 'Edit');
-        p          = Utils.createElement('p');
+        li        = Utils.createElement('li');
+        article   = Utils.createElement('article', 'adminItem');
+        artHeader = Utils.createElement('header');
+        artTitle  = Utils.createElement('h3');
+        input     = Utils.createElement('textarea');
 
         artTitle.innerHTML = 'Description';
         artHeader.appendChild(artTitle);
-        artHeader.appendChild(editButton);
         article.appendChild(artHeader);
 
-        p.innerHTML = viewData.description;
-        article.appendChild(p);
+        input.value = viewData.description;
+        article.appendChild(input);
         li.appendChild(article);
         artList.appendChild(li);
 
