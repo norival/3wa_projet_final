@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class ViewFixtures extends Fixture implements DependentFixtureInterface
 {
     public const VIEW_CV_REFERENCE = 'view-cv';
+    public const VIEW_TEST_REFERENCE = 'view-test';
 
     public function load(ObjectManager $manager)
     {
@@ -26,6 +27,19 @@ class ViewFixtures extends Fixture implements DependentFixtureInterface
         $view->setDescription($loremMessage);
         $view->setCreatedAt(date_create());
         $manager->persist($view);
+
+        $loremMessage =
+            'Overview: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
+
+        $viewTest = new View();
+        $user = $this->getReference(UserFixtures::USER_TEST);
+
+        $viewTest->setUser($user);
+        $viewTest->setName('test');
+        $viewTest->setTitle('Test View');
+        $viewTest->setDescription($loremMessage);
+        $viewTest->setCreatedAt(date_create());
+        $manager->persist($viewTest);
 
         for ($i = 1; $i < 200; $i++) {
             $viewDemo = new View();
@@ -50,6 +64,7 @@ class ViewFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
 
         $this->addReference(self::VIEW_CV_REFERENCE, $view);
+        $this->addReference(self::VIEW_TEST_REFERENCE, $viewTest);
     }
 
     public function getDependencies()

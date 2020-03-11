@@ -114,7 +114,7 @@ class ViewController extends AbstractController
         $paginator->paginate(
             $listQuery,
             $request->query->getInt('page', 1),
-            $request->query->getInt('itemsPerPage', 10)
+            $request->query->getInt('itemsPerPage', 5)
         );
 
         // serialize results
@@ -225,6 +225,7 @@ class ViewController extends AbstractController
             $this->em->persist($view);
             $this->em->flush();
 
+            // TODO set location header to link the updated resource
             // send the id of the updated view
             return new JsonResponse(\json_encode($view->getId()), 200);
         }

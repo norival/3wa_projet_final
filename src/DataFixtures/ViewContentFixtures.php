@@ -29,6 +29,19 @@ class ViewContentFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($viewContent);
         }
 
+        $view = $this->getReference(ViewFixtures::VIEW_TEST_REFERENCE);
+        foreach ($contents as $content) {
+            $viewContent = new ViewContent();
+            if ($content->getName() !== 'php') {
+                continue;
+            }
+
+            $viewContent->setContent($content);
+            $viewContent->setView($view);
+
+            $manager->persist($viewContent);
+        }
+
         $manager->flush();
     }
 
