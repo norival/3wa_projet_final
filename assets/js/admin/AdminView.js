@@ -17,6 +17,10 @@ export class AdminView {
 
         this.currentScreen = '';
 
+        // array to store flash messages
+        this.flashBag    = [];
+        this.flashOutput = Utils.getElement('#flash-bag');
+
         // add event listener for navigation menu
         this.menu.addEventListener('click', (event) => {
             switch (event.target.dataset.action) {
@@ -51,6 +55,21 @@ export class AdminView {
     /***************************************************************************
      * Helper methods
      **************************************************************************/
+
+    /**
+     * Method to handle flash messages
+     */
+    handleFlashBag()
+    {
+        if (this.flashBag.length > 0) {
+            this.flashOutput.classList.remove('hidden');
+            this.flashOutput.innerHTML = this.flashBag.pop();
+
+            setTimeout(() => {
+                this.flashOutput.classList.add('hidden');
+            }, 3000)
+        }
+    }
 
     /**
      * Get and format View form data
@@ -271,6 +290,8 @@ export class AdminView {
      */
     renderViewsHome()
     {
+        this.handleFlashBag();
+
         // store the current screen id to check if it did not changed
         this.currentScreen = 'view';
 
