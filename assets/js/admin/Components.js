@@ -817,8 +817,9 @@ export class Components {
 
         // table head ----------------------------------------------------------
         let th    = Utils.createElement('th', 'tinyCell');
-        let input = Utils.createElement('input');
+        let input = Utils.createElement('input', null, 'check-all');
         input.setAttribute('type', 'checkbox');
+        input.dataset.action = 'check-all';
         th.appendChild(input);
         thead.appendChild(th);
 
@@ -851,7 +852,7 @@ export class Components {
             const tr = Utils.createElement('tr');
 
             // first column
-            let td    = Utils.createElement('th', 'tinyCell');
+            let td    = Utils.createElement('td', 'tinyCell');
             let input = Utils.createElement('input');
             input.setAttribute('type', 'checkbox');
             td.appendChild(input);

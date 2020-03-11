@@ -203,6 +203,33 @@ export class AdminView {
         this.help.classList.toggle('hidden');
     }
 
+    /**
+     * Check the checkbox present on the clicked line
+     * @param {Element} element The the element that is clicked
+     */
+    checkLine(element)
+    {
+        const checkbox = element.closest('tr').querySelector('[type="checkbox"]');
+
+        if (checkbox === element) {
+            return ;
+        }
+
+        checkbox.checked = !checkbox.checked;
+    }
+
+    /**
+     * Check all the checkboxes of the table
+     * @param {Element} element The the element that is clicked
+     * @param {boolean} checked The state of the clicked checkbox
+     */
+    checkAll(element, checked)
+    {
+        element.querySelectorAll('input[type="checkbox"]').forEach((element) => {
+            element.checked = checked;
+        });
+    }
+
 
     /***************************************************************************
      * Methods to render views
@@ -447,6 +474,27 @@ export class AdminView {
                 case 'cancel':
                     this.onClickCancelViewDetails(event.target.dataset.viewId);
                     break;
+            }
+        });
+
+        Utils.getElement('#content-list').addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'check-all':
+                    this.checkAll(event.target.closest('table'), event.target.checked);
+                    break;
+                case 'show-content':
+                    this.onClickShowContent(event.target.dataset.contentId);
+                    break;
+                case 'edit-content':
+                    this.onClickEditContent(event.target.dataset.contentId);
+                    break;
+                case 'delete-content':
+                    this.onClickDeleteContent(event.target.dataset.contentId);
+                    break;
+                default:
+                    if (event.target.closest('tr')) {
+                        this.checkLine(event.target);
+                    }
             }
         });
     }
