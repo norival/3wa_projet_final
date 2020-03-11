@@ -1,0 +1,44 @@
+{% if screen == 1 %}
+    <div class="addContentToView modal">
+        <div class="modalContent small">
+            <a id="close-modal" class="close" href="#">&times;</a>
+            <h3>Add a new content to the view</h3>
+            <ul class="buttonList">
+                <li>
+                    <a class="button big" href="#">Add existing content</a>
+                </li>
+                <li>
+                    <a class="button big" href="#">Create new content</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% elseif screen == 2 %}
+    <div class="addContentToView modal">
+        <div class="modalContent">
+            <a id="close-modal" class="close" href="#">&times;</a>
+            <h3>Add an existing content to the view</h3>
+            <ul class="tools">
+                <li>
+                    <input class="search" type="text" placeholder="Search content">
+                </li>
+            </ul>
+            {{ include('mockups/pagination_head.html.twig') }}
+            {{ include('mockups/pagination.html.twig') }}
+
+            <a class="button" href="#">Add selected content(s)</a>
+            {{ include('mockups/admin_content_list.html.twig') }}
+            <a class="button" href="#">Add selected content(s)</a>
+
+            {{ include('mockups/pagination.html.twig') }}
+        </div>
+    </div>
+{% elseif screen == 3 %}
+    <div class="addContentToView modal">
+        <div class="modalContent">
+            <a id="close-modal" class="close" href="#">&times;</a>
+            <h3>Create a new content</h3>
+            {{ include('mockups/admin_content_create.html.twig') }}
+        </div>
+    </div>
+{% endif %}

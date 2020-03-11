@@ -1,0 +1,52 @@
+<h1>Xavier Laviron (cv)</h1>
+<div class="viewUser">User: <a href="#">admin@test.com</a></div>
+
+<section class="adminSection">
+    <h2>Informations</h2>
+    <ul>
+        <li>
+            <article class="adminItem">
+                <header>
+                    <h3>Title</h3>
+                    <a class="button small" href="#">Edit</a>
+                </header>
+                <p>Xavier Laviron</p>
+            </article>
+            <article class="adminItem">
+                <header>
+                    <h3>Name</h3>
+                    <a class="button small" href="#">Edit</a>
+                </header>
+                <p>cv</p>
+            </article>
+            <article class="adminItem">
+                <header>
+                    <h3>Description</h3>
+                    <a class="button small" href="#">Edit</a>
+                </header>
+                <p>Ipsum quibusdam id hic consequuntur fuga. Esse illum rerum minus nesciunt rem Eaque illum qui iure consectetur nisi, illo, provident Expedita eveniet earum dicta nobis sapiente. Culpa reiciendis nobis animi?</p>
+            </article>
+        </li>
+    </ul>
+</section>
+<section class="adminSection">
+    <h2>Content</h2>
+    <ul class="buttonList">
+        <li>
+            <a class="button delete" href="#">Remove selected content</a>
+        </li>
+        <li>
+            <a class="button" href="#">Add content</a>
+        </li>
+    </ul>
+    {% set contentView = false %}
+    {{ include('mockups/admin_content_list.html.twig') }}
+    <ul class="buttonList">
+        <li>
+            <a class="button delete" href="#">Remove selected content</a>
+        </li>
+        <li>
+            <a class="button" href="#">Add content</a>
+        </li>
+    </ul>
+</section>

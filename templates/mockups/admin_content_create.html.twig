@@ -1,0 +1,41 @@
+<h1>Create a new content</h1>
+
+<form action="#" class="adminForm">
+    <fieldset>
+        <legend>Informations</legend>
+        <ul class="inputList">
+            <li>
+                <label for="content-name">Name</label>
+                <input type="text" id="content-name" placeholder="Content name" required>
+            </li>
+            <li>
+                <label for="content-type">Type</label>
+                <input type="text" id="content-type" placeholder="Content type" required>
+            </li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <legend>Content</legend>
+        <ul>
+            <li>
+                <a id="add-content" class="button" href="#">Add</a>
+            </li>
+        </ul>
+        <ul>
+            {% for i in 1..10 %}
+                <li>
+                    <ul>
+                        <li>
+                            <label for="inner-name-{{ i }}">Name</label>
+                            <input type="text" id="inner-name-{{ i }}" placeholder="Content name">
+                        </li>
+                        <li>
+                            <label for="inner-value-{{ i }}">Value</label>
+                            <textarea id="inner-value-{{ i }}" name="" cols="30" rows="10"></textarea>
+                        </li>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </fieldset>
+</form>
