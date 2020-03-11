@@ -280,11 +280,26 @@ export class AdminController {
     /**
      * Handle click on the 'save' button in view details
      *
-     * @param {int} viewId The id of the view to delete
+     * @param {Element} form The form element to get data from
      */
-    onClickSaveViewDetails = (viewId) => {
-        // TODO
-        console.log(`Saving ${viewId}`);
+    onClickSaveViewDetails = (form) => {
+        // run form validation
+        const formValidator = new FormValidator(form);
+        formValidator.validate();
+
+        if (formValidator.isValid) {
+            // if the form is valid, submit the data to the server
+            this.model.submitViewForm(
+                form.dataset.viewId,
+                this.view.getViewFormData(form),
+                this.onViewFormSubmitted
+            );
+
+            return ;
+        }
+
+        // render the form errors
+        this.view.renderFormErrors(form, formValidator.errors);
     }
 
     /**
@@ -376,10 +391,6 @@ export class AdminController {
      */
     onViewsListDataReceived = (viewListData, paginationState) => {
         this.view.renderViewsList(viewListData, paginationState);
-        // this.view.bindClickViewList(this.handleClickViewList);
-        // this.view.bindClickView(this.handleClickView);
-        // this.view.bindClickViewVisual(this.handleClickViewVisual);
-        // this.model.getHelpData('en', 'view');
     }
 
     /**
@@ -393,6 +404,23 @@ export class AdminController {
      */
     onViewDataReceivedForViewScreen = (viewData) => {
         this.view.renderViewDetails(viewData);
+    }
+
+    /**
+     * Call this method when the view form has been submitted by the Model
+     *
+     * @param {Response} response The response
+     */
+    onViewFormSubmitted = (response) => {
+        // console.log(response);
+        if (!response.ok) {
+            // TODO handle server errors
+            return ;
+        }
+
+        this.view.flashBag.push('The view has been updated!');
+        this.view.renderViewsHome();
+        this.model.listViews();
     }
 
 
@@ -411,6 +439,7 @@ export class AdminController {
     onContentListDataReceived = (contentListData, paginationState) => {
         this.view.renderContentList(contentListData, paginationState);
     }
+
 
     // -------------------------------------------------------------------------
     // not refactored yet ------------------------------------------------------

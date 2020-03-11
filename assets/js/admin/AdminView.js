@@ -74,28 +74,17 @@ export class AdminView {
     /**
      * Get and format View form data
      *
-     * @param {number} viewId The id of the view for which the form is submitted
-     *
+     * @param {Element} form The form element to get data from
      * @return {Object} The formated data
      */
-    getViewFormData(viewId)
+    getViewFormData(form)
     {
-        const contentList = Utils.getElement('#contentList');
-        const data        = {};
-        const formData    = new FormData(Utils.getElement('#viewForm'));
+        const data     = {};
+        const formData = new FormData(form);
 
         // get data from the form
         formData.forEach((element, key) => {
             data[key] = element;
-        });
-
-        // get data contained in contentList
-        data['viewContents'] = [];
-        Array.from(contentList.rows).forEach((tr) => {
-            data['viewContents'].push({
-                view: viewId,
-                content: tr.dataset.contentId
-            })
         });
 
         return data;
@@ -218,6 +207,36 @@ export class AdminView {
     /***************************************************************************
      * Methods to render views
      **************************************************************************/
+
+    /***************************************************************************
+     * Render generic stuff
+     */
+
+    /**
+     * Render form errors
+     *
+     * @param {Element} form The form that has errors
+     * @param {Object} errors Errors to render
+     */
+    renderFormErrors(form, errors)
+    {
+        // remove previous errors (if any)
+        const previousErrors = document.querySelectorAll('.formError');
+
+        if (previousErrors) {
+            previousErrors.forEach((element) => {
+                element.remove();
+            });
+        }
+
+        // display error messages
+        for (let property in errors) {
+            const span     = Utils.createElement('span', 'formError');
+            span.innerHTML = errors[property];
+
+            form.querySelector(`[data-field-name="${property}"]`).insertAdjacentElement('afterend', span);
+        }
+    }
 
     /**
      * Render help messages
@@ -419,11 +438,11 @@ export class AdminView {
 
         this.output.appendChild(Components.viewDetails(viewData));
 
-        // TODO event listeners
+        // add event listeners -------------------------------------------------
         Utils.getElement('#view-info-actions').addEventListener('click', (event) => {
             switch (event.target.dataset.action) {
                 case 'save':
-                    this.onClickSaveViewDetails(event.target.dataset.viewId);
+                    this.onClickSaveViewDetails(Utils.getElement('#view-form'));
                     break;
                 case 'cancel':
                     this.onClickCancelViewDetails(event.target.dataset.viewId);
@@ -908,32 +927,6 @@ export class AdminView {
 
     // -------------------------------------------------------------------------
     // no refacto yet
-
-    /**
-     * Render form errors
-     *
-     * @param {Element} form The form that has errors
-     * @param {Object} errors Errors to render
-     */
-    renderFormErrors(form, errors)
-    {
-        // remove previous errors (if any)
-        const previousErrors = document.querySelectorAll('.formError');
-
-        if (previousErrors) {
-            previousErrors.forEach((element) => {
-                element.remove();
-            });
-        }
-
-        // display error messages
-        for (let property in errors) {
-            const span     = Utils.createElement('span', 'formError');
-            span.innerHTML = errors[property];
-
-            form.querySelector(`[data-name="${property}"]`).insertAdjacentElement('afterend', span);
-        }
-    }
 
     /**
      * Render the template associated to viewId within an iframe

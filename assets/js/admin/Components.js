@@ -449,63 +449,13 @@ export class Components {
         secTitle.innerHTML = 'Informations';
         section.appendChild(secTitle);
 
-        // list of informations
-        let artList = Utils.createElement('ul', null, 'view-informations');
-
-        //// title
-        let li        = Utils.createElement('li');
-        let article   = Utils.createElement('article', 'adminItem');
-        let artHeader = Utils.createElement('header');
-        let artTitle  = Utils.createElement('h3');
-        let input     = Utils.createElement('input');
-
-        artTitle.innerHTML = 'Title';
-        artHeader.appendChild(artTitle);
-        article.appendChild(artHeader);
-
-        input.value = viewData.title;
-        article.appendChild(input);
-        li.appendChild(article);
-        artList.appendChild(li);
-
-        //// name
-        li        = Utils.createElement('li');
-        article   = Utils.createElement('article', 'adminItem');
-        artHeader = Utils.createElement('header');
-        artTitle  = Utils.createElement('h3');
-        input     = Utils.createElement('input');
-
-        artTitle.innerHTML = 'Name';
-        artHeader.appendChild(artTitle);
-        article.appendChild(artHeader);
-
-        input.value = viewData.name;
-        article.appendChild(input);
-        li.appendChild(article);
-        artList.appendChild(li);
-
-        //// description
-        li        = Utils.createElement('li');
-        article   = Utils.createElement('article', 'adminItem');
-        artHeader = Utils.createElement('header');
-        artTitle  = Utils.createElement('h3');
-        input     = Utils.createElement('textarea');
-
-        artTitle.innerHTML = 'Description';
-        artHeader.appendChild(artTitle);
-        article.appendChild(artHeader);
-
-        input.value = viewData.description;
-        article.appendChild(input);
-        li.appendChild(article);
-        artList.appendChild(li);
-
-        section.appendChild(artList);
+        // adds form for view informations
+        section.appendChild(this.viewInformationsForm(viewData));
 
         // add button list: 'Save' and 'Cancel'
         let ul = Utils.createElement('ul', 'buttonList', 'view-info-actions');
 
-        li               = Utils.createElement('li');
+        let li           = Utils.createElement('li');
         a                = Utils.createElement('a', ['button', 'save', 'big']);
         a.href           = '#';
         a.innerHTML      = 'Save';
@@ -566,6 +516,78 @@ export class Components {
 
         // return
         return outputDiv;
+    }
+
+    /**
+     * Create a form to edit/create view informations
+     *
+     * @returns {Element} The form
+     */
+    static viewInformationsForm(viewData)
+    {
+        const form      = Utils.createElement('form', 'adminForm', 'view-form');
+        const inputList = Utils.createElement('ul', 'inputList');
+
+        // view name field
+        let li          = Utils.createElement('li');
+        let label       = Utils.createElement('label');
+        let input       = Utils.createElement('input', null, 'view-name');
+        input.value     = viewData.name;
+        label.innerHTML = 'Name';
+        input.setAttribute('name', 'name');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View name');
+        input.setAttribute('required', true);
+        // form validation
+        input.dataset.required  = true;
+        input.dataset.type      = 'text';
+        input.dataset.form      = true;
+        input.dataset.fieldName = 'Name';
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        // view title field
+        li              = Utils.createElement('li');
+        label           = Utils.createElement('label');
+        input           = Utils.createElement('input', null, 'view-title');
+        label.innerHTML = 'Title';
+        input.value     = viewData.title;
+        input.setAttribute('name', 'title');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View title');
+        input.setAttribute('required', true);
+        // form validation
+        input.dataset.required  = true;
+        input.dataset.type      = 'text';
+        input.dataset.form      = true;
+        input.dataset.fieldName = 'Title';
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        // view description field
+        li              = Utils.createElement('li');
+        label           = Utils.createElement('label');
+        input           = Utils.createElement('textarea', null, 'view-description');
+        input.value     = viewData.description;
+        label.innerHTML = 'Description';
+        input.setAttribute('name', 'description');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'View description');
+        // form validation
+        input.dataset.required  = false;
+        input.dataset.type      = 'text';
+        input.dataset.form      = true;
+        input.dataset.fieldName = 'Name';
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
+        form.appendChild(inputList);
+        form.dataset.viewId = viewData.id;
+
+        return form;
     }
 
     /**

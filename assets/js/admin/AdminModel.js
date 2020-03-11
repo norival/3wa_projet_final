@@ -90,6 +90,33 @@ export class AdminModel {
             });
     }
 
+    /**
+     * Submit the form to update a view
+     *
+     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {object} formData The formated form data
+     */
+    submitViewForm(viewId, formData, callback)
+    {
+        fetch('admin/view/' + viewId, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            // .then(response => response.json())
+            .then(response => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
+                // console.log(response);
+                callback(response);
+                // this.form.remove();
+            })
+    }
+
 
     /***************************************************************************
      * Methods related to content data
@@ -199,32 +226,6 @@ export class AdminModel {
 
     //     return this;
     // }
-
-    /**
-     * Submit the form to update a view
-     *
-     * @param {number} viewId The id of the view for which the form is submitted
-     * @param {object} formData The formated form data
-     */
-    submitViewForm(viewId, formData)
-    {
-        fetch('admin/view/' + viewId, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(json => {
-                // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
-                console.log(json)
-                // this.form.remove();
-            })
-    }
 
     /**
      * Add a content to a view

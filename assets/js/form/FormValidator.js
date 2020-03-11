@@ -27,9 +27,9 @@ export class FormValidator {
 
     checkRequiredFields()
     {
-        this.form.querySelectorAll('[data-required]').forEach((element) => {
+        this.form.querySelectorAll('[data-required="true"]').forEach((element) => {
             if (element.value.trim() === '') {
-                this.errors[element.dataset.name] = 'This field is required';
+                this.errors[element.dataset.fieldName] = 'This field is required';
             }
         });
     }
