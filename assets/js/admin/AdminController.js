@@ -67,6 +67,8 @@ export class AdminController {
         this.view.bindOnClickDeleteView(this.onClickDeleteView);
         this.view.bindOnClickSaveViewDetails(this.onClickSaveViewDetails);
         this.view.bindOnClickCancelViewDetails(this.onClickCancelViewDetails);
+        this.view.bindOnClickRemoveContentFromView(this.onClickRemoveContentFromView);
+        this.view.bindOnClickAddContentToView(this.onClickAddContentToView);
 
         // content related events
         this.view.bindOnClickNewContent(this.onClickNewContent);
@@ -307,6 +309,19 @@ export class AdminController {
      */
     onClickCancelViewDetails = () => {
         this.handleClickViewsHome();
+    }
+
+    /**
+     * Handle click on the 'Remove selected content' button in view details
+     */
+    onClickRemoveContentFromView = () => {
+        console.log('remove content from view');
+    }
+    /**
+     * Handle click on the 'Add content' button in view details
+     */
+    onClickAddContentToView = () => {
+        console.log('add content to view');
     }
 
 

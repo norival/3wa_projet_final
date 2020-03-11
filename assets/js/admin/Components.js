@@ -478,18 +478,20 @@ export class Components {
         // view content --------------------------------------------------------
         section        = Utils.createElement('section', 'adminSection');
         secTitle       = Utils.createElement('h2');
-        let buttonList = Utils.createElement('ul', 'buttonList');
+        let buttonList = Utils.createElement('ul', 'buttonList', 'content-list-actions');
 
         secTitle.innerHTML = 'Content';
         section.appendChild(secTitle);
 
         li         = Utils.createElement('li');
         let button = this.button('delete', null, 'Remove selected content');
+        button.dataset.action = 'remove-content';
         li.appendChild(button);
         buttonList.appendChild(li);
 
         li     = Utils.createElement('li');
         button = this.button(null, null, 'Add content');
+        button.dataset.action = 'add-content';
         li.appendChild(button);
         buttonList.appendChild(li);
 
@@ -502,11 +504,13 @@ export class Components {
 
         li     = Utils.createElement('li');
         button = this.button('delete', null, 'Remove selected content');
+        button.dataset.action = 'remove-content';
         li.appendChild(button);
         buttonList.appendChild(li);
 
         li     = Utils.createElement('li');
         button = this.button(null, null, 'Add content');
+        button.dataset.action = 'add-content';
         li.appendChild(button);
         buttonList.appendChild(li);
 

@@ -477,6 +477,17 @@ export class AdminView {
             }
         });
 
+        Utils.getElement('#content-list-actions').addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'remove-content':
+                    this.onClickRemoveContentFromView();
+                    break;
+                case 'add-content':
+                    this.onClickAddContentToView();
+                    break;
+            }
+        });
+
         Utils.getElement('#content-list').addEventListener('click', (event) => {
             switch (event.target.dataset.action) {
                 case 'check-all':
@@ -883,6 +894,28 @@ export class AdminView {
     bindOnClickCancelViewDetails(handler)
     {
         this.onClickCancelViewDetails = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Remove
+     * selected content' from the view details screeen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickRemoveContentFromView(handler)
+    {
+        this.onClickRemoveContentFromView = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'Add
+     * content' from the view details screeen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickAddContentToView(handler)
+    {
+        this.onClickAddContentToView = handler;
     }
 
 
