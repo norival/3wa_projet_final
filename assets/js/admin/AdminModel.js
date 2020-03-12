@@ -148,8 +148,9 @@ export class AdminModel {
      * Fetch the list of available views
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
+     * @param {function} callback The function to call when response has been received
      */
-    listContent(pagination)
+    listContent(pagination, callback)
     {
         // build request URL
         const url = '/content/list?' + new URLSearchParams(pagination);
@@ -158,8 +159,9 @@ export class AdminModel {
         fetch(url)
             .then(response => response.json())
             .then(paginator => {
+                console.log(paginator);
                 // tell the controller to refresh the view
-                this.onContentListDataReceived(paginator.results, paginator.state);
+                callback(paginator.results, paginator.state);
             });
     }
 
