@@ -234,4 +234,39 @@ class ViewController extends AbstractController
         $errorMessage = 'The data is not valid';
         return new JsonResponse(\json_encode($errorMessage), 400);
     }
+
+    /**
+     * Delete content(s) from the view
+     *
+     * @Route("/admin/view/{id}/content", name="view_remove_content", methods="DELETE")
+     *
+     * @param  string $id The view id
+     * @param  Request $request The request
+     * @return JsonResponse The 
+     */
+    public function removeContent(Request $request, string $id)
+    {
+        // get content ids from the request body
+        /** @var Int[] $contentIds */
+        $contentIds = json_decode($request->getContent(), true);
+
+        /** @var ViewContent[] $viewContents */
+        $viewContents = $this->em->getRepository(ViewContent::class)->findBy([
+            'view'    => $id,
+            'content' => $contentIds,
+        ]);
+
+        if (!empty($viewContents)) {
+            foreach ($viewContents as $viewContent) {
+                // delete ViewContent object
+                $this->em->remove($viewContent);
+            }
+
+            // flush the database
+            $this->em->flush();
+        }
+
+        // return success status code and empty body, even if nothing has been deleted
+        return new JsonResponse(null, 204);
+    }
 }
