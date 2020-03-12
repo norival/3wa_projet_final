@@ -210,11 +210,19 @@ export class AdminView {
     checkLine(element)
     {
         const checkbox = element.closest('tr').querySelector('[type="checkbox"]');
+        const checkAll = document.getElementById('check-all');
+
+        if (checkAll.checked) {
+            // uncheck 'check-all' checkbox if it is checked
+            checkAll.checked = false;
+        }
 
         if (checkbox === element) {
+            // return because the element will be already checked/unchecked
             return ;
         }
 
+        // inverse checked state
         checkbox.checked = !checkbox.checked;
     }
 
