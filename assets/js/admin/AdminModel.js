@@ -117,6 +117,28 @@ export class AdminModel {
             })
     }
 
+    /**
+     * Remove content from the view specified with viewId
+     *
+     * @param {number[]} contentIds The ids of the content to remove
+     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {function} callback The function to call when response has been received
+     */
+    removeContentFromView(contentIds, viewId, callback)
+    {
+        fetch(`admin/view/${viewId}/content`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contentIds)
+        })
+            .then(() => {
+                callback(viewId);
+            })
+    }
+
 
     /***************************************************************************
      * Methods related to content data

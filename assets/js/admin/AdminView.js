@@ -238,6 +238,23 @@ export class AdminView {
         });
     }
 
+    /**
+     * Get data from the selected rows
+     * 
+     * @returns {number[]} The ids of the selected contents
+     */
+    getCheckedRows(tableId)
+    {
+        const table = document.getElementById(tableId);
+        const contentIds = [];
+
+        table.querySelectorAll('tbody [type="checkbox"]:checked').forEach((element) => {
+            contentIds.push(element.dataset.contentId);
+        });
+
+        return contentIds;
+    }
+
 
     /***************************************************************************
      * Methods to render views
@@ -485,15 +502,20 @@ export class AdminView {
             }
         });
 
-        Utils.getElement('#content-list-actions').addEventListener('click', (event) => {
-            switch (event.target.dataset.action) {
-                case 'remove-content':
-                    this.onClickRemoveContentFromView();
-                    break;
-                case 'add-content':
-                    this.onClickAddContentToView();
-                    break;
-            }
+        document.querySelectorAll('.content-list-actions').forEach((element) => {
+            element.addEventListener('click', (event) => {
+                switch (event.target.dataset.action) {
+                    case 'remove-content':
+                        this.onClickRemoveContentFromView(
+                            this.getCheckedRows('content-list'),
+                            event.currentTarget.dataset.viewId
+                        );
+                        break;
+                    case 'add-content':
+                        this.onClickAddContentToView();
+                        break;
+                }
+            });
         });
 
         Utils.getElement('#content-list').addEventListener('click', (event) => {

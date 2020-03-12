@@ -478,7 +478,8 @@ export class Components {
         // view content --------------------------------------------------------
         section        = Utils.createElement('section', 'adminSection');
         secTitle       = Utils.createElement('h2');
-        let buttonList = Utils.createElement('ul', 'buttonList', 'content-list-actions');
+        let buttonList = Utils.createElement('ul', ['buttonList', 'content-list-actions']);
+        buttonList.dataset.viewId = viewData.id;
 
         secTitle.innerHTML = 'Content';
         section.appendChild(secTitle);
@@ -500,7 +501,8 @@ export class Components {
         // content list
         section.appendChild(this.contentListForContent(viewData.viewContents));
 
-        buttonList = Utils.createElement('ul', 'buttonList');
+        buttonList = Utils.createElement('ul', ['buttonList', 'content-list-actions']);
+        buttonList.dataset.viewId = viewData.id;
 
         li     = Utils.createElement('li');
         button = this.button('delete', null, 'Remove selected content');
@@ -856,8 +858,9 @@ export class Components {
             const tr = Utils.createElement('tr');
 
             // first column
-            let td    = Utils.createElement('td', 'tinyCell');
-            let input = Utils.createElement('input');
+            let td                  = Utils.createElement('td', 'tinyCell');
+            let input               = Utils.createElement('input');
+            input.dataset.contentId = contentData.id;
             input.setAttribute('type', 'checkbox');
             td.appendChild(input);
             tr.appendChild(td);

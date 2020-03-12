@@ -313,10 +313,17 @@ export class AdminController {
 
     /**
      * Handle click on the 'Remove selected content' button in view details
+     *
+     * @param {[int]} contentIds An array of content ids to remove from the view
+     * @param {int} viewId The id of the view from which contents should be removed
      */
-    onClickRemoveContentFromView = () => {
-        console.log('remove content from view');
+    onClickRemoveContentFromView = (contentIds, viewId) => {
+        if (contentIds.length > 0) {
+            // TODO ask confirmation before removing contents
+            this.model.removeContentFromView(contentIds, viewId, this.onClickShowView);
+        }
     }
+
     /**
      * Handle click on the 'Add content' button in view details
      */
