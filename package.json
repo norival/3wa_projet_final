@@ -34,5 +34,11 @@
         "scrollmagic": "^2.0.7",
         "traverse": "^0.6.6",
         "vue": "^2.6.11"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true
     }
 }
