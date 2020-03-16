@@ -140,7 +140,7 @@ export class AdminController {
      */
     handleClickContentHome = (pagination) => {
         this.view.renderContentHome();
-        this.model.listContent(pagination);
+        this.model.listContent(pagination, this.onContentListDataReceived);
         this.model.getHelpData('en', 'content');
     }
 
@@ -210,7 +210,7 @@ export class AdminController {
                 this.model.listViews(paginationState);
                 break;
             case 'contentList':
-                this.model.listContent(paginationState);
+                this.model.listContent(paginationState, this.onContentListDataReceived);
                 break;
         }
     }
@@ -226,7 +226,7 @@ export class AdminController {
                 this.model.listViews(paginationState);
                 break;
             case 'contentList':
-                this.model.listContent(paginationState);
+                this.model.listContent(paginationState, this.onContentListDataReceived);
                 break;
         }
     }
