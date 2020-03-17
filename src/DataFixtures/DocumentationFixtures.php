@@ -12,18 +12,18 @@ class DocumentationFixtures extends Fixture
     {
         $documentation = new Documentation();
         $loremMessage1 =
-            'Overview: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
+            'Overview: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Collections are a group of contents.';
         $loremMessage2 =
-            'Details: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Views are a group of contents.';
-        $documentation->setName('view')
+            'Details: Amet tenetur sequi tempore minus nam velit doloribus culpa excepturi! Consequuntur quas sint aperiam libero iure. Consectetur ut placeat amet voluptate in vero ut. Assumenda impedit aut aspernatur commodi fugiat?Collections are a group of contents.';
+        $documentation->setName('collection')
                       ->setLocale('en')
                       ->setContent([
                           'overview' => [
-                              'name'    => 'View management',
+                              'name'    => 'Collection management',
                               'content' => $loremMessage1,
                           ],
                           'details' => [
-                              'name'    => 'View details',
+                              'name'    => 'Collection details',
                               'content' => $loremMessage2,
                           ],
                       ]);

@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+/* use Doctrine\Common\Collections\Collection as DC; */
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -39,9 +40,9 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\View", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Collection", mappedBy="user")
      */
-    private $views;
+    private $collections;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Asset", mappedBy="user")
@@ -55,7 +56,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->views = new ArrayCollection();
+        $this->collections = new ArrayCollection();
         $this->assets = new ArrayCollection();
         $this->contents = new ArrayCollection();
     }
@@ -139,30 +140,30 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|View[]
+     * @return Collection|Collection[]
      */
-    public function getViews(): Collection
+    public function getCollections(): Collection
     {
-        return $this->views;
+        return $this->collections;
     }
 
-    public function addView(View $view): self
+    public function addCollection(Collection $collection): self
     {
-        if (!$this->views->contains($view)) {
-            $this->views[] = $view;
-            $view->setUser($this);
+        if (!$this->collections->contains($collection)) {
+            $this->collections[] = $collection;
+            $collection->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeView(View $view): self
+    public function removeCollection(Collection $collection): self
     {
-        if ($this->views->contains($view)) {
-            $this->views->removeElement($view);
+        if ($this->collections->contains($collection)) {
+            $this->collections->removeElement($collection);
             // set the owning side to null (unless already changed)
-            if ($view->getUser() === $this) {
-                $view->setUser(null);
+            if ($collection->getUser() === $this) {
+                $collection->setUser(null);
             }
         }
 

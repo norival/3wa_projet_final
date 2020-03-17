@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\CollectionContent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,9 +52,9 @@ class Content
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="content", cascade="remove")
+     * @ORM\OneToMany(targetEntity="App\Entity\CollectionContent", mappedBy="content", cascade="remove")
      */
-    private $viewContents;
+    private $collectionContents;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="contents")
@@ -63,7 +64,7 @@ class Content
 
     public function __construct()
     {
-        $this->viewContents = new ArrayCollection();
+        $this->collectionContents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,30 +143,30 @@ class Content
     }
 
     /**
-     * @return Collection|ViewContent[]
+     * @return Collection|CollectionContent[]
      */
-    public function getViewContents(): Collection
+    public function getCollectionContents(): Collection
     {
-        return $this->viewContents;
+        return $this->collectionContents;
     }
 
-    public function addViewContent(ViewContent $viewContent): self
+    public function addCollectionContent(CollectionContent $collectionContent): self
     {
-        if (!$this->viewContents->contains($viewContent)) {
-            $this->viewContents[] = $viewContent;
-            $viewContent->setContent($this);
+        if (!$this->collectionContents->contains($collectionContent)) {
+            $this->collectionContents[] = $collectionContent;
+            $collectionContent->setContent($this);
         }
 
         return $this;
     }
 
-    public function removeViewContent(ViewContent $viewContent): self
+    public function removeCollectionContent(CollectionContent $collectionContent): self
     {
-        if ($this->viewContents->contains($viewContent)) {
-            $this->viewContents->removeElement($viewContent);
+        if ($this->collectionContents->contains($collectionContent)) {
+            $this->collectionContents->removeElement($collectionContent);
             // set the owning side to null (unless already changed)
-            if ($viewContent->getContent() === $this) {
-                $viewContent->setContent(null);
+            if ($collectionContent->getContent() === $this) {
+                $collectionContent->setContent(null);
             }
         }
 

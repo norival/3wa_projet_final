@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\Collection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ViewContentRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollectionContentRepository")
  */
-class ViewContent
+class CollectionContent
 {
     /**
      * @ORM\Id()
@@ -19,13 +20,13 @@ class ViewContent
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\View", inversedBy="viewContents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Collection", inversedBy="collectionContents")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $view;
+    private $collection;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="viewContents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="collectionContents")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"default", "form"})
      */
@@ -36,14 +37,14 @@ class ViewContent
         return $this->id;
     }
 
-    public function getView(): ?View
+    public function getCollection(): ?Collection
     {
-        return $this->view;
+        return $this->collection;
     }
 
-    public function setView(?View $view): self
+    public function setCollection(?Collection $collection): self
     {
-        $this->view = $view;
+        $this->collection = $collection;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\CollectionAsset;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AssetRepository")
@@ -49,13 +50,13 @@ class Asset
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewAsset", mappedBy="asset")
+     * @ORM\OneToMany(targetEntity="App\Entity\CollectionAsset", mappedBy="asset")
      */
-    private $viewAssets;
+    private $collectionAssets;
 
     public function __construct()
     {
-        $this->viewAssets = new ArrayCollection();
+        $this->collectionAssets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,30 +137,30 @@ class Asset
     }
 
     /**
-     * @return Collection|ViewAsset[]
+     * @return Collection|CollectionAsset[]
      */
-    public function getViewAssets(): Collection
+    public function getCollectionAssets(): Collection
     {
-        return $this->viewAssets;
+        return $this->collectionAssets;
     }
 
-    public function addViewAsset(ViewAsset $viewAsset): self
+    public function addCollectionAsset(CollectionAsset $collectionAsset): self
     {
-        if (!$this->viewAssets->contains($viewAsset)) {
-            $this->viewAssets[] = $viewAsset;
-            $viewAsset->setAsset($this);
+        if (!$this->collectionAssets->contains($collectionAsset)) {
+            $this->collectionAssets[] = $collectionAsset;
+            $collectionAsset->setAsset($this);
         }
 
         return $this;
     }
 
-    public function removeViewAsset(ViewAsset $viewAsset): self
+    public function removeCollectionAsset(CollectionAsset $collectionAsset): self
     {
-        if ($this->viewAssets->contains($viewAsset)) {
-            $this->viewAssets->removeElement($viewAsset);
+        if ($this->collectionAssets->contains($collectionAsset)) {
+            $this->collectionAssets->removeElement($collectionAsset);
             // set the owning side to null (unless already changed)
-            if ($viewAsset->getAsset() === $this) {
-                $viewAsset->setAsset(null);
+            if ($collectionAsset->getAsset() === $this) {
+                $collectionAsset->setAsset(null);
             }
         }
 

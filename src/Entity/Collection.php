@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection as ORMCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\CollectionContent;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ViewRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollectionRepository")
  */
-class View
+class Collection
 {
     /**
      * @ORM\Id()
@@ -45,21 +46,21 @@ class View
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="views")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="collections")
      * @Groups({"default", "form", "list"})
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewContent", mappedBy="view", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\CollectionContent", mappedBy="collection", orphanRemoval=true, cascade={"persist"})
      * @Groups({"default", "form"})
      */
-    private $viewContents;
+    private $collectionContents;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ViewAsset", mappedBy="view", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\CollectionAsset", mappedBy="collection", orphanRemoval=true)
      */
-    private $viewAssets;
+    private $collectionAssets;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -69,8 +70,8 @@ class View
 
     public function __construct()
     {
-        $this->viewContents = new ArrayCollection();
-        $this->viewAssets = new ArrayCollection();
+        $this->collectionContents = new ArrayCollection();
+        $this->collectionAssets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,30 +140,30 @@ class View
     }
 
     /**
-     * @return Collection|ViewContent[]
+     * @return Collection|CollectionContent[]
      */
-    public function getViewContents(): Collection
+    public function getCollectionContents(): Collection
     {
-        return $this->viewContents;
+        return $this->collectionContents;
     }
 
-    public function addViewContent(ViewContent $viewContent): self
+    public function addCollectionContent(CollectionContent $collectionContent): self
     {
-        if (!$this->viewContents->contains($viewContent)) {
-            $this->viewContents[] = $viewContent;
-            $viewContent->setView($this);
+        if (!$this->collectionContents->contains($collectionContent)) {
+            $this->collectionContents[] = $collectionContent;
+            $collectionContent->setCollection($this);
         }
 
         return $this;
     }
 
-    public function removeViewContent(ViewContent $viewContent): self
+    public function removeCollectionContent(CollectionContent $collectionContent): self
     {
-        if ($this->viewContents->contains($viewContent)) {
-            $this->viewContents->removeElement($viewContent);
+        if ($this->collectionContents->contains($collectionContent)) {
+            $this->collectionContents->removeElement($collectionContent);
             // set the owning side to null (unless already changed)
-            if ($viewContent->getView() === $this) {
-                $viewContent->setView(null);
+            if ($collectionContent->getCollection() === $this) {
+                $collectionContent->setCollection(null);
             }
         }
 
@@ -170,30 +171,30 @@ class View
     }
 
     /**
-     * @return Collection|ViewAsset[]
+     * @return Collection|CollectionAsset[]
      */
-    public function getViewAssets(): Collection
+    public function getCollectionAssets(): Collection
     {
-        return $this->viewAssets;
+        return $this->collectionAssets;
     }
 
-    public function addViewAsset(ViewAsset $viewAsset): self
+    public function addCollectionAsset(CollectionAsset $collectionAsset): self
     {
-        if (!$this->viewAssets->contains($viewAsset)) {
-            $this->viewAssets[] = $viewAsset;
-            $viewAsset->setView($this);
+        if (!$this->collectionAssets->contains($collectionAsset)) {
+            $this->collectionAssets[] = $collectionAsset;
+            $collectionAsset->setCollection($this);
         }
 
         return $this;
     }
 
-    public function removeViewAsset(ViewAsset $viewAsset): self
+    public function removeCollectionAsset(CollectionAsset $collectionAsset): self
     {
-        if ($this->viewAssets->contains($viewAsset)) {
-            $this->viewAssets->removeElement($viewAsset);
+        if ($this->collectionAssets->contains($collectionAsset)) {
+            $this->collectionAssets->removeElement($collectionAsset);
             // set the owning side to null (unless already changed)
-            if ($viewAsset->getView() === $this) {
-                $viewAsset->setView(null);
+            if ($collectionAsset->getCollection() === $this) {
+                $collectionAsset->setCollection(null);
             }
         }
 

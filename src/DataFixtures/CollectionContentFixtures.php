@@ -3,43 +3,43 @@
 namespace App\DataFixtures;
 
 use App\Entity\Content;
-use App\Entity\View;
-use App\Entity\ViewContent;
+use App\Entity\Collection;
+use App\Entity\CollectionContent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\MakerBundle\Resources\skeleton\doctrine\Fixtures;
 
-class ViewContentFixtures extends Fixture implements DependentFixtureInterface
+class CollectionContentFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         $contents = $manager->getRepository(Content::class)->findAll();
-        $view     = $this->getReference(ViewFixtures::VIEW_CV_REFERENCE);
+        $collection     = $this->getReference(CollectionFixtures::COLLECTION_CV_REFERENCE);
 
         foreach ($contents as $content) {
-            $viewContent = new ViewContent();
+            $collectionContent = new CollectionContent();
             if ($content->getName() === 'misc') {
                 continue;
             }
 
-            $viewContent->setContent($content);
-            $viewContent->setView($view);
+            $collectionContent->setContent($content);
+            $collectionContent->setCollection($collection);
 
-            $manager->persist($viewContent);
+            $manager->persist($collectionContent);
         }
 
-        $view = $this->getReference(ViewFixtures::VIEW_TEST_REFERENCE);
+        $collection = $this->getReference(CollectionFixtures::COLLECTION_TEST_REFERENCE);
         foreach ($contents as $content) {
-            $viewContent = new ViewContent();
+            $collectionContent = new CollectionContent();
             if ($content->getName() !== 'php') {
                 continue;
             }
 
-            $viewContent->setContent($content);
-            $viewContent->setView($view);
+            $collectionContent->setContent($content);
+            $collectionContent->setCollection($collection);
 
-            $manager->persist($viewContent);
+            $manager->persist($collectionContent);
         }
 
         $manager->flush();
@@ -49,7 +49,7 @@ class ViewContentFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             ContentFixtures::class,
-            ViewFixtures::class,
+            CollectionFixtures::class,
         );
     }
 }

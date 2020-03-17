@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ViewAssetRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollectionAssetRepository")
  */
-class ViewAsset
+class CollectionAsset
 {
     /**
      * @ORM\Id()
@@ -18,13 +19,13 @@ class ViewAsset
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\View", inversedBy="viewAssets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Collection", inversedBy="collectionAssets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $view;
+    private $collection;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Asset", inversedBy="viewAssets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Asset", inversedBy="collectionAssets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $asset;
@@ -34,14 +35,14 @@ class ViewAsset
         return $this->id;
     }
 
-    public function getView(): ?View
+    public function getCollection(): ?Collection
     {
-        return $this->view;
+        return $this->collection;
     }
 
-    public function setView(?View $view): self
+    public function setCollection(?Collection $collection): self
     {
-        $this->view = $view;
+        $this->collection = $collection;
 
         return $this;
     }

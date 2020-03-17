@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\View;
-use App\Entity\ViewAsset;
-use App\Entity\ViewContent;
-use App\Form\ViewType;
+use App\Entity\Collection;
+use App\Entity\CollectionAsset;
+use App\Entity\CollectionContent;
+use App\Form\CollectionType;
 use App\Model\AssetModel;
 use App\Model\ContentModel;
-use App\Repository\ViewRepository;
+use App\Repository\CollectionRepository;
 use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,25 +18,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class ViewController extends AbstractController
+class CollectionController extends AbstractController
 {
     private $em;
     private $serializer;
-    private $viewRepository;
+    private $collectionRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
-        ViewRepository $repo
+        CollectionRepository $repo
     )
     {
         $this->em             = $em;
         $this->serializer     = $serializer;
-        $this->viewRepository = $repo;
+        $this->collectionRepository = $repo;
     }
 
     /**
-     * @Route("/{locale}/{name}", name="view", requirements={"locale"="[a-z]{2}"})
+     * @Route("/{locale}/{name}", name="collection", requirements={"locale"="[a-z]{2}"})
      */
     public function index(string $locale, string $name)
     {
@@ -45,19 +45,19 @@ class ViewController extends AbstractController
          * custom filter/function for twig
          */
 
-        // get the view from the db
-        $view = $this->em->getRepository(View::class)->findOneBy(['name' => $name]);
+        // get the collection from the db
+        $collection = $this->em->getRepository(Collection::class)->findOneBy(['name' => $name]);
 
         // use models to simplify templating
         $contentModel = new ContentModel(
-            $this->em->getRepository(ViewContent::class)->findByViewIdJoined($view->getId())
+            $this->em->getRepository(CollectionContent::class)->findByCollectionIdJoined($collection->getId())
         );
         $assetModel = new AssetModel(
-            $this->em->getRepository(ViewAsset::class)->findByViewIdJoined($view->getId())
+            $this->em->getRepository(CollectionAsset::class)->findByCollectionIdJoined($collection->getId())
         );
 
-        return $this->render("view/$name.html.twig", [
-            'title'        => $view->getTitle(),
+        return $this->render("collection/$name.html.twig", [
+            'title'        => $collection->getTitle(),
             'contentModel' => $contentModel,
             'assetModel'   => $assetModel,
             'admin'        => false,
@@ -65,28 +65,28 @@ class ViewController extends AbstractController
     }
 
     /**
-     * @Route("/admin/view/visual/{id}", name="view_admin_visual", requirements={"id"="\d+"})
+     * @Route("/admin/collection/visual/{id}", name="collection_admin_visual", requirements={"id"="\d+"})
      *
-     * Renders a view from a template to be used in admin UI
+     * Renders a collection from a template to be used in admin UI
      *
-     * @param int $id The id of the view
+     * @param int $id The id of the collection
      */
     public function renderVisualAdmin(int $id)
     {
-        // get the view from the db
-        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
-        $name = $view->getName();
+        // get the collection from the db
+        $collection = $this->em->getRepository(Collection::class)->findOneBy(['id' => $id]);
+        $name = $collection->getName();
 
         // use models to simplify templating
         $contentModel = new ContentModel(
-            $this->em->getRepository(ViewContent::class)->findByViewIdJoined($view->getId())
+            $this->em->getRepository(CollectionContent::class)->findByCollectionIdJoined($collection->getId())
         );
         $assetModel = new AssetModel(
-            $this->em->getRepository(ViewAsset::class)->findByViewIdJoined($view->getId())
+            $this->em->getRepository(CollectionAsset::class)->findByCollectionIdJoined($collection->getId())
         );
 
-        return $this->render("view/$name.html.twig", [
-            'title'        => $view->getTitle(),
+        return $this->render("collection/$name.html.twig", [
+            'title'        => $collection->getTitle(),
             'contentModel' => $contentModel,
             'assetModel'   => $assetModel,
             'admin'        => true,
@@ -96,9 +96,9 @@ class ViewController extends AbstractController
 
 
     /**
-     * List all the available views (with pagination) and return result as JSON data
+     * List all the available collections (with pagination) and return result as JSON data
      *
-     * @Route("/view/list", name="view_list", methods={"GET"})
+     * @Route("/collection/list", name="collection_list", methods={"GET"})
      *
      * @param  Paginator $paginator
      * @param  SerializerInterface $serializer
@@ -108,7 +108,7 @@ class ViewController extends AbstractController
     public function list(Paginator $paginator, SerializerInterface $serializer, Request $request)
     {
         // get query from repository
-        $listQuery = $this->viewRepository->list(true);
+        $listQuery = $this->collectionRepository->list(true);
 
         // paginate results
         $paginator->paginate(
@@ -131,9 +131,9 @@ class ViewController extends AbstractController
     }
 
     /**
-     * Search available views by name
+     * Search available collections by name
      *
-     * @Route("/view/search", name="view_search", methods="GET")
+     * @Route("/collection/search", name="collection_search", methods="GET")
      *
      * @param  Request $request
      * @param  Paginator $paginator
@@ -142,7 +142,7 @@ class ViewController extends AbstractController
      */
     public function searchByName(Request $request, Paginator $paginator, SerializerInterface $serializer): JsonResponse
     {
-        $searchQuery = $this->viewRepository->searchByName($request->query->get('name'));
+        $searchQuery = $this->collectionRepository->searchByName($request->query->get('name'));
 
         $paginator->paginate(
             $searchQuery,
@@ -165,35 +165,35 @@ class ViewController extends AbstractController
     /**
      * getForm
      *
-     * Get the view information and send it to the admin as JSON data
+     * Get the collection information and send it to the admin as JSON data
      *
-     * @Route("/admin/view/form/{id}", name="view_get_form", methods={"GET"})
+     * @Route("/admin/collection/form/{id}", name="collection_get_form", methods={"GET"})
      *
      * @param  string $name
      * @return Response
      */
     public function getForm(SerializerInterface $serializer, string $id)
     {
-        // get the view object
-        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
-        $json = $serializer->serialize($view, 'json', ['groups' => 'form']);
+        // get the collection object
+        $collection = $this->em->getRepository(Collection::class)->findOneBy(['id' => $id]);
+        $json = $serializer->serialize($collection, 'json', ['groups' => 'form']);
 
         return new JsonResponse($json);
     }
 
     /**
-     * Get a view by its id
+     * Get a collection by its id
      *
-     * @Route("/view/{id}", name="view_get", requirements={"id"="\d+"})
+     * @Route("/collection/{id}", name="collection_get", requirements={"id"="\d+"})
      *
      * @param  int $id
      * @return JsonResponse
      */
     public function get(string $id): JsonResponse
     {
-        $view = $this->viewRepository->find($id);
+        $collection = $this->collectionRepository->find($id);
         $json = $this->serializer->serialize(
-            $view,
+            $collection,
             'json',
             ['groups' => 'default']
         );
@@ -202,32 +202,32 @@ class ViewController extends AbstractController
     }
 
     /**
-     * Update view
+     * Update collection
      *
-     * Update a view
+     * Update a collection
      *
-     * @Route("/admin/view/{id}", name="view_update", methods={"PUT", "PATCH"})
+     * @Route("/admin/collection/{id}", name="collection_update", methods={"PUT", "PATCH"})
      *
      * @param  string $id
      * @return JsonResponse The 
      */
     public function update(Request $request, string $id)
     {
-        $view = $this->em->getRepository(View::class)->findOneBy(['id' => $id]);
-        $form = $this->createForm(ViewType::class, $view);
+        $collection = $this->em->getRepository(Collection::class)->findOneBy(['id' => $id]);
+        $form = $this->createForm(CollectionType::class, $collection);
 
         $data = json_decode($request->getContent(), true);
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $view->setUpdatedAt(date_create());
+            $collection->setUpdatedAt(date_create());
 
-            $this->em->persist($view);
+            $this->em->persist($collection);
             $this->em->flush();
 
             // TODO set location header to link the updated resource
-            // send the id of the updated view
-            return new JsonResponse(\json_encode($view->getId()), 200);
+            // send the id of the updated collection
+            return new JsonResponse(\json_encode($collection->getId()), 200);
         }
 
         // TODO useful error message
@@ -236,11 +236,11 @@ class ViewController extends AbstractController
     }
 
     /**
-     * Delete content(s) from the view
+     * Delete content(s) from the collection
      *
-     * @Route("/admin/view/{id}/content", name="view_remove_content", methods="DELETE")
+     * @Route("/admin/collection/{id}/content", name="collection_remove_content", methods="DELETE")
      *
-     * @param  string $id The view id
+     * @param  string $id The collection id
      * @param  Request $request The request
      * @return JsonResponse The 
      */
@@ -250,16 +250,16 @@ class ViewController extends AbstractController
         /** @var Int[] $contentIds */
         $contentIds = json_decode($request->getContent(), true);
 
-        /** @var ViewContent[] $viewContents */
-        $viewContents = $this->em->getRepository(ViewContent::class)->findBy([
-            'view'    => $id,
+        /** @var CollectionContent[] $collectionContents */
+        $collectionContents = $this->em->getRepository(CollectionContent::class)->findBy([
+            'collection'    => $id,
             'content' => $contentIds,
         ]);
 
-        if (!empty($viewContents)) {
-            foreach ($viewContents as $viewContent) {
-                // delete ViewContent object
-                $this->em->remove($viewContent);
+        if (!empty($collectionContents)) {
+            foreach ($collectionContents as $collectionContent) {
+                // delete CollectionContent object
+                $this->em->remove($collectionContent);
             }
 
             // flush the database
