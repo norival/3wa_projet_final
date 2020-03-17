@@ -27,8 +27,8 @@ export class AdminView {
                 case 'homepage':
                     this.onClickHomePage();
                     break;
-                case 'views-home':
-                    this.onClickViewsHome({
+                case 'collections-home':
+                    this.onClickCollectionsHome({
                         page: 1,
                         itemsPerPage: 5
                     });
@@ -72,12 +72,12 @@ export class AdminView {
     }
 
     /**
-     * Get and format View form data
+     * Get and format Collection form data
      *
      * @param {Element} form The form element to get data from
      * @return {Object} The formated data
      */
-    getViewFormData(form)
+    getCollectionFormData(form)
     {
         const data     = {};
         const formData = new FormData(form);
@@ -257,7 +257,7 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Methods to render views
+     * Methods to render collections
      **************************************************************************/
 
     /***************************************************************************
@@ -353,38 +353,38 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Render stuff for view management
+     * Render stuff for collection management
      */
 
     /**
-     * Render home page layout for views management
+     * Render home page layout for collections management
      */
-    renderViewsHome()
+    renderCollectionsHome()
     {
         this.handleFlashBag();
 
         // store the current screen id to check if it did not changed
-        this.currentScreen = 'view';
+        this.currentScreen = 'collection';
 
         Utils.clear(this.output);
         this.help.classList.add('hidden');
 
-        this.output.appendChild(Components.viewsHome());
-        this.toggleCurrentMenuEntry('views');
-        document.title = 'Administration - Views';
+        this.output.appendChild(Components.collectionsHome());
+        this.toggleCurrentMenuEntry('collections');
+        document.title = 'Administration - Collections';
 
-        // bind event listener for create view button
-        Utils.getElement('#new-view').addEventListener('click', (event) => {
+        // bind event listener for create collection button
+        Utils.getElement('#new-collection').addEventListener('click', (event) => {
             event.preventDefault();
 
-            this.onClickNewView();
+            this.onClickNewCollection();
         });
 
         // add event listener for search field
-        Utils.getElement('#search-view').addEventListener('keyup', (event) => {
+        Utils.getElement('#search-collection').addEventListener('keyup', (event) => {
             event.preventDefault();
 
-            this.onKeyUpSearchView({
+            this.onKeyUpSearchCollection({
                 name: event.target.value,
                 itemsPerPage: Utils.getElement('#choose-items-per-page').value
             });
@@ -392,43 +392,43 @@ export class AdminView {
     }
 
     /**
-     * Render the list of views
+     * Render the list of collections
      *
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collections
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
      */
-    renderViewsList(viewListData, paginationState)
+    renderCollectionsList(collectionListData, paginationState)
     {
         // check if screen has not been changed: if user click on other meny
         // entry before the async fetch has arrived, it is displayed on the
         // wrong screen
-        if (this.currentScreen !== 'view') {
+        if (this.currentScreen !== 'collection') {
             return ;
         }
 
-        // remove old view list if present
-        const oldDiv = Utils.getElement('#view-list-div');
+        // remove old collection list if present
+        const oldDiv = Utils.getElement('#collection-list-div');
         if (oldDiv) {
             oldDiv.remove();
         }
 
-        this.output.appendChild(Components.viewList(viewListData, paginationState));
+        this.output.appendChild(Components.collectionList(collectionListData, paginationState));
 
         // add event listeners -------------------------------------------------
-        // event listener for clicks on view-list
-        Utils.getElement('#views-list').addEventListener('click', (event) => {
+        // event listener for clicks on collection-list
+        Utils.getElement('#collections-list').addEventListener('click', (event) => {
             event.preventDefault();
 
             switch (event.target.dataset.action) {
-                case 'show-view':
-                    this.onClickShowView(event.target.dataset.viewId);
+                case 'show-collection':
+                    this.onClickShowCollection(event.target.dataset.collectionId);
                     break;
-                case 'edit-view':
-                    this.onClickEditView(event.target.dataset.viewId);
+                case 'edit-collection':
+                    this.onClickEditCollection(event.target.dataset.collectionId);
                     break;
-                case 'delete-view':
-                    this.onClickDeleteView(event.target.dataset.viewId);
+                case 'delete-collection':
+                    this.onClickDeleteCollection(event.target.dataset.collectionId);
                     break;
             }
         });
@@ -437,12 +437,12 @@ export class AdminView {
         Utils.getElement('#choose-items-per-page').addEventListener('change', (event) => {
             event.preventDefault();
 
-            const searchTerm = Utils.getElement('#search-view').value;
+            const searchTerm = Utils.getElement('#search-collection').value;
 
-            // if a term is currently searched, use onKeyUpSearchView callback
+            // if a term is currently searched, use onKeyUpSearchCollection callback
             // instead
             if (searchTerm) {
-                this.onKeyUpSearchView({
+                this.onKeyUpSearchCollection({
                     name: searchTerm,
                     itemsPerPage: event.target.value
                 });
@@ -450,7 +450,7 @@ export class AdminView {
                 return;
             }
 
-            this.onChangeChooseItemsPerPage('viewList', {
+            this.onChangeChooseItemsPerPage('collectionList', {
                 page: 1,
                 itemsPerPage: event.target.value
             });
@@ -466,7 +466,7 @@ export class AdminView {
                     return;
                 }
 
-                this.onClickPaginationPage('viewList', {
+                this.onClickPaginationPage('collectionList', {
                     page: event.target.dataset.page,
                     itemsPerPage: Utils.getElement('#choose-items-per-page').value
                 });
@@ -475,29 +475,29 @@ export class AdminView {
     }
 
     /**
-     * Render the details of a view
+     * Render the details of a collection
      *
-     * @param {Object} viewData The data for the given view
+     * @param {Object} collectionData The data for the given collection
      */
-    renderViewDetails(viewData)
+    renderCollectionDetails(collectionData)
     {
         // check if screen has not been changed: if user click on other menu entry
-        if (this.currentScreen !== 'view') {
+        if (this.currentScreen !== 'collection') {
             return ;
         }
 
         Utils.clear(this.output);
 
-        this.output.appendChild(Components.viewDetails(viewData));
+        this.output.appendChild(Components.collectionDetails(collectionData));
 
         // add event listeners -------------------------------------------------
-        Utils.getElement('#view-info-actions').addEventListener('click', (event) => {
+        Utils.getElement('#collection-info-actions').addEventListener('click', (event) => {
             switch (event.target.dataset.action) {
                 case 'save':
-                    this.onClickSaveViewDetails(Utils.getElement('#view-form'));
+                    this.onClickSaveCollectionDetails(Utils.getElement('#collection-form'));
                     break;
                 case 'cancel':
-                    this.onClickCancelViewDetails(event.target.dataset.viewId);
+                    this.onClickCancelCollectionDetails(event.target.dataset.collectionId);
                     break;
             }
         });
@@ -506,13 +506,13 @@ export class AdminView {
             element.addEventListener('click', (event) => {
                 switch (event.target.dataset.action) {
                     case 'remove-content':
-                        this.onClickRemoveContentFromView(
+                        this.onClickRemoveContentFromCollection(
                             this.getCheckedRows('content-list'),
-                            event.currentTarget.dataset.viewId
+                            event.currentTarget.dataset.collectionId
                         );
                         break;
                     case 'add-content':
-                        this.onClickAddContentToView();
+                        this.onClickAddContentToCollection();
                         break;
                 }
             });
@@ -541,19 +541,19 @@ export class AdminView {
     }
 
     /**
-     * Render a view form and attach event listeners
+     * Render a collection form and attach event listeners
      *
-     * @param {?Object} viewData The view data for the form
+     * @param {?Object} collectionData The collection data for the form
      */
-    renderViewForm(viewData)
+    renderCollectionForm(collectionData)
     {
         Utils.clear(this.output);
 
-        if (viewData) {
-            // TODO form to update a view
+        if (collectionData) {
+            // TODO form to update a collection
         }
 
-        this.output.appendChild(Components.viewForm(viewData));
+        this.output.appendChild(Components.collectionForm(collectionData));
     }
 
 
@@ -581,7 +581,7 @@ export class AdminView {
         document.title = 'Administration - Content';
 
         // add event listeners -------------------------------------------------
-        // bind event listener for create view button
+        // bind event listener for create collection button
         Utils.getElement('#new-content').addEventListener('click', (event) => {
             event.preventDefault();
 
@@ -602,7 +602,7 @@ export class AdminView {
     /**
      * Render the list of content
      * 
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collections
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
      */
@@ -615,7 +615,7 @@ export class AdminView {
             return ;
         }
 
-        // remove old view list if present
+        // remove old collection list if present
         const oldDiv = Utils.getElement('#content-list-div');
         if (oldDiv) {
             oldDiv.remove();
@@ -624,7 +624,7 @@ export class AdminView {
         this.output.appendChild(Components.contentListForContent(contentListData, paginationState));
 
         // add event listeners -------------------------------------------------
-        // event listener for clicks on view-list
+        // event listener for clicks on collection-list
         Utils.getElement('#content-list').addEventListener('click', (event) => {
             event.preventDefault();
 
@@ -755,14 +755,14 @@ export class AdminView {
     }
 
     /**
-     * Bind the controller callback to use when the user clicks on 'Views' menu
+     * Bind the controller callback to use when the user clicks on 'Collections' menu
      * entry
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickViewsHome(handler)
+    bindOnClickCollectionsHome(handler)
     {
-        this.onClickViewsHome = handler;
+        this.onClickCollectionsHome = handler;
     }
 
     /**
@@ -811,7 +811,7 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Handlers for clicks on the help view
+     * Handlers for clicks on the help collection
      */
 
     /**
@@ -846,106 +846,106 @@ export class AdminView {
 
 
     /***************************************************************************
-     * Handlers for clicks on the view management screen
+     * Handlers for clicks on the collection management screen
      */
 
     /**
-     * Bind the controller callback to use when the user clicks on 'new-view'
+     * Bind the controller callback to use when the user clicks on 'new-collection'
      * button
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickNewView(handler)
+    bindOnClickNewCollection(handler)
     {
-        this.onClickNewView = handler;
+        this.onClickNewCollection = handler;
     }
 
     /**
      * Bind the controller callback to use when the user type a letter in the
-     * view search field
+     * collection search field
      *
      * @param {function} handler The callback to bind
      */
-    bindOnKeyUpSearchView(handler)
+    bindOnKeyUpSearchCollection(handler)
     {
-        this.onKeyUpSearchView = handler;
+        this.onKeyUpSearchCollection = handler;
     }
 
     /**
-     * Bind the controller callback to use when the user clicks on 'show-view'
+     * Bind the controller callback to use when the user clicks on 'show-collection'
      * button
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickShowView(handler)
+    bindOnClickShowCollection(handler)
     {
-        this.onClickShowView = handler;
+        this.onClickShowCollection = handler;
     }
 
     /**
-     * Bind the controller callback to use when the user clicks on 'edit-view'
+     * Bind the controller callback to use when the user clicks on 'edit-collection'
      * button
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickEditView(handler)
+    bindOnClickEditCollection(handler)
     {
-        this.onClickEditView = handler;
+        this.onClickEditCollection = handler;
     }
 
     /**
-     * Bind the controller callback to use when the user clicks on 'edit-view'
+     * Bind the controller callback to use when the user clicks on 'edit-collection'
      * button
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickDeleteView(handler)
+    bindOnClickDeleteCollection(handler)
     {
-        this.onClickDeleteView = handler;
+        this.onClickDeleteCollection = handler;
     }
 
     /**
      * Bind the controller callback to use when the user clicks on 'save' in
-     * the view details screen
+     * the collection details screen
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickSaveViewDetails(handler)
+    bindOnClickSaveCollectionDetails(handler)
     {
-        this.onClickSaveViewDetails = handler;
+        this.onClickSaveCollectionDetails = handler;
     }
 
     /**
      * Bind the controller callback to use when the user clicks on 'cancel' in
-     * the view details screen
+     * the collection details screen
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickCancelViewDetails(handler)
+    bindOnClickCancelCollectionDetails(handler)
     {
-        this.onClickCancelViewDetails = handler;
+        this.onClickCancelCollectionDetails = handler;
     }
 
     /**
      * Bind the controller callback to use when the user clicks on 'Remove
-     * selected content' from the view details screeen
+     * selected content' from the collection details screeen
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickRemoveContentFromView(handler)
+    bindOnClickRemoveContentFromCollection(handler)
     {
-        this.onClickRemoveContentFromView = handler;
+        this.onClickRemoveContentFromCollection = handler;
     }
 
     /**
      * Bind the controller callback to use when the user clicks on 'Add
-     * content' from the view details screeen
+     * content' from the collection details screeen
      *
      * @param {function} handler The callback to bind
      */
-    bindOnClickAddContentToView(handler)
+    bindOnClickAddContentToCollection(handler)
     {
-        this.onClickAddContentToView = handler;
+        this.onClickAddContentToCollection = handler;
     }
 
 
@@ -1041,27 +1041,27 @@ export class AdminView {
     // -------------------------------------------------------------------------
 
     /**
-     * Render the template associated to viewId within an iframe
+     * Render the template associated to collectionId within an iframe
      *
-     * @param {number} viewId The id of the view. Set to null to only refresh an
+     * @param {number} collectionId The id of the collection. Set to null to only refresh an
      * existing iframe
      *
      * @return {undefined}
      */
-    renderViewTemplate(viewId)
+    renderCollectionTemplate(collectionId)
     {
-        if (!viewId) {
-            // called without viewId when refreshing the iframe, so we get
-            // viewId from existing iframe
-            viewId = Utils.getElement('#visualView').dataset.viewId;
-            Utils.getElement('#visualViewContainer').remove();
+        if (!collectionId) {
+            // called without collectionId when refreshing the iframe, so we get
+            // collectionId from existing iframe
+            collectionId = Utils.getElement('#visualCollection').dataset.collectionId;
+            Utils.getElement('#visualCollectionContainer').remove();
         }
 
-        const div    = Utils.createElement('div', null, 'visualViewContainer');
-        const iframe = Utils.createElement('iframe', null, 'visualView');
+        const div    = Utils.createElement('div', null, 'visualCollectionContainer');
+        const iframe = Utils.createElement('iframe', null, 'visualCollection');
 
-        iframe.dataset.viewId = viewId;
-        iframe.setAttribute('src', `admin/view/visual/${viewId}`);
+        iframe.dataset.collectionId = collectionId;
+        iframe.setAttribute('src', `admin/collection/visual/${collectionId}`);
 
         div.appendChild(iframe);
         this.output.appendChild(div);
@@ -1070,10 +1070,10 @@ export class AdminView {
     /**
      * Render a form to create a new content
      * 
-     * @param {number?} viewId The id of the view for which we want to add a
-     * content or null if we do not want to add it to a view
+     * @param {number?} collectionId The id of the collection for which we want to add a
+     * content or null if we do not want to add it to a collection
      */
-    renderNewContentForm(viewId)
+    renderNewContentForm(collectionId)
     {
         let newContentForm = Utils.getElement('#newContentForm');
 
@@ -1084,13 +1084,13 @@ export class AdminView {
         }
 
         newContentForm.appendChild(Components.newContentForm());
-        newContentForm.dataset.group = 'addContentToView';
+        newContentForm.dataset.group = 'addContentToCollection';
 
         this.output.appendChild(newContentForm);
 
-        if (viewId) {
-            // Create a new content from the view pane
-            Utils.getElement('#submitContentFormButton').dataset.viewId = viewId;
+        if (collectionId) {
+            // Create a new content from the collection pane
+            Utils.getElement('#submitContentFormButton').dataset.collectionId = collectionId;
         }
 
         // add event listener for cancel button
@@ -1104,7 +1104,7 @@ export class AdminView {
      */
     renderContent(content)
     {
-        const parent   = Utils.getElement('#viewFormOutput');
+        const parent   = Utils.getElement('#collectionFormOutput');
         const button   = Utils.createElement('a', 'button', 'useThisContent');
         let contentDiv = Utils.getElement('#contentDisplay');
 
@@ -1113,11 +1113,11 @@ export class AdminView {
             contentDiv.remove();
         }
 
-        contentDiv               = Components.content(content);
-        button.innerHTML         = 'Add to view';
-        button.href              = '#'
-        button.dataset.contentId = content.id;
-        button.dataset.viewId    = Utils.getElement('#contentSuggestion').dataset.viewId;
+        contentDiv                  = Components.content(content);
+        button.innerHTML            = 'Add to collection';
+        button.href                 = '#'
+        button.dataset.contentId    = content.id;
+        button.dataset.collectionId = Utils.getElement('#contentSuggestion').dataset.collectionId;
 
         contentDiv.appendChild(button);
         parent.appendChild(contentDiv);

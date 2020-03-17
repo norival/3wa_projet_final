@@ -138,7 +138,7 @@ export class Components {
         list.appendChild(item);
 
         item           = Utils.createElement('li');
-        item.innerHTML = 'An overview of the site content (number of views, number of contents, ...';
+        item.innerHTML = 'An overcollection of the site content (number of collections, number of contents, ...';
         list.appendChild(item);
 
         div.appendChild(list);
@@ -184,7 +184,7 @@ export class Components {
 
             select.appendChild(option);
         });
-        select.dataset.onScreen = 'viewList';
+        select.dataset.onScreen = 'collectionList';
         li.appendChild(select);
 
         const text = document.createTextNode('entries per page');
@@ -290,35 +290,35 @@ export class Components {
 
 
     /***************************************************************************
-     * Components related to view screen
+     * Components related to collection screen
      **************************************************************************/
 
     /**
-     * Create the view homepage
+     * Create the collection homepage
      *
      * @returns {Element}
      */
-    static viewsHome()
+    static collectionsHome()
     {
-        const outputDiv  = Utils.createElement('div', null, 'viewsHomeDiv');
+        const outputDiv  = Utils.createElement('div', null, 'collectionsHomeDiv');
         const title      = Utils.createElement('h1');
         const toolsList  = Utils.createElement('ul', 'tools');
-        const newView    = Utils.createElement('a', 'button', 'new-view');
-        const viewSearch = Utils.createElement('input', 'search', 'search-view');
+        const newCollection    = Utils.createElement('a', 'button', 'new-collection');
+        const collectionSearch = Utils.createElement('input', 'search', 'search-collection');
 
-        title.innerHTML = 'Views';
+        title.innerHTML = 'Collections';
         outputDiv.appendChild(title);
 
         let li            = Utils.createElement('li');
-        newView.href      = '#';
-        newView.innerHTML = 'Create view';
-        li.appendChild(newView);
+        newCollection.href      = '#';
+        newCollection.innerHTML = 'Create collection';
+        li.appendChild(newCollection);
         toolsList.appendChild(li);
 
         li = Utils.createElement('li');
-        viewSearch.setAttribute('type', 'text');
-        viewSearch.setAttribute('placeholder', 'Search Views');
-        li.appendChild(viewSearch);
+        collectionSearch.setAttribute('type', 'text');
+        collectionSearch.setAttribute('placeholder', 'Search Collections');
+        li.appendChild(collectionSearch);
         toolsList.appendChild(li);
 
         outputDiv.appendChild(toolsList);
@@ -327,22 +327,22 @@ export class Components {
     }
 
     /**
-     * Create a list of available views
+     * Create a list of available collections
      *
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collections
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
      * @returns {Element}
      */
-    static viewList(viewListData, paginationState)
+    static collectionList(collectionListData, paginationState)
     {
-        const outputDiv = Utils.createElement('div', null, 'view-list-div');
-        const table     = Utils.createElement('table', ['adminTable', 'fullWidth'], 'views-list');
+        const outputDiv = Utils.createElement('div', null, 'collection-list-div');
+        const table     = Utils.createElement('table', ['adminTable', 'fullWidth'], 'collections-list');
         const thead     = Utils.createElement('thead');
         const tbody     = Utils.createElement('tbody');
 
         // upper pagination
-        outputDiv.appendChild(this.paginationHead(viewListData.length, paginationState));
+        outputDiv.appendChild(this.paginationHead(collectionListData.length, paginationState));
         outputDiv.appendChild(this.paginationPages(paginationState));
 
         // table header
@@ -365,41 +365,41 @@ export class Components {
         table.appendChild(thead);
 
         // table body
-        viewListData.forEach((viewData) => {
+        collectionListData.forEach((collectionData) => {
             const tr = Utils.createElement('tr');
 
             // first column
             let td     = Utils.createElement('td', 'textCell');
             let strong = Utils.createElement('strong');
 
-            strong.innerHTML = viewData.name;
+            strong.innerHTML = collectionData.name;
             td.appendChild(strong);
 
-            td.appendChild(this.actionButtonList('view', {name: 'viewId', id: viewData.id}));
+            td.appendChild(this.actionButtonList('collection', {name: 'collectionId', id: collectionData.id}));
             tr.appendChild(td);
 
             // second column
             td          = Utils.createElement('td', 'textCell');
             let a       = Utils.createElement('a');
             a.href      = '#';
-            a.innerHTML = viewData.user.email;
+            a.innerHTML = collectionData.user.email;
             td.appendChild(a);
             tr.appendChild(td);
 
             // third column
             td             = Utils.createElement('td', 'numCell');
             let time       = Utils.createElement('time');
-            time.innerHTML = Utils.formatDate(viewData.created_at);
-            time.setAttribute('datetime', viewData.created_at);
+            time.innerHTML = Utils.formatDate(collectionData.created_at);
+            time.setAttribute('datetime', collectionData.created_at);
             td.appendChild(time);
             tr.appendChild(td);
 
             // fourth column
             td             = Utils.createElement('td', 'numCell');
             time           = Utils.createElement('time');
-            if (viewData.updated_at) {
-                time.innerHTML = Utils.formatDate(viewData.updated_at);
-                time.setAttribute('datetime', viewData.updated_at);
+            if (collectionData.updated_at) {
+                time.innerHTML = Utils.formatDate(collectionData.updated_at);
+                time.setAttribute('datetime', collectionData.updated_at);
             } else {
                 time.innerHTML = 'Never';
                 time.setAttribute('datetime', null);
@@ -420,47 +420,47 @@ export class Components {
     }
 
     /**
-     * Create the view details element
+     * Create the collection details element
      *
-     * @param {Object} viewData The data for the given view
+     * @param {Object} collectionData The data for the given collection
      * @returns {Element}
      */
-    static viewDetails(viewData)
+    static collectionDetails(collectionData)
     {
-        const outputDiv = Utils.createElement('div', null, 'view-details-div');
+        const outputDiv = Utils.createElement('div', null, 'collection-details-div');
         const title     = Utils.createElement('h1');
-        const viewUser  = Utils.createElement('div', 'viewUser');
+        const collectionUser  = Utils.createElement('div', 'collectionUser');
 
         // title ---------------------------------------------------------------
-        title.innerHTML = `${viewData.title} (${viewData.name})`;
+        title.innerHTML = `${collectionData.title} (${collectionData.name})`;
         outputDiv.appendChild(title);
 
         // user informations ---------------------------------------------------
         let a       = Utils.createElement('a');
         a.href      = '#';
-        a.innerHTML = `User: ${viewData.user.email}`;
-        viewUser.appendChild(a);
-        outputDiv.appendChild(viewUser);
+        a.innerHTML = `User: ${collectionData.user.email}`;
+        collectionUser.appendChild(a);
+        outputDiv.appendChild(collectionUser);
 
-        // view informations ---------------------------------------------------
+        // collection informations ---------------------------------------------------
         let section = Utils.createElement('section', 'adminSection');
         let secTitle = Utils.createElement('h2');
 
         secTitle.innerHTML = 'Informations';
         section.appendChild(secTitle);
 
-        // adds form for view informations
-        section.appendChild(this.viewInformationsForm(viewData));
+        // adds form for collection informations
+        section.appendChild(this.collectionInformationsForm(collectionData));
 
         // add button list: 'Save' and 'Cancel'
-        let ul = Utils.createElement('ul', 'buttonList', 'view-info-actions');
+        let ul = Utils.createElement('ul', 'buttonList', 'collection-info-actions');
 
         let li           = Utils.createElement('li');
         a                = Utils.createElement('a', ['button', 'save', 'big']);
         a.href           = '#';
         a.innerHTML      = 'Save';
         a.dataset.action = 'save';
-        a.dataset.viewId = viewData.id;
+        a.dataset.collectionId = collectionData.id;
         li.appendChild(a);
         ul.appendChild(li);
 
@@ -475,11 +475,11 @@ export class Components {
         section.appendChild(ul);
         outputDiv.appendChild(section);
 
-        // view content --------------------------------------------------------
+        // collection content --------------------------------------------------------
         section        = Utils.createElement('section', 'adminSection');
         secTitle       = Utils.createElement('h2');
         let buttonList = Utils.createElement('ul', ['buttonList', 'content-list-actions']);
-        buttonList.dataset.viewId = viewData.id;
+        buttonList.dataset.collectionId = collectionData.id;
 
         secTitle.innerHTML = 'Content';
         section.appendChild(secTitle);
@@ -499,10 +499,10 @@ export class Components {
         section.appendChild(buttonList);
 
         // content list
-        section.appendChild(this.contentListForContent(viewData.viewContents));
+        section.appendChild(this.contentListForContent(collectionData.collectionContents));
 
         buttonList = Utils.createElement('ul', ['buttonList', 'content-list-actions']);
-        buttonList.dataset.viewId = viewData.id;
+        buttonList.dataset.collectionId = collectionData.id;
 
         li     = Utils.createElement('li');
         button = this.button('delete', null, 'Remove selected content');
@@ -525,24 +525,24 @@ export class Components {
     }
 
     /**
-     * Create a form to edit/create view informations
+     * Create a form to edit/create collection informations
      *
      * @returns {Element} The form
      */
-    static viewInformationsForm(viewData)
+    static collectionInformationsForm(collectionData)
     {
-        const form      = Utils.createElement('form', 'adminForm', 'view-form');
+        const form      = Utils.createElement('form', 'adminForm', 'collection-form');
         const inputList = Utils.createElement('ul', 'inputList');
 
-        // view name field
+        // collection name field
         let li          = Utils.createElement('li');
         let label       = Utils.createElement('label');
-        let input       = Utils.createElement('input', null, 'view-name');
-        input.value     = viewData.name;
+        let input       = Utils.createElement('input', null, 'collection-name');
+        input.value     = collectionData.name;
         label.innerHTML = 'Name';
         input.setAttribute('name', 'name');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View name');
+        input.setAttribute('placeholder', 'Collection name');
         input.setAttribute('required', true);
         // form validation
         input.dataset.required  = true;
@@ -553,15 +553,15 @@ export class Components {
         li.appendChild(input);
         inputList.appendChild(li);
 
-        // view title field
+        // collection title field
         li              = Utils.createElement('li');
         label           = Utils.createElement('label');
-        input           = Utils.createElement('input', null, 'view-title');
+        input           = Utils.createElement('input', null, 'collection-title');
         label.innerHTML = 'Title';
-        input.value     = viewData.title;
+        input.value     = collectionData.title;
         input.setAttribute('name', 'title');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View title');
+        input.setAttribute('placeholder', 'Collection title');
         input.setAttribute('required', true);
         // form validation
         input.dataset.required  = true;
@@ -572,15 +572,15 @@ export class Components {
         li.appendChild(input);
         inputList.appendChild(li);
 
-        // view description field
+        // collection description field
         li              = Utils.createElement('li');
         label           = Utils.createElement('label');
-        input           = Utils.createElement('textarea', null, 'view-description');
-        input.value     = viewData.description;
+        input           = Utils.createElement('textarea', null, 'collection-description');
+        input.value     = collectionData.description;
         label.innerHTML = 'Description';
         input.setAttribute('name', 'description');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View description');
+        input.setAttribute('placeholder', 'Collection description');
         // form validation
         input.dataset.required  = false;
         input.dataset.type      = 'text';
@@ -591,73 +591,73 @@ export class Components {
         inputList.appendChild(li);
 
         form.appendChild(inputList);
-        form.dataset.viewId = viewData.id;
+        form.dataset.collectionId = collectionData.id;
 
         return form;
     }
 
     /**
-     * Create a form to modify a View or create a new one
+     * Create a form to modify a Collection or create a new one
      *
-     * @param {?object} viewData The view data
+     * @param {?object} collectionData The collection data
      *
      * @returns {Element}
      */
-    static viewForm(viewData)
+    static collectionForm(collectionData)
     {
-        const outputDiv = Utils.createElement('div', null, 'view-form-div');
+        const outputDiv = Utils.createElement('div', null, 'collection-form-div');
         const title     = Utils.createElement('h1');
-        const form      = Utils.createElement('form', 'adminForm', 'view-form');
+        const form      = Utils.createElement('form', 'adminForm', 'collection-form');
 
         let fieldset  = Utils.createElement('fieldset');
         let legend    = Utils.createElement('legend');
         let inputList = Utils.createElement('ul', 'inputList');
 
-        if (viewData) {
-            // TODO do something when updating an existing view
+        if (collectionData) {
+            // TODO do something when updating an existing collection
         }
 
-        title.innerHTML = 'Create a new view';
+        title.innerHTML = 'Create a new collection';
         outputDiv.appendChild(title);
 
-        // view informations fieldset ------------------------------------------
-        legend.innerHTML = 'View informations';
+        // collection informations fieldset ------------------------------------------
+        legend.innerHTML = 'Collection informations';
         fieldset.appendChild(legend);
 
-        // view name field
+        // collection name field
         let li            = Utils.createElement('li');
         let label         = Utils.createElement('label');
-        let input         = Utils.createElement('input', null, 'view-name');
+        let input         = Utils.createElement('input', null, 'collection-name');
         label.innerHTML   = 'Name';
-        input.setAttribute('name', 'viewName');
+        input.setAttribute('name', 'collectionName');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View name');
+        input.setAttribute('placeholder', 'Collection name');
         input.setAttribute('required', true);
         li.appendChild(label);
         li.appendChild(input);
         inputList.appendChild(li);
 
-        // view title field
+        // collection title field
         li                = Utils.createElement('li');
         label             = Utils.createElement('label');
-        input             = Utils.createElement('input', null, 'view-title');
+        input             = Utils.createElement('input', null, 'collection-title');
         label.innerHTML   = 'Title';
-        input.setAttribute('name', 'viewTitle');
+        input.setAttribute('name', 'collectionTitle');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View title');
+        input.setAttribute('placeholder', 'Collection title');
         input.setAttribute('required', true);
         li.appendChild(label);
         li.appendChild(input);
         inputList.appendChild(li);
 
-        // view description field
+        // collection description field
         li                = Utils.createElement('li');
         label             = Utils.createElement('label');
-        input             = Utils.createElement('textarea', null, 'view-description');
+        input             = Utils.createElement('textarea', null, 'collection-description');
         label.innerHTML   = 'Description';
-        input.setAttribute('name', 'viewDescription');
+        input.setAttribute('name', 'collectionDescription');
         input.setAttribute('type', 'text');
-        input.setAttribute('placeholder', 'View description');
+        input.setAttribute('placeholder', 'Collection description');
         li.appendChild(label);
         li.appendChild(input);
         inputList.appendChild(li);
@@ -665,13 +665,13 @@ export class Components {
         fieldset.appendChild(inputList);
         form.appendChild(fieldset);
 
-        // view content fieldset -----------------------------------------------
+        // collection content fieldset -----------------------------------------------
         fieldset = Utils.createElement('fieldset');
         legend   = Utils.createElement('legend');
         let ul   = Utils.createElement('ul');
         let a    = Utils.createElement('a', 'button', 'add-content');
 
-        legend.innerHTML = 'View content';
+        legend.innerHTML = 'Collection content';
         fieldset.appendChild(legend);
 
         li          = Utils.createElement('li');
@@ -682,7 +682,7 @@ export class Components {
         fieldset.appendChild(ul);
 
         // add content list
-        const contentListData = viewData ? viewData.content : null;
+        const contentListData = collectionData ? collectionData.content : null;
         fieldset.appendChild(this.contentList(contentListData));
 
         form.appendChild(fieldset);
@@ -754,7 +754,7 @@ export class Components {
      *
      * @param {?Object} contentListData The content list
      * @returns {Element}
-     * static contentList(contentList, id, forViewScreen = false)
+     * static contentList(contentList, id, forCollectionScreen = false)
      */
     static contentList(contentListData)
     {
@@ -791,9 +791,9 @@ export class Components {
 
         return table;
     }
-    static contentListForView(contentListData)
+    static contentListForCollection(contentListData)
     {
-        // TODO refacto: 2 separate methods for content list in view screen or
+        // TODO refacto: 2 separate methods for content list in collection screen or
         // content screen
         return this.contentList(contentListData);
     }
@@ -851,7 +851,7 @@ export class Components {
         contentListData.forEach((contentData) => {
             if (!contentData.user) {
                 // check if content data is nested (ie when it comes from a
-                // join in view table) and un-nest it
+                // join in collection table) and un-nest it
                 contentData = contentData.content;
             }
 
@@ -1055,22 +1055,22 @@ export class Components {
     /**
      * Create form to ask which type of content must be added
      *
-     * @param {integer} viewId The id of the view for which we want to add a content
+     * @param {integer} collectionId The id of the collection for which we want to add a content
      * @returns {Element}
      */
-    static askNewContentForm(viewId)
+    static askNewContentForm(collectionId)
     {
         const addContentDiv = Utils.createElement('div', null, 'askNewContentType');
         const ul = Utils.createElement('ul');
 
         // set data-group: used to easily remove groups of divs
-        addContentDiv.dataset.group = 'addContentToView';
+        addContentDiv.dataset.group = 'addContentToCollection';
 
         let li           = Utils.createElement('li');
         let a            = Utils.createElement('a', 'button', 'createContent');
         a.text           = 'Create new Content';
         a.href           = "#";
-        a.dataset.viewId = viewId;
+        a.dataset.collectionId = collectionId;
         li.appendChild(a);
         ul.appendChild(li);
 
@@ -1078,7 +1078,7 @@ export class Components {
         a                = Utils.createElement('a', 'button', 'useContent');
         a.text           = 'Use existing Content';
         a.href           = "#";
-        a.dataset.viewId = viewId;
+        a.dataset.collectionId = collectionId;
         li.appendChild(a);
         ul.appendChild(li);
 
@@ -1103,7 +1103,7 @@ export class Components {
         let article = Utils.createElement('article', 'content');
 
         div.dataset.contentId = content.id;
-        div.dataset.group     = 'addContentToView';
+        div.dataset.group     = 'addContentToCollection';
 
         title.innerHTML = 'Informations';
         article.appendChild(title);

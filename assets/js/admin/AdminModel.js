@@ -38,67 +38,67 @@ export class AdminModel {
 
 
     /***************************************************************************
-     * Methods related to view data
+     * Methods related to collection data
      */
 
     /**
-     * Fetch the list of available views
+     * Fetch the list of available collections
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
      */
-    listViews(pagination)
+    listCollections(pagination)
     {
         // build request URL
-        const url = '/view/list?' + new URLSearchParams(pagination);
+        const url = '/collection/list?' + new URLSearchParams(pagination);
 
-        // fetch data from website and store the promise in this.views
+        // fetch data from website and store the promise in this.collections
         fetch(url)
             .then(response => response.json())
             .then(paginator => {
-                // tell the controller to refresh the view
-                this.onViewsListDataReceived(paginator.results, paginator.state);
+                // tell the controller to refresh the collection
+                this.onCollectionsListDataReceived(paginator.results, paginator.state);
             });
     }
 
     /**
-     * Search views from the database
+     * Search collections from the database
      *
      * @param {Object} query The query to look for
      */
-    searchView(query)
+    searchCollection(query)
     {
-        fetch('/view/search?' + new URLSearchParams(query))
+        fetch('/collection/search?' + new URLSearchParams(query))
             .then(response => response.json())
             .then(paginator => {
-                this.onViewsListDataReceived(paginator.results, paginator.state);
+                this.onCollectionsListDataReceived(paginator.results, paginator.state);
             });
     }
 
     /**
-     * Get view data from the database and call the given callback
+     * Get collection data from the database and call the given callback
      *
-     * @param {int} viewId The id of the view to get
+     * @param {int} collectionId The id of the collection to get
      * @param {function} callback The function to call when data has been
      * received
      */
-    getViewData(viewId, callback)
+    getCollectionData(collectionId, callback)
     {
-        fetch(`/view/${viewId}`)
+        fetch(`/collection/${collectionId}`)
             .then(response => response.json())
-            .then(viewData => {
-                callback(viewData);
+            .then(collectionData => {
+                callback(collectionData);
             });
     }
 
     /**
-     * Submit the form to update a view
+     * Submit the form to update a collection
      *
-     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {number} collectionId The id of the collection for which the form is submitted
      * @param {object} formData The formated form data
      */
-    submitViewForm(viewId, formData, callback)
+    submitCollectionForm(collectionId, formData, callback)
     {
-        fetch('admin/view/' + viewId, {
+        fetch('admin/collection/' + collectionId, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -118,15 +118,15 @@ export class AdminModel {
     }
 
     /**
-     * Remove content from the view specified with viewId
+     * Remove content from the collection specified with collectionId
      *
      * @param {number[]} contentIds The ids of the content to remove
-     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {number} collectionId The id of the collection for which the form is submitted
      * @param {function} callback The function to call when response has been received
      */
-    removeContentFromView(contentIds, viewId, callback)
+    removeContentFromCollection(contentIds, collectionId, callback)
     {
-        fetch(`admin/view/${viewId}/content`, {
+        fetch(`admin/collection/${collectionId}/content`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -135,7 +135,7 @@ export class AdminModel {
             body: JSON.stringify(contentIds)
         })
             .then(() => {
-                callback(viewId);
+                callback(collectionId);
             })
     }
 
@@ -145,7 +145,7 @@ export class AdminModel {
      */
 
     /**
-     * Fetch the list of available views
+     * Fetch the list of available collections
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
      * @param {function} callback The function to call when response has been received
@@ -155,12 +155,12 @@ export class AdminModel {
         // build request URL
         const url = '/content/list?' + new URLSearchParams(pagination);
 
-        // fetch data from website and store the promise in this.views
+        // fetch data from website and store the promise in this.collections
         fetch(url)
             .then(response => response.json())
             .then(paginator => {
                 console.log(paginator);
-                // tell the controller to refresh the view
+                // tell the controller to refresh the collection
                 callback(paginator.results, paginator.state);
             });
     }
@@ -204,18 +204,18 @@ export class AdminModel {
 
 
     /***************************************************************************
-     * Handlers related to view data
+     * Handlers related to collection data
      */
 
     /**
-     * Bind the controller callback to use when the list of view has been
+     * Bind the controller callback to use when the list of collection has been
      * loaded
      *
      * @param {function} callback The callback to bind
      */
-    bindViewsListDataReceived(callback)
+    bindCollectionsListDataReceived(callback)
     {
-        this.onViewsListDataReceived = callback;
+        this.onCollectionsListDataReceived = callback;
     }
 
 
@@ -240,20 +240,20 @@ export class AdminModel {
     // -------------------------------------------------------------------------
 
     /**
-     * Add a content to a view
+     * Add a content to a collection
      *
-     * @param {number} viewId The id of the view for which the form is submitted
+     * @param {number} collectionId The id of the collection for which the form is submitted
      * @param {object} formData The formated form data
      * @param {number} contentId The id of the content that is added
      */
-    addContentToView(viewId, formData, contentId)
+    addContentToCollection(collectionId, formData, contentId)
     {
-        formData.viewContents.push({
-            view:    viewId,
+        formData.collectionContents.push({
+            collection:    collectionId,
             content: contentId
         });
 
-        fetch('admin/view/' + viewId, {
+        fetch('admin/collection/' + collectionId, {
             method: 'PATCH',
             headers: {
                 'Accept': 'application/json',
@@ -268,7 +268,7 @@ export class AdminModel {
                 // TODO Clear the form
                 console.log(json)
                 console.log('data sent')
-                this.onViewDataChanged(JSON.parse(json));
+                this.onCollectionDataChanged(JSON.parse(json));
                 // this.form.remove();
             })
     }
@@ -308,20 +308,21 @@ export class AdminModel {
                 console.log(data)
                 if (visual) {
                     // call callback to refresh iframe
-                    this.onVisualViewChanged();
+                    this.onVisualCollectionChanged();
                 }
             })
     }
 
     /**
-     * Submit form to create a new content and add it to a view if viewId and
-     * viewData are supplied
+     * Submit form to create a new content and add it to a collection if
+     * collectionId and
+     * collectionData are supplied
      *
      * @param {Object} contentData Data for the new content
-     * @param {?number} viewId Null to create a new content only or the id of
-     * the view to which the new content must be added
+     * @param {?number} collectionId Null to create a new content only or the id of
+     * the collection to which the new content must be added
      */
-    submitNewContentForm(contentData, viewId = null)
+    submitNewContentForm(contentData, collectionId = null)
     {
         fetch('admin/content', {
                 method: 'POST',
@@ -338,9 +339,9 @@ export class AdminModel {
                 // TODO Clear the form
                 const contentId = JSON.parse(json);
 
-                if (viewId) {
-                    // if viewId was supplied, refresh the view screen
-                    this.onContentCreatedForView(contentId);
+                if (collectionId) {
+                    // if collectionId was supplied, refresh the collection screen
+                    this.onContentCreatedForCollection(contentId);
                 }
             })
     }
@@ -405,12 +406,12 @@ export class AdminModel {
 
     /**
      * Bind the controller callback to use when the a content have been created
-     * for a view and the view must be updated
+     * for a collection and the collection must be updated
      *
      * @param {function} callback The callback to bind
      */
-    bindContentCreatedForView(callback)
+    bindContentCreatedForCollection(callback)
     {
-        this.onContentCreatedForView = callback;
+        this.onContentCreatedForCollection = callback;
     }
 }

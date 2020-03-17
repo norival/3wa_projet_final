@@ -1,17 +1,17 @@
 /*
  * DONE remove a content from 
- * DONE remove a content from a view
+ * DONE remove a content from a collection
  * DONE JS form validation
- * DONE When adding content to a view, only update screen, do not submit the form
+ * DONE When adding content to a collection, only update screen, do not submit the form
  * TODO manage form errors from php
  * TODO Assets view
  * TODO Users view
- * TODO Create a new view
+ * TODO Create a new collection
  * TODO Add inner content in content modification form
  *
  * NOTE For model methods that can be called to fill different part of the View
  * (for example teh content list can be rendered in the content screen or the
- * view screen), I could set an argument 'callback', so it could use a
+ * collection screen), I could set an argument 'callback', so it could use a
  * different callback each time
  */
 
@@ -41,7 +41,7 @@ export class AdminController {
         // bind event handlers for view events ---------------------------------
         // events for clicks on navigation menu
         this.view.bindOnClickHomePage(this.handleClickHomePage);
-        this.view.bindOnClickViewsHome(this.handleClickViewsHome);
+        this.view.bindOnClickCollectionsHome(this.handleClickCollectionsHome);
         this.view.bindOnClickContentHome(this.handleClickContentHome);
         this.view.bindOnClickAssetsHome(this.handleClickAssetsHome);
         this.view.bindOnClickUsersHome(this.handleClickUsersHome);
@@ -59,16 +59,16 @@ export class AdminController {
         this.view.bindOnChangeChooseItemsPerPage(this.onChangeChooseItemsPerPage);
         this.view.bindOnClickPaginationPage(this.onClickPaginationPage);
 
-        // views related events
-        this.view.bindOnClickNewView(this.onClickNewView);
-        this.view.bindOnKeyUpSearchView(this.onKeyUpSearchView);
-        this.view.bindOnClickShowView(this.onClickShowView);
-        this.view.bindOnClickEditView(this.onClickEditView);
-        this.view.bindOnClickDeleteView(this.onClickDeleteView);
-        this.view.bindOnClickSaveViewDetails(this.onClickSaveViewDetails);
-        this.view.bindOnClickCancelViewDetails(this.onClickCancelViewDetails);
-        this.view.bindOnClickRemoveContentFromView(this.onClickRemoveContentFromView);
-        this.view.bindOnClickAddContentToView(this.onClickAddContentToView);
+        // collections related events
+        this.view.bindOnClickNewCollection(this.onClickNewCollection);
+        this.view.bindOnKeyUpSearchCollection(this.onKeyUpSearchCollection);
+        this.view.bindOnClickShowCollection(this.onClickShowCollection);
+        this.view.bindOnClickEditCollection(this.onClickEditCollection);
+        this.view.bindOnClickDeleteCollection(this.onClickDeleteCollection);
+        this.view.bindOnClickSaveCollectionDetails(this.onClickSaveCollectionDetails);
+        this.view.bindOnClickCancelCollectionDetails(this.onClickCancelCollectionDetails);
+        this.view.bindOnClickRemoveContentFromCollection(this.onClickRemoveContentFromCollection);
+        this.view.bindOnClickAddContentToCollection(this.onClickAddContentToCollection);
 
         // content related events
         this.view.bindOnClickNewContent(this.onClickNewContent);
@@ -82,19 +82,19 @@ export class AdminController {
         // help related events
         this.model.bindHelpDataReceived(this.onHelpDataReceived);
 
-        // views related events
-        this.model.bindViewsListDataReceived(this.onViewsListDataReceived);
+        // collections related events
+        this.model.bindCollectionsListDataReceived(this.onCollectionsListDataReceived);
 
         // content related events
         this.model.bindContentListDataReceived(this.onContentListDataReceived);
 
-        // this.model.bindViewDataChanged(this.onViewDataChanged);
-        // this.model.bindVisualViewChanged(this.onVisualViewChanged);
+        // this.model.bindCollectionDataChanged(this.onCollectionDataChanged);
+        // this.model.bindVisualCollectionChanged(this.onVisualCollectionChanged);
         // this.model.bindContentListChanged(this.onContentListChanged);
         // this.model.bindContentFormChanged(this.onContentFormChanged);
         // this.model.bindContentSuggestionChanged(this.onContentSuggestionChanged);
         // this.model.bindContentReceived(this.onContentReceived);
-        // this.model.bindContentCreatedForView(this.onContentCreatedForView);
+        // this.model.bindContentCreatedForCollection(this.onContentCreatedForCollection);
 
         // render the home page
         // this.handleClickHomePage();
@@ -102,7 +102,7 @@ export class AdminController {
 
 
     /***************************************************************************
-     * Handlers for View events
+     * Handlers for Collection events
     ***************************************************************************/
 
     // handlers for navigation menu --------------------------------------------
@@ -120,15 +120,15 @@ export class AdminController {
     }
 
     /**
-     * Handle click on the 'Views' menu entry
+     * Handle click on the 'Collections' menu entry
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
-     * @callback AdminController~handleClickViewsHome
+     * @callback AdminController~handleClickCollectionsHome
      */
-    handleClickViewsHome = (pagination) => {
-        this.view.renderViewsHome();
-        this.model.listViews(pagination);
-        this.model.getHelpData('en', 'view');
+    handleClickCollectionsHome = (pagination) => {
+        this.view.renderCollectionsHome();
+        this.model.listCollections(pagination);
+        this.model.getHelpData('en', 'collection');
     }
 
     /**
@@ -206,8 +206,8 @@ export class AdminController {
      */
     onChangeChooseItemsPerPage = (screen, paginationState) => {
         switch (screen) {
-            case 'viewList':
-                this.model.listViews(paginationState);
+            case 'collectionList':
+                this.model.listCollections(paginationState);
                 break;
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
@@ -222,8 +222,8 @@ export class AdminController {
      */
     onClickPaginationPage = (screen, paginationState) => {
         switch (screen) {
-            case 'viewList':
-                this.model.listViews(paginationState);
+            case 'collectionList':
+                this.model.listCollections(paginationState);
                 break;
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
@@ -232,69 +232,69 @@ export class AdminController {
     }
 
 
-    // handlers for views related events ---------------------------------------
+    // handlers for collections related events ---------------------------------------
 
     /**
-     * Handle click on the 'new-view' button
+     * Handle click on the 'new-collection' button
      */
-    onClickNewView = () => {
-        this.view.renderViewForm(null);
+    onClickNewCollection = () => {
+        this.view.renderCollectionForm(null);
     }
 
     /**
-     * Handle key press on search view input
+     * Handle key press on search collection input
      *
      * @param {Object} query The query
      */
-    onKeyUpSearchView = (query) => {
-        this.model.searchView(query);
+    onKeyUpSearchCollection = (query) => {
+        this.model.searchCollection(query);
     }
 
     /**
-     * Handle click on the 'show-view' button
+     * Handle click on the 'show-collection' button
      *
-     * @param {int} viewId The id of the view to edit
+     * @param {int} collectionId The id of the collection to edit
      */
-    onClickShowView = (viewId) => {
-        this.model.getViewData(viewId, this.onViewDataReceivedForViewScreen);
+    onClickShowCollection = (collectionId) => {
+        this.model.getCollectionData(collectionId, this.onCollectionDataReceivedForCollectionScreen);
     }
 
     /**
-     * Handle click on the 'edit-view' button
+     * Handle click on the 'edit-collection' button
      *
-     * @param {int} viewId The id of the view to edit
+     * @param {int} collectionId The id of the collection to edit
      */
-    onClickEditView = (viewId) => {
+    onClickEditCollection = (collectionId) => {
         // TODO
-        console.log(`Editing ${viewId}`);
+        console.log(`Editing ${collectionId}`);
     }
 
     /**
-     * Handle click on the 'delete-view' button
+     * Handle click on the 'delete-collection' button
      *
-     * @param {int} viewId The id of the view to delete
+     * @param {int} collectionId The id of the collection to delete
      */
-    onClickDeleteView = (viewId) => {
+    onClickDeleteCollection = (collectionId) => {
         // TODO
-        console.log(`Deleting ${viewId}`);
+        console.log(`Deleting ${collectionId}`);
     }
 
     /**
-     * Handle click on the 'save' button in view details
+     * Handle click on the 'save' button in collection details
      *
      * @param {Element} form The form element to get data from
      */
-    onClickSaveViewDetails = (form) => {
+    onClickSaveCollectionDetails = (form) => {
         // run form validation
         const formValidator = new FormValidator(form);
         formValidator.validate();
 
         if (formValidator.isValid) {
             // if the form is valid, submit the data to the server
-            this.model.submitViewForm(
-                form.dataset.viewId,
-                this.view.getViewFormData(form),
-                this.onViewFormSubmitted
+            this.model.submitCollectionForm(
+                form.dataset.collectionId,
+                this.view.getCollectionFormData(form),
+                this.onCollectionFormSubmitted
             );
 
             return ;
@@ -305,30 +305,30 @@ export class AdminController {
     }
 
     /**
-     * Handle click on the 'cancel' button in view details
+     * Handle click on the 'cancel' button in collection details
      */
-    onClickCancelViewDetails = () => {
-        this.handleClickViewsHome();
+    onClickCancelCollectionDetails = () => {
+        this.handleClickCollectionsHome();
     }
 
     /**
-     * Handle click on the 'Remove selected content' button in view details
+     * Handle click on the 'Remove selected content' button in collection details
      *
-     * @param {[int]} contentIds An array of content ids to remove from the view
-     * @param {int} viewId The id of the view from which contents should be removed
+     * @param {[int]} contentIds An array of content ids to remove from the collection
+     * @param {int} collectionId The id of the collection from which contents should be removed
      */
-    onClickRemoveContentFromView = (contentIds, viewId) => {
+    onClickRemoveContentFromCollection = (contentIds, collectionId) => {
         if (contentIds.length > 0) {
             // TODO ask confirmation before removing contents
-            this.model.removeContentFromView(contentIds, viewId, this.onClickShowView);
+            this.model.removeContentFromCollection(contentIds, collectionId, this.onClickShowCollection);
         }
     }
 
     /**
-     * Handle click on the 'Add content' button in view details
+     * Handle click on the 'Add content' button in collection details
      */
-    onClickAddContentToView = () => {
-        console.log('add content to view');
+    onClickAddContentToCollection = () => {
+        console.log('add content to collection');
     }
 
 
@@ -355,7 +355,7 @@ export class AdminController {
     /**
      * Handle click on the 'show-content' button
      *
-     * @param {int} contentId The id of the view to edit
+     * @param {int} contentId The id of the collection to edit
      */
     onClickShowContent = (contentId) => {
         console.log(`Showing ${contentId}`);
@@ -364,7 +364,7 @@ export class AdminController {
     /**
      * Handle click on the 'edit-content' button
      *
-     * @param {int} contentId The id of the view to edit
+     * @param {int} contentId The id of the collection to edit
      */
     onClickEditContent = (contentId) => {
         console.log(`Editing ${contentId}`);
@@ -373,7 +373,7 @@ export class AdminController {
     /**
      * Handle click on the 'delete-content' button
      *
-     * @param {int} contentId The id of the view to delete
+     * @param {int} contentId The id of the collection to delete
      */
     onClickDeleteContent = (contentId) => {
         console.log(`Deleting ${contentId}`);
@@ -400,49 +400,49 @@ export class AdminController {
 
 
     /***************************************************************************
-     * Handlers related to view data
+     * Handlers related to collection data
      */
 
     /**
-     * Call this method from the model when the list of view has been loaded.
+     * Call this method from the model when the list of collection has been loaded.
      * 
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collection
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
-     * @callback AdminController~onViewDataChanged
+     * @callback AdminController~onCollectionDataChanged
      */
-    onViewsListDataReceived = (viewListData, paginationState) => {
-        this.view.renderViewsList(viewListData, paginationState);
+    onCollectionsListDataReceived = (collectionListData, paginationState) => {
+        this.view.renderCollectionsList(collectionListData, paginationState);
     }
 
     /**
-     * Call this method from the model when the data for a specific view has
-     * been received and must be displayed in the view screen
+     * Call this method from the model when the data for a specific collection has
+     * been received and must be displayed in the collection screen
      * 
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collections
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
-     * @callback AdminController~onViewDataChanged
+     * @callback AdminController~onCollectionDataChanged
      */
-    onViewDataReceivedForViewScreen = (viewData) => {
-        this.view.renderViewDetails(viewData);
+    onCollectionDataReceivedForCollectionScreen = (collectionData) => {
+        this.view.renderCollectionDetails(collectionData);
     }
 
     /**
-     * Call this method when the view form has been submitted by the Model
+     * Call this method when the collection form has been submitted by the Model
      *
      * @param {Response} response The response
      */
-    onViewFormSubmitted = (response) => {
+    onCollectionFormSubmitted = (response) => {
         // console.log(response);
         if (!response.ok) {
             // TODO handle server errors
             return ;
         }
 
-        this.view.flashBag.push('The view has been updated!');
-        this.view.renderViewsHome();
-        this.model.listViews();
+        this.view.flashBag.push('The collection has been updated!');
+        this.view.renderCollectionsHome();
+        this.model.listCollections();
     }
 
 
@@ -453,10 +453,10 @@ export class AdminController {
     /**
      * Call this method from the model when the list of content has been loaded.
      * 
-     * @param {Object} viewListData The list of views
+     * @param {Object} collectionListData The list of collections
      * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
      *      state of the pagination
-     * @callback AdminController~onViewDataChanged
+     * @callback AdminController~onCollectionDataChanged
      */
     onContentListDataReceived = (contentListData, paginationState) => {
         this.view.renderContentList(contentListData, paginationState);
@@ -506,7 +506,7 @@ export class AdminController {
             return;
         }
 
-        // send the errors back to the view
+        // send the errors back to the collection
         this.view.renderFormErrors(form, formValidator.errors);
     }
 
@@ -514,11 +514,11 @@ export class AdminController {
      * Handle the submission of a new content
      *
      * @param {Element} form The form to validate
-     * @param {?number} viewId Null to create a new content only or the id of
-     * the view to which the new content must be added
+     * @param {?number} collectionId Null to create a new content only or the id of
+     * the collection to which the new content must be added
      * @callback AdminController~handleClickSubmitNewContent
      */
-    handleClickSubmitNewContent = (form, viewId = null) => {
+    handleClickSubmitNewContent = (form, collectionId = null) => {
         const formValidator = new FormValidator(form);
 
         formValidator.validate();
@@ -527,13 +527,13 @@ export class AdminController {
             // submit the content
             this.model.submitNewContentForm(
                 this.view.getNewContentFormData(),
-                viewId
+                collectionId
             );
 
             return;
         }
 
-        // send the errors back to the view
+        // send the errors back to the collection
         this.view.renderFormErrors(form, formValidator.errors);
     }
 }
