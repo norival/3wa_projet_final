@@ -1088,49 +1088,6 @@ export class Components {
     }
 
     /**
-     * Create a search content form
-     *
-     * @returns {Element}
-     */
-    static searchContentForm()
-    {
-        const searchContentDiv = Utils.createElement('div', null, 'searchContent');
-        const form             = Utils.createElement('form', null, 'searchContentForm');
-        const input            = Utils.createElement('input');
-
-        searchContentDiv.dataset.group = 'addContentToView';
-
-        form.appendChild(input);
-        searchContentDiv.appendChild(form);
-
-        return searchContentDiv;
-    }
-
-    /**
-     * Create list to display content suggestions
-     *
-     * @param {Array} suggestion An array of content suggestions
-     * @returns {undefined}
-     */
-    static contentSuggestion(suggestion)
-    {
-        const ul = Utils.createElement('ul');
-
-        suggestion.forEach(element => {
-            let li              = Utils.createElement('li');
-            let a               = Utils.createElement('a');
-            a.href              = '#';
-            a.innerHTML         = element.name;
-            a.dataset.contentId = element.id;
-
-            li.appendChild(a);
-            ul.appendChild(li);
-        });
-
-        return ul;
-    }
-
-    /**
      * Create a div to display a content
      *
      * @param {Object} content The content to be displayed

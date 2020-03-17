@@ -1,1 +1,0 @@
-[{"name":"admin","path":"\/admin"},{"name":"content","path":"\/{route}"},{"name":"content_admin","path":"\/admin\/page\/{route}"},{"name":"content_update","path":"\/{route}"},{"name":"content_list","path":"\/admin\/list-content"},{"name":"home","path":"\/"}]

@@ -235,21 +235,9 @@ export class AdminModel {
     }
 
 
-    /***************************************************************************
-     * no refacto yet
-     **************************************************************************/
-
-    // async getViewForm(viewId)
-    // {
-    //     await fetch('/admin/view/form/' + viewId)
-    //         .then(response => response.json())
-    //         .then(json => JSON.parse(json))
-    //         .then(viewData => {
-    //             this.onViewDataChanged(viewData);
-    //         });
-
-    //     return this;
-    // }
+    // -------------------------------------------------------------------------
+    // no refacto yet
+    // -------------------------------------------------------------------------
 
     /**
      * Add a content to a view
@@ -393,26 +381,6 @@ export class AdminModel {
                 console.log('coucou');
                 console.log(response.status);
             })
-    }
-
-    bindViewDataChanged(callback)
-    {
-        this.onViewDataChanged = callback;
-    }
-
-    bindVisualViewChanged(callback)
-    {
-        this.onVisualViewChanged = callback;
-    }
-
-    bindContentListChanged(callback)
-    {
-        this.onContentListChanged = callback;
-    }
-
-    bindContentFormChanged(callback)
-    {
-        this.onContentFormChanged = callback;
     }
 
     /**
