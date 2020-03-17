@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use App\Entity\CollectionAsset;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection as ORMCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AssetRepository")
@@ -137,9 +137,9 @@ class Asset
     }
 
     /**
-     * @return Collection|CollectionAsset[]
+     * @return ORMCollection|CollectionAsset[]
      */
-    public function getCollectionAssets(): Collection
+    public function getCollectionAssets(): ORMCollection
     {
         return $this->collectionAssets;
     }

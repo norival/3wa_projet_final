@@ -140,9 +140,9 @@ class Collection
     }
 
     /**
-     * @return Collection|CollectionContent[]
+     * @return ORMCollection|CollectionContent[]
      */
-    public function getCollectionContents(): Collection
+    public function getCollectionContents(): ORMCollection
     {
         return $this->collectionContents;
     }
@@ -171,9 +171,9 @@ class Collection
     }
 
     /**
-     * @return Collection|CollectionAsset[]
+     * @return ORMCollection|CollectionAsset[]
      */
-    public function getCollectionAssets(): Collection
+    public function getCollectionAssets(): ORMCollection
     {
         return $this->collectionAssets;
     }

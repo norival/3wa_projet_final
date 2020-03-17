@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Entity\CollectionContent;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection as ORMCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -143,9 +143,9 @@ class Content
     }
 
     /**
-     * @return Collection|CollectionContent[]
+     * @return ORMCollection|CollectionContent[]
      */
-    public function getCollectionContents(): Collection
+    public function getCollectionContents(): ORMCollection
     {
         return $this->collectionContents;
     }
