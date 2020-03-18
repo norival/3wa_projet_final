@@ -127,7 +127,7 @@ export class AdminController {
      */
     handleClickCollectionsHome = (pagination) => {
         this.view.renderCollectionsHome();
-        this.model.listCollections(pagination);
+        this.model.listCollections(pagination, this.onCollectionsListDataReceived);
         this.model.getHelpData('en', 'collection');
     }
 
@@ -207,7 +207,7 @@ export class AdminController {
     onChangeChooseItemsPerPage = (screen, paginationState) => {
         switch (screen) {
             case 'collectionList':
-                this.model.listCollections(paginationState);
+                this.model.listCollections(paginationState, this.onCollectionsListDataReceived);
                 break;
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
@@ -223,7 +223,7 @@ export class AdminController {
     onClickPaginationPage = (screen, paginationState) => {
         switch (screen) {
             case 'collectionList':
-                this.model.listCollections(paginationState);
+                this.model.listCollections(paginationState, this.onCollectionsListDataReceived);
                 break;
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
@@ -442,7 +442,7 @@ export class AdminController {
 
         this.view.flashBag.push('The collection has been updated!');
         this.view.renderCollectionsHome();
-        this.model.listCollections();
+        this.model.listCollections(null, this.onCollectionsListDataReceived);
     }
 
 

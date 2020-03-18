@@ -45,8 +45,10 @@ export class AdminModel {
      * Fetch the list of available collections
      *
      * @param {{page: int, itemsPerPage: integer}} pagination Pagination state
+     * @param {function} callback The function to call when data has been
+     * received
      */
-    listCollections(pagination)
+    listCollections(pagination, callback)
     {
         // build request URL
         const url = '/collection/list?' + new URLSearchParams(pagination);
@@ -56,7 +58,7 @@ export class AdminModel {
             .then(response => response.json())
             .then(paginator => {
                 // tell the controller to refresh the collection
-                this.onCollectionsListDataReceived(paginator.results, paginator.state);
+                callback(paginator.results, paginator.state);
             });
     }
 
