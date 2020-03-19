@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Collection;
 use App\Entity\CollectionAsset;
 use App\Entity\CollectionContent;
+use App\Entity\Content;
 use App\Form\CollectionType;
 use App\Model\AssetModel;
 use App\Model\ContentModel;
@@ -242,7 +243,7 @@ class CollectionController extends AbstractController
      *
      * @param  string $id The collection id
      * @param  Request $request The request
-     * @return JsonResponse The 
+     * @return JsonResponse The response
      */
     public function removeContent(Request $request, string $id)
     {
@@ -252,8 +253,8 @@ class CollectionController extends AbstractController
 
         /** @var CollectionContent[] $collectionContents */
         $collectionContents = $this->em->getRepository(CollectionContent::class)->findBy([
-            'collection'    => $id,
-            'content' => $contentIds,
+            'collection' => $id,
+            'content'    => $contentIds,
         ]);
 
         if (!empty($collectionContents)) {
@@ -268,5 +269,44 @@ class CollectionController extends AbstractController
 
         // return success status code and empty body, even if nothing has been deleted
         return new JsonResponse(null, 204);
+    }
+
+    /**
+     * Delete content(s) from the collection
+     *
+     * @Route("/admin/collection/{id}/content", name="collection_add_content", methods="PATCH")
+     *
+     * @param  string $id The collection id
+     * @param  Request $request The request
+     * @return JsonResponse The response
+     */
+    public function addContent(Request $request, string $id)
+    {
+        /** @var Int[] $contentIds */
+        $contentIds = \json_decode($request->getContent(), true);
+
+        /** @var \App\Entity\Collection $collection */
+        $collection = $this->collectionRepository->find($id);
+
+        /** @var \App\Entity\Content[] $contents */
+        $contents = $this->em->getRepository(Content::class)->findBy(['id' => $contentIds]);
+
+        if (empty($contents)) {
+            throw $this->createNotFoundException('No content correspond to the given id(s)');
+        }
+
+        foreach ($contents as $content) {
+            // TODO check if already present
+            // Create a new collectionContent object
+            $collectionContent = new CollectionContent();
+
+            $collectionContent->setContent($content);
+            $collectionContent->setCollection($collection);
+
+            $this->em->persist($collectionContent);
+        }
+        $this->em->flush();
+
+        return new JsonResponse($collection->getId(), 201);
     }
 }
