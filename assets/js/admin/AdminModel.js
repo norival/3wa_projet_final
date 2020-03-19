@@ -141,6 +141,29 @@ export class AdminModel {
             })
     }
 
+    /**
+     * Add a content to a collection
+     *
+     * @param {number} collectionId The id of the collection for which content is added
+     * @param {number[]} contentIds The id(s) of the content(s) added
+     */
+    addContentToCollection(collectionId, contentIds, callback)
+    {
+        console.log(collectionId);
+        fetch(`admin/collection/${collectionId}/content`, {
+            method: 'PATCH',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contentIds)
+        }).then(
+            response => response.json()
+        ).then(collectionId => {
+            callback(collectionId);
+        });
+    }
+
 
     /***************************************************************************
      * Methods related to content data
@@ -161,8 +184,6 @@ export class AdminModel {
         fetch(url)
             .then(response => response.json())
             .then(paginator => {
-                console.log(paginator);
-                // tell the controller to refresh the collection
                 callback(paginator.results, paginator.state);
             });
     }
@@ -171,14 +192,15 @@ export class AdminModel {
      * Search content from the database
      *
      * @param {Object} query The query to look for
+     * @param {function} callback The function to call when response has been received
      * @returns {undefined}
      */
-    searchContent(query)
+    searchContent(query, callback)
     {
         fetch('/content/search?' + new URLSearchParams(query))
             .then(response => response.json())
             .then(paginator => {
-                this.onContentListDataReceived(paginator.results, paginator.state);
+                callback(paginator.results, paginator.state);
             });
     }
 
@@ -225,55 +247,10 @@ export class AdminModel {
      * Handlers related to content data
      */
 
-    /**
-     * Bind the controller callback to use when the list of content has been
-     * loaded
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindContentListDataReceived(callback)
-    {
-        this.onContentListDataReceived = callback
-    }
-
 
     // -------------------------------------------------------------------------
     // no refacto yet
     // -------------------------------------------------------------------------
-
-    /**
-     * Add a content to a collection
-     *
-     * @param {number} collectionId The id of the collection for which the form is submitted
-     * @param {object} formData The formated form data
-     * @param {number} contentId The id of the content that is added
-     */
-    addContentToCollection(collectionId, formData, contentId)
-    {
-        formData.collectionContents.push({
-            collection:    collectionId,
-            content: contentId
-        });
-
-        fetch('admin/collection/' + collectionId, {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(json => {
-                // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
-                console.log(json)
-                console.log('data sent')
-                this.onCollectionDataChanged(JSON.parse(json));
-                // this.form.remove();
-            })
-    }
 
     async getContentForm(contentId)
     {

@@ -711,6 +711,44 @@ export class Components {
         return outputDiv;
     }
 
+    /**
+     * Create a modal window to select content to add to a collection
+     *
+     * @returns {Element} The created element
+     */
+    static addContentToCollection(collectionId)
+    {
+        const modal            = Utils.createElement('div', 'modal', 'add-content-to-collection');
+        const modalContent     = Utils.createElement('div', 'modalContent');
+        const toolsList        = Utils.createElement('ul', 'tools');
+        const title            = Utils.createElement('h3');
+        const collectionSearch = Utils.createElement('input', 'search', 'search-content');
+
+        title.innerHTML = 'Add a content to the collection';
+        modalContent.appendChild(title);
+
+        let li = Utils.createElement('li');
+        collectionSearch.setAttribute('type', 'text');
+        collectionSearch.setAttribute('placeholder', 'Search collection');
+        li.appendChild(collectionSearch);
+        toolsList.appendChild(li);
+        modalContent.appendChild(toolsList);
+
+        const buttonList = Utils.createElement('ul', 'buttonList', 'content-list-actions');
+        const button     = this.button(null, null, 'Add to collection');
+
+        li                              = Utils.createElement('li');
+        button.dataset.action           = 'add-content';
+        buttonList.dataset.collectionId = collectionId;
+        li.appendChild(button);
+        buttonList.appendChild(li);
+
+        modalContent.appendChild(buttonList);
+
+        modal.appendChild(modalContent);
+        return modal;
+    }
+
 
     /***************************************************************************
      * Components related to content

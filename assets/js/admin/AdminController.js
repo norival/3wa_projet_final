@@ -69,6 +69,7 @@ export class AdminController {
         this.view.bindOnClickCancelCollectionDetails(this.onClickCancelCollectionDetails);
         this.view.bindOnClickRemoveContentFromCollection(this.onClickRemoveContentFromCollection);
         this.view.bindOnClickAddContentToCollection(this.onClickAddContentToCollection);
+        this.view.bindOnClickAddSelectedContentToCollection(this.onClickAddSelectedContentToCollection);
 
         // content related events
         this.view.bindOnClickNewContent(this.onClickNewContent);
@@ -86,7 +87,6 @@ export class AdminController {
         this.model.bindCollectionsListDataReceived(this.onCollectionsListDataReceived);
 
         // content related events
-        this.model.bindContentListDataReceived(this.onContentListDataReceived);
 
         // this.model.bindCollectionDataChanged(this.onCollectionDataChanged);
         // this.model.bindVisualCollectionChanged(this.onVisualCollectionChanged);
@@ -212,6 +212,9 @@ export class AdminController {
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
                 break;
+            case 'addToCollection':
+                this.model.listContent(paginationState, this.onContentListDataReceivedForCollection);
+                break;
         }
     }
 
@@ -227,6 +230,9 @@ export class AdminController {
                 break;
             case 'contentList':
                 this.model.listContent(paginationState, this.onContentListDataReceived);
+                break;
+            case 'addToCollection':
+                this.model.listContent(paginationState, this.onContentListDataReceivedForCollection);
                 break;
         }
     }
@@ -326,9 +332,26 @@ export class AdminController {
 
     /**
      * Handle click on the 'Add content' button in collection details
+     *
+     * @param {number} collectionId The id of the collection for which content is added
      */
-    onClickAddContentToCollection = () => {
-        console.log('add content to collection');
+    onClickAddContentToCollection = (collectionId) => {
+        this.view.renderAddContentToCollection(collectionId);
+        this.model.listContent(
+            {page: 1, itemsPerPage: 5},
+            this.onContentListDataReceivedForCollection
+        );
+    }
+
+    /**
+     * Handle click to add selected content to a given collection
+     *
+     * @param {number[]} contentIds The id(s) of the content(s) to add
+     * @param {number} collectionId The id of the collection for which content is added
+     */
+    onClickAddSelectedContentToCollection = (contentIds, collectionId) => {
+        // console.log(contentIds, collectionId);
+        this.model.addContentToCollection(collectionId, contentIds, this.onClickShowCollection);
     }
 
 
@@ -348,8 +371,14 @@ export class AdminController {
      *
      * @param {Object} query The query
      */
-    onKeyUpSearchContent = (query) => {
-        this.model.searchContent(query);
+    onKeyUpSearchContent = (query, screen) => {
+        switch (screen) {
+            case 'contentHome':
+                this.model.searchContent(query, this.onContentListDataReceived);
+                break;
+            case 'addToCollection':
+                this.model.searchContent(query, this.onContentListDataReceivedForCollection);
+        }
     }
 
     /**
@@ -378,7 +407,6 @@ export class AdminController {
     onClickDeleteContent = (contentId) => {
         console.log(`Deleting ${contentId}`);
     }
-
 
 
     /***************************************************************************
@@ -460,6 +488,18 @@ export class AdminController {
      */
     onContentListDataReceived = (contentListData, paginationState) => {
         this.view.renderContentList(contentListData, paginationState);
+    }
+
+    /**
+     * Call this from the model when the content list has been received and we
+     * want to refresh the view to add a content to a collection
+     *
+     * @param {Object} contentListData The list of content
+     * @param {{itemsPerPage: int, numberOfPages: int, page: int, total: int}} paginationState The current
+     *      state of the pagination
+     */
+    onContentListDataReceivedForCollection = (contentListData, paginationState) => {
+        this.view.renderContentListInAddToCollection(contentListData, paginationState);
     }
 
 

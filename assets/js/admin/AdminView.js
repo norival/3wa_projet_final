@@ -243,9 +243,9 @@ export class AdminView {
      * 
      * @returns {number[]} The ids of the selected contents
      */
-    getCheckedRows(tableId)
+    getCheckedRows(tableSelector)
     {
-        const table = document.getElementById(tableId);
+        const table      = document.querySelector(tableSelector);
         const contentIds = [];
 
         table.querySelectorAll('tbody [type="checkbox"]:checked').forEach((element) => {
@@ -507,12 +507,14 @@ export class AdminView {
                 switch (event.target.dataset.action) {
                     case 'remove-content':
                         this.onClickRemoveContentFromCollection(
-                            this.getCheckedRows('content-list'),
+                            this.getCheckedRows('#content-list'),
                             event.currentTarget.dataset.collectionId
                         );
                         break;
                     case 'add-content':
-                        this.onClickAddContentToCollection();
+                        this.onClickAddContentToCollection(
+                            event.currentTarget.dataset.collectionId
+                        );
                         break;
                 }
             });
@@ -556,6 +558,123 @@ export class AdminView {
         this.output.appendChild(Components.collectionForm(collectionData));
     }
 
+    /**
+     * Render the layout for the window to add a content to a view
+     * 
+     * @param {number} contentId The id of the collection
+     */
+    renderAddContentToCollection(collectionId)
+    {
+        // create modal window
+        const modal = Components.addContentToCollection(collectionId);
+        this.output.appendChild(modal);
+
+        // add event listeners -------------------------------------------------
+        // add event listener for search input
+        modal.querySelector('#search-content').addEventListener('keyup', (event) => {
+            event.preventDefault();
+
+            this.onKeyUpSearchContent({
+                name: event.target.value,
+                itemsPerPage: modal.querySelector('#choose-items-per-page').value
+            }, 'addToCollection');
+        });
+
+        // event listener for the 'add selected content' button
+        modal.querySelector('#content-list-actions').addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'add-content':
+                    this.onClickAddSelectedContentToCollection(
+                        this.getCheckedRows('.modalContent #content-list'),
+                        event.currentTarget.dataset.collectionId
+                    );
+                    break;
+            }
+        });
+
+        return;
+    }
+
+    /**
+     * Render or refresh the content list in the window to add a content to the view
+     * 
+     * @param {number} contentId The id of the collection
+     */
+    renderContentListInAddToCollection(contentListData, paginationState)
+    {
+        const modalContent = Utils.getElement('.modalContent');
+        const oldDiv       = modalContent.querySelector('#content-list-div');
+
+        // remove previous content list if present
+        if (oldDiv) {
+            oldDiv.remove();
+        }
+
+        // append the new content list
+        modalContent.appendChild(Components.contentListForContent(contentListData, paginationState));
+
+        // add event listeners -------------------------------------------------
+        // TODO see if possible to make a reusable function for these events
+        // event listener for items per page selector
+        modalContent
+            .querySelector('#choose-items-per-page')
+            .addEventListener( 'change', (event) => {
+                // TODO refacto: this one should be quite easy to put into a reusable method
+
+                // get the currently searched term
+                const searchTerm = modalContent.querySelector('#search-content').value;
+
+                // if a term is currently searched, use onKeyUpSearchContent
+                // callback instead
+                if (searchTerm) {
+                    this.onKeyUpSearchContent(
+                        {
+                            name: searchTerm,
+                            itemsPerPage: event.target.value
+                        },
+                        'addToCollection'
+                    );
+
+                    return;
+                }
+
+                // else use onChangeChooseItemsPerPage
+                this.onChangeChooseItemsPerPage('addToCollection', {
+                    page: 1,
+                    itemsPerPage: event.target.value
+                });
+            });
+
+        // event listener for pagination
+        modalContent.querySelectorAll('.paginationPages').forEach((element) => {
+            element.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                if (!event.target.dataset.page) {
+                    return;
+                }
+
+                this.onClickPaginationPage('addToCollection', {
+                    page: event.target.dataset.page,
+                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                });
+            });
+        });
+
+        // event listener for checkboxes
+        modalContent.querySelector('#content-list').addEventListener('click', (event) => {
+            switch (event.target.dataset.action) {
+                case 'check-all':
+                    this.checkAll(event.target.closest('table'), event.target.checked);
+                    break;
+                default:
+                    if (event.target.closest('tr')) {
+                        this.checkLine(event.target);
+                    }
+            }
+        });
+    }
+
 
     /***************************************************************************
      * Render stuff for content management
@@ -595,7 +714,7 @@ export class AdminView {
             this.onKeyUpSearchContent({
                 name: event.target.value,
                 itemsPerPage: Utils.getElement('#choose-items-per-page').value
-            });
+            }, 'contentHome');
         });
     }
 
@@ -946,6 +1065,17 @@ export class AdminView {
     bindOnClickAddContentToCollection(handler)
     {
         this.onClickAddContentToCollection = handler;
+    }
+
+    /**
+     * Bind the controller callback to call when we want to add selected
+     * content to a collection
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickAddSelectedContentToCollection(handler)
+    {
+        this.onClickAddSelectedContentToCollection = handler;
     }
 
 
