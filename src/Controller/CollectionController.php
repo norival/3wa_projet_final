@@ -297,7 +297,7 @@ class CollectionController extends AbstractController
      * @Route("/admin/collection/{id}/content", name="collection_add_content", methods="PATCH")
      *
      * @param  string $id The collection id
-     * @param  Request $request The request
+     * @param Request $request The request
      * @return JsonResponse The response
      */
     public function addContent(Request $request, string $id)
@@ -328,5 +328,42 @@ class CollectionController extends AbstractController
         $this->em->flush();
 
         return new JsonResponse($collection->getId(), 201);
+    }
+
+    /**
+     * Add a new collection
+     *
+     * @Route("/admin/collection/new", name="collection_new", methods={"POST"})
+     *
+     * @param Request $request The request
+     * @return JsonResponse The response
+     */
+    public function new(Request $request)
+    {
+        $collection = new Collection();
+        $form = $this->createForm(CollectionType::class, $collection);
+
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data, false);
+
+        if ($form->isValid()) {
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
+
+            $collection->setCreatedAt(date_create());
+            $collection->setUser($user);
+
+            $this->em->persist($collection);
+            $this->em->flush();
+            dump($collection);
+
+            // TODO set location header to link the updated resource
+            // send the id of the updated collection
+            return new JsonResponse($collection->getId(), 200);
+        }
+
+        // TODO useful error message
+        $errorMessage = 'The data is not valid';
+        return new JsonResponse(\json_encode($errorMessage), 400);
     }
 }
