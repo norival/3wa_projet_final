@@ -210,7 +210,7 @@ class CollectionController extends AbstractController
      * @Route("/admin/collection/{id}", name="collection_update", methods={"PUT", "PATCH"})
      *
      * @param  string $id
-     * @return JsonResponse The 
+     * @return JsonResponse The response
      */
     public function update(Request $request, string $id)
     {
@@ -234,6 +234,26 @@ class CollectionController extends AbstractController
         // TODO useful error message
         $errorMessage = 'The data is not valid';
         return new JsonResponse(\json_encode($errorMessage), 400);
+    }
+
+    /**
+     * Delete a collection
+     *
+     * @Route("/admin/collection/{id}", name="collection_delete", requirements={"id"="\d+"}, methods="DELETE")
+     *
+     * @param  string $id
+     * @return JsonResponse
+     */
+    public function delete(string $id): JsonResponse
+    {
+        $collection = $this->collectionRepository->find($id);
+
+        if ($collection) {
+            $this->em->remove($collection);
+            $this->em->flush();
+        }
+
+        return new JsonResponse(null, 204);
     }
 
     /**
