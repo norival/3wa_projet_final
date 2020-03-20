@@ -117,8 +117,17 @@ export class AdminModel {
      */
     submitCollectionForm(collectionId, formData, callback)
     {
-        fetch('admin/collection/' + collectionId, {
-            method: 'PUT',
+        let url    = '/admin/collection/' + collectionId;
+        let method = 'PUT';
+
+        if (!collectionId) {
+            // generate URL to create a new collection
+            url    = '/admin/collection/new';
+            method = 'POST';
+        }
+
+        fetch(url, {
+            method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -130,7 +139,6 @@ export class AdminModel {
                 // TODO If the server returns an error, display the form and the validation errors
                 // TODO If the server says OK, display confirmation message and clear the page
                 // TODO Clear the form
-                // console.log(response);
                 callback(response);
                 // this.form.remove();
             })
@@ -167,7 +175,6 @@ export class AdminModel {
      */
     addContentToCollection(collectionId, contentIds, callback)
     {
-        console.log(collectionId);
         fetch(`admin/collection/${collectionId}/content`, {
             method: 'PATCH',
             headers: {

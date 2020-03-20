@@ -481,6 +481,19 @@ export class AdminView {
      */
     renderCollectionDetails(collectionData)
     {
+        if (!('user' in collectionData)) {
+            // create empty collectionData object when creating a new
+            // collection
+            collectionData = {
+                id: '',
+                title: '',
+                name: '',
+                description: '',
+                user: collectionData,
+                collectionContents: []
+            };
+        }
+
         // check if screen has not been changed: if user click on other menu entry
         if (this.currentScreen !== 'collection') {
             return ;
@@ -501,6 +514,12 @@ export class AdminView {
                     break;
             }
         });
+
+        if (!collectionData.id) {
+            // if creating a new collection, do not bind event listeners
+            // related to content
+            return ;
+        }
 
         document.querySelectorAll('.content-list-actions').forEach((element) => {
             element.addEventListener('click', (event) => {

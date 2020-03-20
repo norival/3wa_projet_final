@@ -244,7 +244,7 @@ export class AdminController {
      * Handle click on the 'new-collection' button
      */
     onClickNewCollection = () => {
-        this.view.renderCollectionForm(null);
+        this.model.getUser(this.onCollectionDataReceivedForCollectionScreen);
     }
 
     /**

@@ -427,9 +427,9 @@ export class Components {
      */
     static collectionDetails(collectionData)
     {
-        const outputDiv = Utils.createElement('div', null, 'collection-details-div');
-        const title     = Utils.createElement('h1');
-        const collectionUser  = Utils.createElement('div', 'collectionUser');
+        const outputDiv      = Utils.createElement('div', null, 'collection-details-div');
+        const title          = Utils.createElement('h1');
+        const collectionUser = Utils.createElement('div', 'collectionUser');
 
         // title ---------------------------------------------------------------
         title.innerHTML = `${collectionData.title} (${collectionData.name})`;
@@ -474,6 +474,12 @@ export class Components {
 
         section.appendChild(ul);
         outputDiv.appendChild(section);
+
+        if (!collectionData.id) {
+            // if creating a new collection, do not add parts related to
+            // content
+            return outputDiv;
+        }
 
         // collection content --------------------------------------------------------
         section        = Utils.createElement('section', 'adminSection');
@@ -735,7 +741,7 @@ export class Components {
         modalContent.appendChild(toolsList);
 
         const buttonList = Utils.createElement('ul', 'buttonList', 'content-list-actions');
-        const button     = this.button(null, null, 'Add to collection');
+        const button     = this.button(null, null, 'Add selected content');
 
         li                              = Utils.createElement('li');
         button.dataset.action           = 'add-content';
