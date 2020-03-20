@@ -281,8 +281,7 @@ export class AdminController {
      * @param {int} collectionId The id of the collection to delete
      */
     onClickDeleteCollection = (collectionId) => {
-        // TODO
-        console.log(`Deleting ${collectionId}`);
+        this.model.deleteCollection(collectionId, this.handleClickCollectionsHome);
     }
 
     /**

@@ -146,6 +146,7 @@ export class AdminModel {
      *
      * @param {number} collectionId The id of the collection for which content is added
      * @param {number[]} contentIds The id(s) of the content(s) added
+     * @param {function} callback The function to call when response has been received
      */
     addContentToCollection(collectionId, contentIds, callback)
     {
@@ -163,6 +164,30 @@ export class AdminModel {
             callback(collectionId);
         });
     }
+
+    /**
+     * Delete a collection
+     *
+     * @param {number} collectionId The id of the collection to delete
+     * @param {function} callback The function to call when request is finished
+     */
+    deleteCollection(collectionId, callback)
+    {
+        fetch(`admin/collection/${collectionId}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(collectionId)
+        }).then(
+            response => {
+                if (response.ok) {
+                    callback();
+                }
+            });
+    }
+
 
 
     /***************************************************************************
