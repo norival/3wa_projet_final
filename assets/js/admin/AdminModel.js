@@ -13,9 +13,26 @@ export class AdminModel {
     /***************************************************************************
      * Methods to fetch data and post data
      *
-     * This methods use the fetch API to fetch data from the database or to
+     * These methods use the fetch API to fetch data from the database or to
      * post data
      **************************************************************************/
+
+    /***************************************************************************
+     * Methods related to user data
+     */
+
+    /**
+     * Get informations about the current user
+     *
+     * @param {function} callback The function to call when data has been received
+     */
+    getUser(callback)
+    {
+        fetch('/admin/user')
+            .then(response => response.json())
+            .then(userData => callback(userData));
+    }
+
 
     /***************************************************************************
      * Methods related to help data
