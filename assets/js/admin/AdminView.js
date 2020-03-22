@@ -75,7 +75,7 @@ export class AdminView {
      * Get and format Collection form data
      *
      * @param {Element} form The form element to get data from
-     * @return {Object} The formated data
+     * @return {Object} The formatted data
      */
     getCollectionFormData(form)
     {
@@ -116,21 +116,28 @@ export class AdminView {
     /**
      * Get and format Content form data
      *
-     * @return {Object} The formated data
+     * @param {Element} form The form element to get data from
+     * @return {Object} The formatted data
      */
-    getContentFormData()
+    getContentFormData(form)
     {
-        const formData = new FormData(Utils.getElement('#contentForm form'));
         const data     = {};
+        const formData = new FormData(form);
+        const table    = form.querySelector('tbody');
 
-        data['content'] = {};
+        data.content = {};
         formData.forEach((element, key) => {
-            if (key.match(/^content_/g)) {
-                data['content'][key.substring(8)] = element;
+            if (key.match(/^innerContent_/g)) {
                 return;
             }
 
             data[key] = element;
+        });
+
+        // fill content
+        table.rows.forEach((row) => {
+            data.content[row.cells[1].querySelector('input').value] =
+                row.cells[2].querySelector('textarea').value;
         });
 
         return data;
@@ -830,6 +837,20 @@ export class AdminView {
         this.output.appendChild(Components.contentDetails(contentData));
 
         // add event listeners -------------------------------------------------
+        this.output.querySelector('#content-info-actions')
+            .addEventListener('click', (event) => {
+                switch (event.target.dataset.action) {
+                    case 'save':
+                        this.onClickSaveContentDetails(Utils.getElement('#content-form'));
+                        break;
+                    case 'cancel':
+                        this.onClickCancelContentDetails(event.target.dataset.collectionId);
+                        break;
+                    case 'add-row':
+                        this.onClickAddRowToContent();
+                        break;
+                }
+            });
     }
 
 
@@ -1170,6 +1191,38 @@ export class AdminView {
         this.onClickDeleteContent = handler;
     }
 
+    /**
+     * Bind the controller callback to use when the user clicks on 'save' in
+     * the content details screen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickSaveContentDetails(handler)
+    {
+        this.onClickSaveContentDetails = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'cancel' in
+     * the content details screen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickCancelContentDetails(handler)
+    {
+        this.onClickCancelContentDetails = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on 'add-row' in
+     * the content details screen
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickAddRowToContent(handler)
+    {
+        this.onClickAddRowToContent = handler;
+    }
 
 
     /***************************************************************************

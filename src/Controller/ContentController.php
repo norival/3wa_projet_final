@@ -50,7 +50,7 @@ class ContentController extends AbstractController
         $paginator->paginate(
             $listQuery,
             $request->query->getInt('page', 1),
-            $request->query->getInt('itemsPerPage', 10)
+            $request->query->getInt('itemsPerPage', 5)
         );
 
         // serialize results
@@ -155,10 +155,10 @@ class ContentController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
-        $form = $this->createForm(ContentType::class, $content);
+        $content = $this->em->getRepository(Content::class)->find($id);
+        $form    = $this->createForm(ContentType::class, $content);
 
         $data = json_decode($request->getContent(), true);
         $form->submit($data, false);
@@ -171,6 +171,7 @@ class ContentController extends AbstractController
             $this->em->flush();
         }
 
+        // TODO send url to updated content
         return new JsonResponse(json_encode('data received'));
     }
 

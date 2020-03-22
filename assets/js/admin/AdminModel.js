@@ -266,6 +266,42 @@ export class AdminModel {
             });
     }
 
+    /**
+     * Submit form to edit a content
+     *
+     * @param {?number} contentId The id of the content to edit
+     * @param {?Object} formData The data to send
+     * @param {function} callback The function to call when data has been sent
+     */
+    submitContentForm(contentId, formData, callback)
+    {
+        console.log(formData);
+        let url    = '/admin/content/' + contentId;
+        let method = 'PUT';
+
+        if (!contentId) {
+            // generate URL to create a new content
+            url    = '/admin/content/new';
+            method = 'POST';
+        }
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+            // .then(response => response.json())
+            .then(response => {
+                // TODO If the server returns an error, display the form and the validation errors
+                // TODO If the server says OK, display confirmation message and clear the page
+                // TODO Clear the form
+                callback(response);
+            })
+    }
+
 
     /***************************************************************************
      * Methods to bind handlers
@@ -320,37 +356,6 @@ export class AdminModel {
             .then(response => response.json())
             .then(data => {
                 this.onContentFormChanged(data);
-            })
-    }
-
-    /**
-     * Submit form to edit a content
-     *
-     * @param {number} contentId The id of the content to edit
-     * @param {?Object} formData The data to send
-     * @param {Boolean} visual Whether we are in visual mode or not
-     */
-    submitContentForm(contentId, formData, visual)
-    {
-        fetch(contentId === null ? 'admin/content' : `admin/content/${contentId}`, {
-                method: contentId === null ? 'POST': 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(json => {
-                // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
-                const data = JSON.parse(json);
-                console.log(data)
-                if (visual) {
-                    // call callback to refresh iframe
-                    this.onVisualCollectionChanged();
-                }
             })
     }
 

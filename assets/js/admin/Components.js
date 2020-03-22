@@ -979,7 +979,7 @@ export class Components {
             <h1>Content name</h1>
             <div class="collectionUser">User: <a href="#">${contentData.user.email}</a></div>
 
-            <form class="adminForm" action="#">
+            <form id="content-form" class="adminForm" action="#" data-content-id="${contentData.id}">
                 <section class="adminSection">
                     <h2>Informations</h2>
                     <ul class="inputList">
@@ -988,6 +988,7 @@ export class Components {
                             <input
                                 type="text"
                                 id="content-name"
+                                name="name"
                                 placeholder="Content name"
                                 required data-required="true"
                                 data-type="text"
@@ -1000,6 +1001,7 @@ export class Components {
                             <input
                                 type="text"
                                 id="content-type"
+                                name="type"
                                 placeholder="Content type"
                                 required data-required="true"
                                 data-type="text"
@@ -1020,15 +1022,15 @@ export class Components {
                         <tbody>
                         </tbody>
                     </table>
-                    <ul class="buttonList">
+                    <ul id="content-info-actions" class="buttonList">
                         <li>
-                            <a class="button" href="#">Add row</a>
+                            <a class="button" href="#" data-action="add-row">Add row</a>
                         </li>
                         <li>
-                            <a class="button" href="#">Save</a>
+                            <a class="button" href="#" data-action="save">Save</a>
                         </li>
                         <li>
-                            <a class="button cancel" href="#">Cancel</a>
+                            <a class="button cancel" href="#" data-action="cancel">Cancel</a>
                         </li>
                     </ul>
                 </section>
@@ -1038,7 +1040,6 @@ export class Components {
         const tbody = outputDiv.querySelector('#inner-content-list tbody')
 
         // render rows
-        let counter = 1;
         for (const key in contentData.content) {
             const tr = Utils.createElement('tr');
             tr.innerHTML = `
@@ -1046,17 +1047,17 @@ export class Components {
                     <a class="button delete" href="#">Delete</a>
                 </td>
                 <td>
-                    <input type="text" value="${key}">
+                    <input
+                        type="text"
+                        value="${key}">
                 </td>
                 <td>
                     <textarea
-                        name="innerContent_${counter}"
                         cols="30" rows="10"
                         >${contentData.content[key]}</textarea>
                 </td>
             `;
             tbody.appendChild(tr);
-            counter++;
         }
 
         return outputDiv;

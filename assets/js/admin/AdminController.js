@@ -77,6 +77,9 @@ export class AdminController {
         this.view.bindOnClickShowContent(this.onClickShowContent);
         this.view.bindOnClickEditContent(this.onClickEditContent);
         this.view.bindOnClickDeleteContent(this.onClickDeleteContent);
+        this.view.bindOnClickSaveContentDetails(this.onClickSaveContentDetails);
+        this.view.bindOnClickCancelContentDetails(this.onClickCancelContentDetails);
+        this.view.bindOnClickAddRowToContent(this.onClickAddRowToContent);
 
 
         // bind callbacks for model events -------------------------------------
@@ -407,6 +410,46 @@ export class AdminController {
         console.log(`Deleting ${contentId}`);
     }
 
+    /**
+     * Handle click on the 'save' button in content details
+     *
+     * @param {Element} form The form element to get data from
+     */
+    onClickSaveContentDetails = (form) => {
+        // run form validation
+        const formValidator = new FormValidator(form);
+        formValidator.validate();
+
+        if (formValidator.isValid) {
+            // if the form is valid, submit the data to the server
+            this.model.submitContentForm(
+                form.dataset.contentId,
+                this.view.getContentFormData(form),
+                this.onContentFormSubmitted
+            );
+
+            return ;
+        }
+
+        // render the form errors
+        this.view.renderFormErrors(form, formValidator.errors);
+    }
+
+    /**
+     * Handle click on the 'cancel' button in content details
+     */
+    onClickCancelContentDetails = () => {
+        this.handleClickCollectionsHome();
+    }
+
+    /**
+     * Handle click on the 'add-row' button in content details
+     */
+    onClickAddRowToContent = () => {
+        // TODO
+        console.log('adding a row');
+    }
+
 
     /***************************************************************************
      * Callbacks for Model events
@@ -508,6 +551,22 @@ export class AdminController {
      */
     onContentDataReceived = (contentData) => {
         this.view.renderContentDetails(contentData);
+    }
+
+    /**
+     * Call this method when the content form has been submitted by the Model
+     *
+     * @param {Response} response The response
+     */
+    onContentFormSubmitted = (response) => {
+        if (!response.ok) {
+            // TODO handle server errors
+            return ;
+        }
+
+        this.view.flashBag.push('The content has been updated!');
+        this.view.renderContentHome();
+        this.model.listContent(null, this.onContentListDataReceived);
     }
 
 
