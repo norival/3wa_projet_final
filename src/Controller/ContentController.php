@@ -20,14 +20,18 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ContentController extends AbstractController
 {
-    /** @var \Doctrine\ORM\EntityManagerInterface $em */
-    private $em;
-    private $contentRepository;
+    private EntityManagerInterface $em;
+    private ContentRepository $contentRepository;
+    private SerializerInterface $serializer;
 
-    public function __construct(EntityManagerInterface $em, ContentRepository $repo)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        ContentRepository $repo,
+        SerializerInterface $serializer
+    ) {
         $this->em                = $em;
         $this->contentRepository = $repo;
+        $this->serializer        = $serializer;
     }
 
     /**
@@ -99,19 +103,19 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/admin/content/{id}", name="content_get", methods={"GET"}, requirements={"id"="\d+"})
+     * @Route("/content/{id}", name="content_get", methods={"GET"}, requirements={"id"="\d+"})
      *
      * @return JsonResponse
      */
-    public function getById(SerializerInterface $serializer, $id)
+    public function get(string $id): JsonResponse
     {
         $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
 
-        $json = $serializer->serialize($content, 'json', [
+        $json = $this->serializer->serialize($content, 'json', [
             'groups' => 'default',
         ]);
 
-        return new JsonResponse($json);
+        return JsonResponse::fromJsonString($json);
     }
 
     /**

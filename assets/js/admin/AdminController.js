@@ -386,7 +386,7 @@ export class AdminController {
      * @param {int} contentId The id of the collection to edit
      */
     onClickShowContent = (contentId) => {
-        console.log(`Showing ${contentId}`);
+        this.model.getContentData(contentId, this.onContentDataReceived);
     }
 
     /**
@@ -499,6 +499,15 @@ export class AdminController {
      */
     onContentListDataReceivedForCollection = (contentListData, paginationState) => {
         this.view.renderContentListInAddToCollection(contentListData, paginationState);
+    }
+
+    /**
+     * Call this from the model when the content data has been received
+     *
+     * @param {Object} contentData The content data
+     */
+    onContentDataReceived = (contentData) => {
+        this.view.renderContentDetails(contentData);
     }
 
 

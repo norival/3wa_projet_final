@@ -819,6 +819,19 @@ export class AdminView {
         });
     }
 
+    /**
+     * Render the details of a content
+     *
+     * @param {Object} contentData The data for the given collection
+     */
+    renderContentDetails = (contentData) => {
+        // console.log(contentData);
+        Utils.clear(this.output);
+        this.output.appendChild(Components.contentDetails(contentData));
+
+        // add event listeners -------------------------------------------------
+    }
+
 
     /***************************************************************************
      * Render stuff for assets management

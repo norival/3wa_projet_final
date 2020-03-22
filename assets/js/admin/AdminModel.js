@@ -140,7 +140,6 @@ export class AdminModel {
                 // TODO If the server says OK, display confirmation message and clear the page
                 // TODO Clear the form
                 callback(response);
-                // this.form.remove();
             })
     }
 
@@ -242,7 +241,6 @@ export class AdminModel {
      *
      * @param {Object} query The query to look for
      * @param {function} callback The function to call when response has been received
-     * @returns {undefined}
      */
     searchContent(query, callback)
     {
@@ -250,6 +248,21 @@ export class AdminModel {
             .then(response => response.json())
             .then(paginator => {
                 callback(paginator.results, paginator.state);
+            });
+    }
+
+    /**
+     * Get data for a given content
+     *
+     * @param {number} contentId The id of the content to fetch
+     * @param {function} callback The function to call when data has been received
+     */
+    getContentData(contentId, callback)
+    {
+        fetch(`/content/${contentId}`)
+            .then(response => response.json())
+            .then(contentData => {
+                callback(contentData);
             });
     }
 

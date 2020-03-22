@@ -966,6 +966,102 @@ export class Components {
     {
     }
 
+    /**
+     * Create a form to edit a content
+     *
+     * @param {?object} contentData The content data
+     * @returns {Element}
+     */
+    static contentDetails(contentData)
+    {
+        const outputDiv = Utils.createElement('div', null, 'content-details-div');
+        outputDiv.innerHTML = `
+            <h1>Content name</h1>
+            <div class="collectionUser">User: <a href="#">${contentData.user.email}</a></div>
+
+            <form class="adminForm" action="#">
+                <section class="adminSection">
+                    <h2>Informations</h2>
+                    <ul class="inputList">
+                        <li>
+                            <label for="content-name">Name</label>
+                            <input
+                                type="text"
+                                id="content-name"
+                                placeholder="Content name"
+                                required data-required="true"
+                                data-type="text"
+                                data-field-name="Name"
+                                data-form="true"
+                                value="${contentData.name}">
+                        </li>
+                        <li>
+                            <label for="content-type">Type</label>
+                            <input
+                                type="text"
+                                id="content-type"
+                                placeholder="Content type"
+                                required data-required="true"
+                                data-type="text"
+                                data-field-name="Type"
+                                data-form="true"
+                                value="${contentData.type}">
+                        </li>
+                    </ul>
+                </section>
+                <section class="adminSection">
+                    <h2>Content</h2>
+                    <table id="inner-content-list" class="adminTable innerContentTable fullWidth">
+                        <thead>
+                            <th class="tinyCell">Action</th>
+                            <th class="tinyCell">Name</th>
+                            <th>Content</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <ul class="buttonList">
+                        <li>
+                            <a class="button" href="#">Add row</a>
+                        </li>
+                        <li>
+                            <a class="button" href="#">Save</a>
+                        </li>
+                        <li>
+                            <a class="button cancel" href="#">Cancel</a>
+                        </li>
+                    </ul>
+                </section>
+            </form>
+        `;
+
+        const tbody = outputDiv.querySelector('#inner-content-list tbody')
+
+        // render rows
+        let counter = 1;
+        for (const key in contentData.content) {
+            const tr = Utils.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a class="button delete" href="#">Delete</a>
+                </td>
+                <td>
+                    <input type="text" value="${key}">
+                </td>
+                <td>
+                    <textarea
+                        name="innerContent_${counter}"
+                        cols="30" rows="10"
+                        >${contentData.content[key]}</textarea>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            counter++;
+        }
+
+        return outputDiv;
+    }
+
 
     /***************************************************************************
      * no refacto yet

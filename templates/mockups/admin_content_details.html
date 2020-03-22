@@ -1,0 +1,54 @@
+<h1>Content name</h1>
+<div class="collectionUser">User: <a href="#">{{ user }}</a></div>
+
+<form class="adminForm" action="#">
+    <section class="adminSection">
+        <h2>Informations</h2>
+        <ul class="inputList">
+            <li>
+                <label for="content-name">Name</label>
+                <input type="text" id="content-name" placeholder="Content name" required>
+            </li>
+            <li>
+                <label for="content-type">Type</label>
+                <input type="text" id="content-type" placeholder="Content type" required>
+            </li>
+        </ul>
+    </section>
+    <section class="adminSection">
+        <h2>Content</h2>
+        <table id="inner-content-list" class="adminTable innerContentTable fullWidth">
+            <thead>
+                <th class="tinyCell">Action</th>
+                <th class="tinyCell">Name</th>
+                <th>Content</th>
+            </thead>
+            <tbody>
+                {% for i in 1..2 %}
+                <tr>
+                    <td>
+                        <a class="button delete" href="#">Delete</a>
+                    </td>
+                    <td>
+                        <input type="text" value="Name">
+                    </td>
+                    <td>
+                        <textarea id="" name="innerContent_{{ i }}" cols="30" rows="10">Inner content</textarea>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <ul class="buttonList">
+            <li>
+                <a class="button" href="#">Add row</a>
+            </li>
+            <li>
+                <a class="button" href="#">Save</a>
+            </li>
+            <li>
+                <a class="button cancel" href="#">Cancel</a>
+            </li>
+        </ul>
+    </section>
+</form>
