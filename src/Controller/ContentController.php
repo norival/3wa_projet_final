@@ -122,7 +122,7 @@ class ContentController extends AbstractController
     /**
      * Create a new content
      *
-     * @Route("/admin/content", name="content_new", methods={"POST"})
+     * @Route("/admin/content/new", name="content_new", methods={"POST"})
      *
      * @param  Request $request
      * @return JsonResponse
@@ -136,8 +136,11 @@ class ContentController extends AbstractController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            // TODO if object has not been modified, do not change updated_at field
+            /** @var \App\Entity\User $user */
+            $user = $this->getUser();
+
             $content->setCreatedAt(\date_create());
+            $content->setUser($user);
 
             $this->em->persist($content);
             $this->em->flush();

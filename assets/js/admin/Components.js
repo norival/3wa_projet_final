@@ -1073,7 +1073,7 @@ export class Components {
         const tr = Utils.createElement('tr');
         tr.innerHTML = `
             <td>
-                <a class="button delete" href="#">Delete</a>
+                <a class="button delete" href="#" data-action="delete-row">Delete</a>
             </td>
             <td>
                 <input

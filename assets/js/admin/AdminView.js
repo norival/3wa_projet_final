@@ -841,6 +841,17 @@ export class AdminView {
      */
     renderContentDetails(contentData)
     {
+        if (!('user' in contentData)) {
+            // create empty contentData object when creating a new content
+            contentData = {
+                id: '',
+                name: '',
+                type: '',
+                user: contentData,
+                content: {}
+            };
+        }
+
         // console.log(contentData);
         Utils.clear(this.output);
         this.output.appendChild(Components.contentDetails(contentData));

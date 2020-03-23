@@ -363,9 +363,7 @@ export class AdminController {
      * Handle click on the 'new-content' button
      */
     onClickNewContent = () => {
-        console.log('creating new content');
-        // TODO
-        // this.view.renderContentForm(null);
+        this.model.getUser(this.onContentDataReceived);
     }
 
     /**
