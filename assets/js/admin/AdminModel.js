@@ -302,6 +302,28 @@ export class AdminModel {
             })
     }
 
+    /**
+     * Delete a content from the database
+     *
+     * @param {number} contentId The id of the content to delete
+     * @param {function} callback The function to call when request is finished
+     */
+    deleteContent(contentId, callback)
+    {
+        fetch('/admin/content/' + contentId, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    callback();
+                }
+            })
+    }
+
 
     /***************************************************************************
      * Methods to bind handlers
@@ -406,27 +428,6 @@ export class AdminModel {
             .then(json => {
                 return JSON.parse(json);
                 // this.onContentReceived(JSON.parse(json));
-            })
-    }
-
-    /**
-     * Delete a content from the database
-     *
-     * @param {number} contentId The id of the content to delete
-     */
-    deleteContent(contentId)
-    {
-        console.log('coucou');
-        fetch('/admin/content/' + contentId, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => {
-                console.log('coucou');
-                console.log(response.status);
             })
     }
 

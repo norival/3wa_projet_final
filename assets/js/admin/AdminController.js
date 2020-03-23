@@ -407,7 +407,7 @@ export class AdminController {
      * @param {int} contentId The id of the collection to delete
      */
     onClickDeleteContent = (contentId) => {
-        console.log(`Deleting ${contentId}`);
+        this.model.deleteContent(contentId, this.handleClickContentHome);
     }
 
     /**
