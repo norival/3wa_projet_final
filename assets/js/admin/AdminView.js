@@ -717,6 +717,8 @@ export class AdminView {
      */
     renderContentHome()
     {
+        this.handleFlashBag();
+
         // store the current screen id to check if it did not changed
         this.currentScreen = 'content';
 
@@ -844,6 +846,7 @@ export class AdminView {
         this.output.appendChild(Components.contentDetails(contentData));
 
         // add event listeners -------------------------------------------------
+        // click on the action buttons
         this.output.querySelector('#content-info-actions')
             .addEventListener('click', (event) => {
                 switch (event.target.dataset.action) {
@@ -858,6 +861,16 @@ export class AdminView {
                         break;
                 }
             });
+
+        // click on the delete row button
+        this.output.querySelector('#inner-content-list').addEventListener('click', (event) => {
+            if (event.target.dataset.action !== 'delete-row') {
+                return ;
+            }
+
+            const tr = event.target.closest('tr');
+            tr.remove();
+        });
     }
 
     /**
