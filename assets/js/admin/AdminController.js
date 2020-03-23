@@ -439,15 +439,14 @@ export class AdminController {
      * Handle click on the 'cancel' button in content details
      */
     onClickCancelContentDetails = () => {
-        this.handleClickCollectionsHome();
+        this.handleClickContentHome();
     }
 
     /**
      * Handle click on the 'add-row' button in content details
      */
     onClickAddRowToContent = () => {
-        // TODO
-        console.log('adding a row');
+        this.view.renderAddRowToContent();
     }
 
 

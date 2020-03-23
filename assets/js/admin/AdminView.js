@@ -136,8 +136,14 @@ export class AdminView {
 
         // fill content
         table.rows.forEach((row) => {
-            data.content[row.cells[1].querySelector('input').value] =
-                row.cells[2].querySelector('textarea').value;
+            const name = row.cells[1].querySelector('input').value;
+
+            if (name.trim() === '') {
+                // do not add if empty string given
+                return;
+            }
+
+            data.content[name] = row.cells[2].querySelector('textarea').value;
         });
 
         return data;
@@ -831,7 +837,8 @@ export class AdminView {
      *
      * @param {Object} contentData The data for the given collection
      */
-    renderContentDetails = (contentData) => {
+    renderContentDetails(contentData)
+    {
         // console.log(contentData);
         Utils.clear(this.output);
         this.output.appendChild(Components.contentDetails(contentData));
@@ -851,6 +858,16 @@ export class AdminView {
                         break;
                 }
             });
+    }
+
+    /**
+     * Add a row to add inner content in content details form
+     */
+    renderAddRowToContent()
+    {
+        const tbody = this.output.querySelector('#inner-content-list tbody');
+
+        tbody.appendChild(Components.innerContentRow());
     }
 
 

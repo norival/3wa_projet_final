@@ -1063,6 +1063,32 @@ export class Components {
         return outputDiv;
     }
 
+    /**
+     * Create an inner content row
+     *
+     * @returns {Element}
+     */
+    static innerContentRow()
+    {
+        const tr = Utils.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <a class="button delete" href="#">Delete</a>
+            </td>
+            <td>
+                <input
+                    type="text">
+            </td>
+            <td>
+                <textarea
+                    cols="30" rows="10"
+                    ></textarea>
+            </td>
+        `;
+
+        return tr;
+    }
+
 
     /***************************************************************************
      * no refacto yet
