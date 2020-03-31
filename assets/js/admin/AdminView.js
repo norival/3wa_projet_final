@@ -564,7 +564,10 @@ export class AdminView {
                     this.onClickEditContent(event.target.dataset.contentId);
                     break;
                 case 'delete-content':
-                    this.onClickDeleteContent(event.target.dataset.contentId);
+                    this.onClickRemoveContentFromCollection(
+                        [event.target.dataset.contentId],
+                        collectionData.id
+                    );
                     break;
                 default:
                     if (event.target.closest('tr')) {
