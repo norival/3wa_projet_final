@@ -300,7 +300,7 @@ class CollectionController extends AbstractController
      * @param Request $request The request
      * @return JsonResponse The response
      */
-    public function addContent(Request $request, string $id)
+    public function addContent(Request $request, string $id): JsonResponse
     {
         /** @var Int[] $contentIds */
         $contentIds = \json_decode($request->getContent(), true);
@@ -316,7 +316,16 @@ class CollectionController extends AbstractController
         }
 
         foreach ($contents as $content) {
-            // TODO check if already present
+            // if this content is already present in the collection, do not add it
+            $collectionContent = $this->em->getRepository(CollectionContent::class)->findBy([
+                'content'    => $content->getId(),
+                'collection' => $collection->getId(),
+            ]);
+
+            if ($collectionContent) {
+                continue;
+            }
+
             // Create a new collectionContent object
             $collectionContent = new CollectionContent();
 
