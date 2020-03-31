@@ -14,10 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-/*
- * TODO
- * Set location headers for responses
- */
 class ContentController extends AbstractController
 {
     private EntityManagerInterface $em;
@@ -91,9 +87,8 @@ class ContentController extends AbstractController
      *
      * @return Response
      */
-    public function getForm(SerializerInterface $serializer, $id)
+    public function getForm(SerializerInterface $serializer, string $id)
     {
-        // TODO get only one column from db
         $content = $this->em->getRepository(Content::class)->findOneBy(['id' => $id]);
 
         $json = $serializer->serialize($content, 'json', [
@@ -173,10 +168,15 @@ class ContentController extends AbstractController
 
             $this->em->persist($content);
             $this->em->flush();
+
+            // return the updated content and a success code
+            $json = $this->serializer->serialize($content, 'json', ['groups' => 'default']);
+            return new JsonResponse($json, 200);
         }
 
-        // TODO send url to updated content
-        return new JsonResponse(json_encode('data received'));
+        // TODO useful error message
+        $errorMessage = 'The data is not valid';
+        return new JsonResponse(\json_encode($errorMessage), 400);
     }
 
     /**
