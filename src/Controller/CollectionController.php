@@ -21,25 +21,24 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CollectionController extends AbstractController
 {
-    private $em;
-    private $serializer;
-    private $collectionRepository;
+    private EntityManagerInterface $em;
+    private SerializerInterface $serializer;
+    private CollectionRepository $collectionRepository;
 
     public function __construct(
         EntityManagerInterface $em,
         SerializerInterface $serializer,
         CollectionRepository $repo
-    )
-    {
-        $this->em             = $em;
-        $this->serializer     = $serializer;
+    ) {
+        $this->em                   = $em;
+        $this->serializer           = $serializer;
         $this->collectionRepository = $repo;
     }
 
     /**
      * @Route("/{locale}/{name}", name="collection", requirements={"locale"="[a-z]{2}"})
      */
-    public function index(string $locale, string $name)
+    public function index(string $locale, string $name): Response
     {
         /* TODO: the join returns an array with the content. It whould be better if it returned
          * an array of Content objects (for the templates). If it is not possible, try to implement
@@ -47,7 +46,9 @@ class CollectionController extends AbstractController
          */
 
         // get the collection from the db
-        $collection = $this->em->getRepository(Collection::class)->findOneBy(['name' => $name]);
+        /** @var \App\Entity\Collection $collection */
+        $collection = $this->collectionRepository->findOneBy(['name' => $name]);
+        dump($collection);
 
         // use models to simplify templating
         $contentModel = new ContentModel(
@@ -226,9 +227,9 @@ class CollectionController extends AbstractController
             $this->em->persist($collection);
             $this->em->flush();
 
-            // TODO set location header to link the updated resource
-            // send the id of the updated collection
-            return new JsonResponse(\json_encode($collection->getId()), 200);
+            // return the updated content and a success code
+            $json = $this->serializer->serialize($collection, 'json', ['groups' => 'default']);
+            return new JsonResponse($json, 200);
         }
 
         // TODO useful error message
@@ -347,7 +348,7 @@ class CollectionController extends AbstractController
      * @param Request $request The request
      * @return JsonResponse The response
      */
-    public function new(Request $request)
+    public function new(Request $request): JsonResponse
     {
         $collection = new Collection();
         $form = $this->createForm(CollectionType::class, $collection);
@@ -366,9 +367,23 @@ class CollectionController extends AbstractController
             $this->em->flush();
             dump($collection);
 
-            // TODO set location header to link the updated resource
-            // send the id of the updated collection
-            return new JsonResponse($collection->getId(), 200);
+            // send the created resource and set the location to the point to it
+            $json = $this->serializer->serialize(
+                $this->collectionRepository->find($collection->getId()),
+                'json',
+                ['groups' => 'default']
+            );
+
+            $response      = new JsonResponse($json, 200);
+            $collectionUrl = $this->generateUrl(
+                'collection_get',
+                [
+                    'id' => $collection->getId()
+                ]
+            );
+            $response->headers->set('Location', $collectionUrl);
+
+            return $response;
         }
 
         // TODO useful error message
