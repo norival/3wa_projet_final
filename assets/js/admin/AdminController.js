@@ -4,15 +4,10 @@
  * DONE JS form validation
  * DONE When adding content to a collection, only update screen, do not submit the form
  * TODO manage form errors from php
- * TODO Assets view
- * TODO Users view
- * TODO Create a new collection
- * TODO Add inner content in content modification form
- *
- * NOTE For model methods that can be called to fill different part of the View
- * (for example teh content list can be rendered in the content screen or the
- * collection screen), I could set an argument 'callback', so it could use a
- * different callback each time
+ * DONE Assets view
+ * DONE Users view
+ * DONE Create a new collection
+ * DONE Add inner content in content modification form
  */
 
 import {AdminModel} from './AdminModel';
@@ -269,16 +264,6 @@ export class AdminController {
     }
 
     /**
-     * Handle click on the 'edit-collection' button
-     *
-     * @param {int} collectionId The id of the collection to edit
-     */
-    onClickEditCollection = (collectionId) => {
-        // TODO
-        console.log(`Editing ${collectionId}`);
-    }
-
-    /**
      * Handle click on the 'delete-collection' button
      *
      * @param {int} collectionId The id of the collection to delete
@@ -327,6 +312,7 @@ export class AdminController {
      */
     onClickRemoveContentFromCollection = (contentIds, collectionId) => {
         if (contentIds.length > 0) {
+            console.log('coucou');
             // TODO ask confirmation before removing contents
             this.model.removeContentFromCollection(contentIds, collectionId, this.onClickShowCollection);
         }
@@ -564,80 +550,5 @@ export class AdminController {
         this.view.flashBag.push('The content has been updated!');
         this.view.renderContentHome();
         this.model.listContent(null, this.onContentListDataReceived);
-    }
-
-
-    // -------------------------------------------------------------------------
-    // not refactored yet ------------------------------------------------------
-    // -------------------------------------------------------------------------
-
-    /**
-     * Handle click on deleteContentButton
-     * @callback AdminController~handleClickDeleteContent
-     */
-    handleClickDeleteContent = (contentId) => {
-        console.log(`deleting content: ${event.target.dataset.contentId}`);
-        this.model.deleteContent(contentId);
-    }
-
-    /**
-     * Handle click on newContentButton
-     * @callback AdminController~handleClickNewContent
-     */
-    handleClickNewContent = () => {
-        this.view.renderNewContentForm(null);
-        this.view.bindClickAddInnerContent(this.handleClickAddInnerContent);
-        this.view.bindClickSubmitNewContent(this.handleClickSubmitNewContent);
-    }
-
-    /**
-     * Handle the submission of an existing content
-     *
-     * @param {Element} form The form to validate
-     * @callback AdminController~handleClickSubmitContent
-     */
-    handleClickSubmitContent = (form) => {
-        const formValidator = new FormValidator(form);
-
-        formValidator.validate();
-
-        if (formValidator.isValid) {
-            this.model.submitContentForm(
-                form.dataset.contentId,
-                this.view.getContentFormData()
-            );
-
-            return;
-        }
-
-        // send the errors back to the collection
-        this.view.renderFormErrors(form, formValidator.errors);
-    }
-
-    /**
-     * Handle the submission of a new content
-     *
-     * @param {Element} form The form to validate
-     * @param {?number} collectionId Null to create a new content only or the id of
-     * the collection to which the new content must be added
-     * @callback AdminController~handleClickSubmitNewContent
-     */
-    handleClickSubmitNewContent = (form, collectionId = null) => {
-        const formValidator = new FormValidator(form);
-
-        formValidator.validate();
-
-        if (formValidator.isValid) {
-            // submit the content
-            this.model.submitNewContentForm(
-                this.view.getNewContentFormData(),
-                collectionId
-            );
-
-            return;
-        }
-
-        // send the errors back to the collection
-        this.view.renderFormErrors(form, formValidator.errors);
     }
 }

@@ -137,8 +137,6 @@ export class AdminModel {
             // .then(response => response.json())
             .then(response => {
                 // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
                 callback(response);
             })
     }
@@ -296,8 +294,6 @@ export class AdminModel {
             // .then(response => response.json())
             .then(response => {
                 // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
                 callback(response);
             })
     }
@@ -366,99 +362,4 @@ export class AdminModel {
     /***************************************************************************
      * Handlers related to content data
      */
-
-
-    // -------------------------------------------------------------------------
-    // no refacto yet
-    // -------------------------------------------------------------------------
-
-    async getContentForm(contentId)
-    {
-        await fetch('/admin/content/form/' + contentId)
-            .then(response => response.json())
-            .then(data => {
-                this.onContentFormChanged(data);
-            })
-    }
-
-    /**
-     * Submit form to create a new content and add it to a collection if
-     * collectionId and
-     * collectionData are supplied
-     *
-     * @param {Object} contentData Data for the new content
-     * @param {?number} collectionId Null to create a new content only or the id of
-     * the collection to which the new content must be added
-     */
-    submitNewContentForm(contentData, collectionId = null)
-    {
-        fetch('admin/content', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(contentData)
-            })
-            .then(response => response.json())
-            .then(json => {
-                // TODO If the server returns an error, display the form and the validation errors
-                // TODO If the server says OK, display confirmation message and clear the page
-                // TODO Clear the form
-                const contentId = JSON.parse(json);
-
-                if (collectionId) {
-                    // if collectionId was supplied, refresh the collection screen
-                    this.onContentCreatedForCollection(contentId);
-                }
-            })
-    }
-
-    /**
-     * Fetch a content from database with its id
-     *
-     * @param {number} contentId The id of the content to fetch
-     * @returns {Object} Content data
-     * @async
-     */
-    async getContent(contentId)
-    {
-        return await fetch('/admin/content/' + contentId)
-            .then(response => response.json())
-            .then(json => {
-                return JSON.parse(json);
-                // this.onContentReceived(JSON.parse(json));
-            })
-    }
-
-    /**
-     * Bind the controller callback to use when the content suggestions have changed
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindContentSuggestionChanged(callback)
-    {
-        this.onContentSuggestionChanged = callback;
-    }
-
-    /**
-     * Bind the controller callback to use when the a content have been received
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindContentReceived(callback)
-    {
-        this.onContentReceived = callback;
-    }
-
-    /**
-     * Bind the controller callback to use when the a content have been created
-     * for a collection and the collection must be updated
-     *
-     * @param {function} callback The callback to bind
-     */
-    bindContentCreatedForCollection(callback)
-    {
-        this.onContentCreatedForCollection = callback;
-    }
 }

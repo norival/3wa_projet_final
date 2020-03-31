@@ -578,22 +578,6 @@ export class AdminView {
     }
 
     /**
-     * Render a collection form and attach event listeners
-     *
-     * @param {?Object} collectionData The collection data for the form
-     */
-    renderCollectionForm(collectionData)
-    {
-        Utils.clear(this.output);
-
-        if (collectionData) {
-            // TODO form to update a collection
-        }
-
-        this.output.appendChild(Components.collectionForm(collectionData));
-    }
-
-    /**
      * Render the layout for the window to add a content to a view
      * 
      * @param {number} contentId The id of the collection
@@ -646,7 +630,7 @@ export class AdminView {
         }
 
         // append the new content list
-        modalContent.appendChild(Components.contentListForContent(contentListData, paginationState));
+        modalContent.appendChild(Components.contentList(contentListData, paginationState));
 
         // add event listeners -------------------------------------------------
         // TODO see if possible to make a reusable function for these events
@@ -777,7 +761,7 @@ export class AdminView {
             oldDiv.remove();
         }
 
-        this.output.appendChild(Components.contentListForContent(contentListData, paginationState));
+        this.output.appendChild(Components.contentList(contentListData, paginationState));
 
         // add event listeners -------------------------------------------------
         // event listener for clicks on collection-list
@@ -912,6 +896,7 @@ export class AdminView {
 
         this.toggleCurrentMenuEntry('assets');
         this.output.appendChild(Components.notImplementedFeature());
+        document.title = 'Administration - Assets';
     }
 
 
@@ -929,6 +914,7 @@ export class AdminView {
 
         this.toggleCurrentMenuEntry('users');
         this.output.appendChild(Components.notImplementedFeature());
+        document.title = 'Administration - Users';
     }
 
 
@@ -946,6 +932,7 @@ export class AdminView {
 
         this.toggleCurrentMenuEntry('stats');
         this.output.appendChild(Components.notImplementedFeature());
+        document.title = 'Administration - Stats';
     }
 
 
@@ -1292,93 +1279,5 @@ export class AdminView {
     bindOnClickPaginationPage(handler)
     {
         this.onClickPaginationPage = handler;
-    }
-
-
-    // -------------------------------------------------------------------------
-    // not refactored yet ------------------------------------------------------
-    // -------------------------------------------------------------------------
-
-    /**
-     * Render the template associated to collectionId within an iframe
-     *
-     * @param {number} collectionId The id of the collection. Set to null to only refresh an
-     * existing iframe
-     *
-     * @return {undefined}
-     */
-    renderCollectionTemplate(collectionId)
-    {
-        if (!collectionId) {
-            // called without collectionId when refreshing the iframe, so we get
-            // collectionId from existing iframe
-            collectionId = Utils.getElement('#visualCollection').dataset.collectionId;
-            Utils.getElement('#visualCollectionContainer').remove();
-        }
-
-        const div    = Utils.createElement('div', null, 'visualCollectionContainer');
-        const iframe = Utils.createElement('iframe', null, 'visualCollection');
-
-        iframe.dataset.collectionId = collectionId;
-        iframe.setAttribute('src', `admin/collection/visual/${collectionId}`);
-
-        div.appendChild(iframe);
-        this.output.appendChild(div);
-    }
-
-    /**
-     * Render a form to create a new content
-     * 
-     * @param {number?} collectionId The id of the collection for which we want to add a
-     * content or null if we do not want to add it to a collection
-     */
-    renderNewContentForm(collectionId)
-    {
-        let newContentForm = Utils.getElement('#newContentForm');
-
-        if (newContentForm) {
-            Utils.clear(newContentForm);
-        } else {
-            newContentForm = Utils.createElement('div', null, 'newContentForm');
-        }
-
-        newContentForm.appendChild(Components.newContentForm());
-        newContentForm.dataset.group = 'addContentToCollection';
-
-        this.output.appendChild(newContentForm);
-
-        if (collectionId) {
-            // Create a new content from the collection pane
-            Utils.getElement('#submitContentFormButton').dataset.collectionId = collectionId;
-        }
-
-        // add event listener for cancel button
-        this._bindClickCancelButtons();
-    }
-
-    /**
-     * Render a div to display a single content
-     * 
-     * @param {Object} content An object representation of the content
-     */
-    renderContent(content)
-    {
-        const parent   = Utils.getElement('#collectionFormOutput');
-        const button   = Utils.createElement('a', 'button', 'useThisContent');
-        let contentDiv = Utils.getElement('#contentDisplay');
-
-        // remove it if already created
-        if (contentDiv) {
-            contentDiv.remove();
-        }
-
-        contentDiv                  = Components.content(content);
-        button.innerHTML            = 'Add to collection';
-        button.href                 = '#'
-        button.dataset.contentId    = content.id;
-        button.dataset.collectionId = Utils.getElement('#contentSuggestion').dataset.collectionId;
-
-        contentDiv.appendChild(button);
-        parent.appendChild(contentDiv);
     }
 }
