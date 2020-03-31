@@ -62,15 +62,11 @@ export class Utils {
      */
     static formatDate(dateTime)
     {
-        // TODO fix this method
         if (!(dateTime instanceof(Date))) {
             dateTime = new Date(dateTime);
         }
 
-        return `
-            ${dateTime.getFullYear()}/${dateTime.getMonth()}/${dateTime.getDay()}
-            at ${dateTime.getHours()}:${dateTime.getMinutes()}
-        `;
+        return dateTime.toDateString();
     }
 
     /**
