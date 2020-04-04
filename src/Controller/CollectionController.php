@@ -48,7 +48,6 @@ class CollectionController extends AbstractController
         // get the collection from the db
         /** @var \App\Entity\Collection $collection */
         $collection = $this->collectionRepository->findOneBy(['name' => $name]);
-        dump($collection);
 
         // use models to simplify templating
         $contentModel = new ContentModel(
@@ -365,7 +364,6 @@ class CollectionController extends AbstractController
 
             $this->em->persist($collection);
             $this->em->flush();
-            dump($collection);
 
             // send the created resource and set the location to the point to it
             $json = $this->serializer->serialize(
