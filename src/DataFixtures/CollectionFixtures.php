@@ -23,6 +23,7 @@ class CollectionFixtures extends Fixture implements DependentFixtureInterface
         $collection->setUser($user);
         $collection->setName('cv');
         $collection->setTitle('Xavier Laviron');
+        $collection->setLocale('en');
         $collection->setDescription($loremMessage);
         $collection->setCreatedAt(date_create());
         $manager->persist($collection);
@@ -36,6 +37,7 @@ class CollectionFixtures extends Fixture implements DependentFixtureInterface
         $collectionTest->setUser($user);
         $collectionTest->setName('test');
         $collectionTest->setTitle('Test Collection');
+        $collection->setLocale('en');
         $collectionTest->setDescription($loremMessage);
         $collectionTest->setCreatedAt(date_create());
         $manager->persist($collectionTest);
@@ -55,6 +57,7 @@ class CollectionFixtures extends Fixture implements DependentFixtureInterface
             /* $collectionDemo->setName("demoCollection_$i"); */
             $collectionDemo->setName(uniqid('collection_'));
             $collectionDemo->setTitle("Demo collection $i");
+            $collection->setLocale('en');
             $collectionDemo->setDescription($loremMessage);
             $collectionDemo->setCreatedAt($date);
             $manager->persist($collectionDemo);

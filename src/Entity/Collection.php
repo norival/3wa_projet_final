@@ -68,6 +68,11 @@ class Collection
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $locale;
+
     public function __construct()
     {
         $this->collectionContents = new ArrayCollection();
@@ -209,6 +214,18 @@ class Collection
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }
