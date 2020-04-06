@@ -36,9 +36,9 @@ class CollectionController extends AbstractController
     }
 
     /**
-     * @Route("/{locale}/{name}", name="collection", requirements={"locale"="[a-z]{2}"})
+     * @Route("/{locale}/{name}", name="collection_render", requirements={"locale"="[a-z]{2}"})
      */
-    public function index(string $locale, string $name): Response
+    public function show(string $locale, string $name): Response
     {
         /* TODO: the join returns an array with the content. It whould be better if it returned
          * an array of Content objects (for the templates). If it is not possible, try to implement
@@ -47,7 +47,14 @@ class CollectionController extends AbstractController
 
         // get the collection from the db
         /** @var \App\Entity\Collection $collection */
-        $collection = $this->collectionRepository->findOneBy(['name' => $name]);
+        $collection = $this->collectionRepository->findOneBy([
+            'locale' => $locale,
+            'name'   => $name,
+        ]);
+
+        if (!$collection) {
+            throw $this->createNotFoundException('Page not found');
+        }
 
         // use models to simplify templating
         $contentModel = new ContentModel(
@@ -64,37 +71,6 @@ class CollectionController extends AbstractController
             'admin'        => false,
         ]);
     }
-
-    /**
-     * @Route("/admin/collection/visual/{id}", name="collection_admin_visual", requirements={"id"="\d+"})
-     *
-     * Renders a collection from a template to be used in admin UI
-     *
-     * @param int $id The id of the collection
-     */
-    public function renderVisualAdmin(int $id)
-    {
-        // get the collection from the db
-        $collection = $this->em->getRepository(Collection::class)->findOneBy(['id' => $id]);
-        $name = $collection->getName();
-
-        // use models to simplify templating
-        $contentModel = new ContentModel(
-            $this->em->getRepository(CollectionContent::class)->findByCollectionIdJoined($collection->getId())
-        );
-        $assetModel = new AssetModel(
-            $this->em->getRepository(CollectionAsset::class)->findByCollectionIdJoined($collection->getId())
-        );
-
-        return $this->render("collection/$name.html.twig", [
-            'title'        => $collection->getTitle(),
-            'contentModel' => $contentModel,
-            'assetModel'   => $assetModel,
-            'admin'        => true,
-        ]);
-    }
-
-
 
     /**
      * List all the available collections (with pagination) and return result as JSON data
@@ -161,25 +137,6 @@ class CollectionController extends AbstractController
         );
 
         return JsonResponse::fromJsonString($json);
-    }
-
-    /**
-     * getForm
-     *
-     * Get the collection information and send it to the admin as JSON data
-     *
-     * @Route("/admin/collection/form/{id}", name="collection_get_form", methods={"GET"})
-     *
-     * @param  string $name
-     * @return Response
-     */
-    public function getForm(SerializerInterface $serializer, string $id)
-    {
-        // get the collection object
-        $collection = $this->em->getRepository(Collection::class)->findOneBy(['id' => $id]);
-        $json = $serializer->serialize($collection, 'json', ['groups' => 'form']);
-
-        return new JsonResponse($json);
     }
 
     /**

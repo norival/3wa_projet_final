@@ -13,7 +13,7 @@ class HomeController extends AbstractController
      */
     public function index(): RedirectResponse
     {
-        return $this->redirectToRoute('collection', [
+        return $this->redirectToRoute('collection_render', [
             'locale' => 'en',
             'name'   => 'cv',
         ]);
