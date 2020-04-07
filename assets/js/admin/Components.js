@@ -17,7 +17,7 @@ export class Components {
     {
         const element = document.createElement('a');
 
-        // if (classList) {
+        if (classList) {
             if (!Array.isArray(classList)) {
                 // put in an array if not already
                 classList = [classList];
@@ -28,7 +28,9 @@ export class Components {
 
             // use spread syntax to assign all classes names
             element.classList.add(...classList);
-        // }
+        }
+
+        element.classList.add('button');
 
         if (id) {
             element.id = id;
@@ -614,6 +616,12 @@ export class Components {
         const toolsList        = Utils.createElement('ul', 'tools');
         const title            = Utils.createElement('h3');
         const collectionSearch = Utils.createElement('input', 'search', 'search-content');
+        // const closeButton      = this.button('close', 'close-modal', 'X');
+        const closeButton      = Utils.createElement('a', 'close', 'close-modal');
+
+        closeButton.innerHTML = 'X';
+        closeButton.href      = '#';
+        modalContent.appendChild(closeButton);
 
         title.innerHTML = 'Add a content to the collection';
         modalContent.appendChild(title);

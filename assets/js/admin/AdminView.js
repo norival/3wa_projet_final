@@ -620,6 +620,8 @@ export class AdminView {
 
         // event listener for the 'add selected content' button
         modal.querySelector('#content-list-actions').addEventListener('click', (event) => {
+            event.preventDefault();
+
             switch (event.target.dataset.action) {
                 case 'add-content':
                     this.onClickAddSelectedContentToCollection(
@@ -628,6 +630,13 @@ export class AdminView {
                     );
                     break;
             }
+        });
+
+        // event listener to close modal window
+        modal.querySelector('#close-modal').addEventListener('click', event => {
+            event.preventDefault();
+
+            modal.remove();
         });
 
         return;
