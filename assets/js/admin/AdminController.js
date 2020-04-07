@@ -95,7 +95,7 @@ export class AdminController {
         // this.model.bindContentCreatedForCollection(this.onContentCreatedForCollection);
 
         // render the home page
-        // this.handleClickHomePage();
+        this.handleClickHomePage();
     }
 
 

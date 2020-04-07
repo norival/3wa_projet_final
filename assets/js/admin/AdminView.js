@@ -23,6 +23,8 @@ export class AdminView {
 
         // add event listener for navigation menu
         this.menu.addEventListener('click', (event) => {
+            event.preventDefault();
+
             switch (event.target.dataset.action) {
                 case 'homepage':
                     this.onClickHomePage();
@@ -399,6 +401,7 @@ export class AdminView {
 
             this.onKeyUpSearchCollection({
                 name: event.target.value,
+                page: 1,
                 itemsPerPage: Utils.getElement('#choose-items-per-page').value
             });
         });
@@ -457,6 +460,7 @@ export class AdminView {
             if (searchTerm) {
                 this.onKeyUpSearchCollection({
                     name: searchTerm,
+                    page: 1,
                     itemsPerPage: event.target.value
                 });
 
@@ -479,9 +483,24 @@ export class AdminView {
                     return;
                 }
 
+                const itemsPerPage = Utils.getElement('#choose-items-per-page').value;
+                const searchTerm   = Utils.getElement('#search-collection').value;
+
+                // if a term is currently searched, use onKeyUpSearchCollection callback
+                // instead
+                if (searchTerm) {
+                    this.onKeyUpSearchCollection({
+                        name: searchTerm,
+                        page: event.target.dataset.page,
+                        itemsPerPage: itemsPerPage
+                    });
+
+                    return;
+                }
+
                 this.onClickPaginationPage('collectionList', {
                     page: event.target.dataset.page,
-                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                    itemsPerPage: itemsPerPage
                 });
             });
         });
@@ -673,9 +692,24 @@ export class AdminView {
                     return;
                 }
 
+                const itemsPerPage = Utils.getElement('#choose-items-per-page').value;
+                const searchTerm   = Utils.getElement('#search-content').value;
+
+                // if a term is currently searched, use onKeyUpSearchCollection callback
+                // instead
+                if (searchTerm) {
+                    this.onKeyUpSearchContent({
+                        name: searchTerm,
+                        page: event.target.dataset.page,
+                        itemsPerPage: itemsPerPage
+                    }, 'addToCollection');
+
+                    return;
+                }
+
                 this.onClickPaginationPage('addToCollection', {
                     page: event.target.dataset.page,
-                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                    itemsPerPage: itemsPerPage
                 });
             });
         });
@@ -792,8 +826,9 @@ export class AdminView {
             if (searchTerm) {
                 this.onKeyUpSearchContent({
                     name: searchTerm,
+                    page: 1,
                     itemsPerPage: event.target.value
-                });
+                }, 'contentHome');
 
                 return;
             }
@@ -813,9 +848,24 @@ export class AdminView {
                     return;
                 }
 
+                const itemsPerPage = Utils.getElement('#choose-items-per-page').value;
+                const searchTerm   = Utils.getElement('#search-content').value;
+
+                // if a term is currently searched, use onKeyUpSearchCollection callback
+                // instead
+                if (searchTerm) {
+                    this.onKeyUpSearchContent({
+                        name: searchTerm,
+                        page: event.target.dataset.page,
+                        itemsPerPage: itemsPerPage
+                    }, 'contentHome');
+
+                    return;
+                }
+
                 this.onClickPaginationPage('contentList', {
                     page: event.target.dataset.page,
-                    itemsPerPage: Utils.getElement('#choose-items-per-page').value
+                    itemsPerPage: itemsPerPage
                 });
             });
         });

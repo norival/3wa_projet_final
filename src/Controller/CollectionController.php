@@ -123,7 +123,7 @@ class CollectionController extends AbstractController
 
         $paginator->paginate(
             $searchQuery,
-            1,
+            $request->query->getInt('page', 1),
             $request->query->getInt('itemsPerPage', 10)
         );
 
