@@ -11,6 +11,7 @@ class ContentFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        /** @var \App\Entity\User $user */
         $user = $this->getReference(UserFixtures::USER_TEST);
 
         $loremMessage =
@@ -136,7 +137,7 @@ class ContentFixtures extends Fixture implements DependentFixtureInterface
         $content->setContent([
             'name'        => 'PhD in Ecology',
             'place'       => 'Grenoble',
-            'description' => 'A PhD in Ecology is boring',
+            'description' => 'A PhD in Ecology',
             'year_start'  => '2017',
             'year_end'    => '2019',
         ]);
