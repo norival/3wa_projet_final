@@ -120,8 +120,6 @@ export class Components {
         const div   = Utils.createElement('div', null, 'admin-homepage');
         const title = Utils.createElement('h1');
         let message = Utils.createElement('p');
-        let list    = Utils.createElement('ul', 'bulletList');
-        let item    = Utils.createElement('li');
 
         title.innerHTML = "Website administration";
         div.appendChild(title);
@@ -131,19 +129,6 @@ export class Components {
             of your website!
         `;
         div.appendChild(message);
-
-        message           = Utils.createElement('p');
-        message.innerHTML = 'Here, there should be:';
-        div.appendChild(message);
-
-        item.innerHTML = 'A link to the documentation';
-        list.appendChild(item);
-
-        item           = Utils.createElement('li');
-        item.innerHTML = 'An overcollection of the site content (number of collections, number of contents, ...';
-        list.appendChild(item);
-
-        div.appendChild(list);
 
         return div;
     }

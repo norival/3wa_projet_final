@@ -3,6 +3,7 @@
 // import ScrollMagic from 'scrollmagic';
 
 import '../css/home.scss';
+require('@fortawesome/fontawesome-free/css/all.min.css');
 
 // console.log('homepage');
 

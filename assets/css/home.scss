@@ -9,11 +9,21 @@ $neonBlue: #5fddfc;
 $mobileFontSize: 1rem;
 $neonColor: red;
 
+$desktopWidth: 900px;
+
+* {
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%; /*pour mettre en base 10 */
+}
 body {
+    font-size: 1.6rem; /* on repasse en police 16 */
+    margin: 0;
+    text-align: center;
+
     background-color: $bgColor;
-    // padding: 15px;
     color: $fgColor;
-    // font-size: $mobileFontSize;
     font-family: 'Exo2Regular', serif;
 }
 
@@ -153,7 +163,7 @@ nav {
 img.profile {
     max-width: 75%;
     height: auto;
-    margin: 0 auto;
+    margin: 25px auto;
     border-radius: 50%;
 }
 
@@ -161,7 +171,7 @@ main {
     position: relative;
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: $desktopWidth) {
     .flex-big {
         display: flex;
         justify-content: center;
@@ -180,9 +190,9 @@ main {
     }
 
     .resume section {
-        min-height: 100vh;
+        // min-height: 100vh;
         margin: auto;
-        // padding: 100px 40px;
+        padding: 200px 40px;
 
         h2 {
             margin-top: 0;
@@ -202,12 +212,12 @@ footer {
     padding: 15px;
 }
 
-#contact a {
-    justify-content: center;
-    display: flex;
-    flex-grow: 0;
-    flex-basis: 0;
-}
+// #contact a {
+//     justify-content: center;
+//     display: flex;
+//     flex-grow: 0;
+//     flex-basis: 0;
+// }
 
 .button {
     background-color: #000;
@@ -215,4 +225,31 @@ footer {
 
     border: 3px solid $neonBlue;
     border-radius: 30px;
+}
+
+.social {
+    font-size: 4em;
+    margin-top: 20px;
+
+    a {
+        display: inline-block;
+
+        @media screen and (min-width: $desktopWidth) {
+            margin-left: 30px;
+        }
+
+        i {
+            transition: all ease 0.3s 0s;
+        }
+
+        :hover {
+            color: $neonBlue;
+            text-shadow: 0 0 10px;
+        }
+    }
+
+    @media screen and (min-width: $desktopWidth) {
+        display: flex;
+        justify-content: center;
+    }
 }
