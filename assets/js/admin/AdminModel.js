@@ -270,8 +270,9 @@ export class AdminModel {
      * @param {?number} contentId The id of the content to edit
      * @param {?Object} formData The data to send
      * @param {function} callback The function to call when data has been sent
+     * @param {int} collectionId The id of the collection to which content belong
      */
-    submitContentForm(contentId, formData, callback)
+    submitContentForm(contentId, formData, callback, collectionId)
     {
         console.log(formData);
         let url    = '/admin/content/' + contentId;
@@ -294,7 +295,7 @@ export class AdminModel {
             // .then(response => response.json())
             .then(response => {
                 // TODO If the server returns an error, display the form and the validation errors
-                callback(response);
+                callback(response, collectionId);
             })
     }
 

@@ -578,7 +578,7 @@ export class AdminView {
                     this.checkAll(event.target.closest('table'), event.target.checked);
                     break;
                 case 'show-content':
-                    this.onClickShowContent(event.target.dataset.contentId);
+                    this.onClickShowContent(event.target.dataset.contentId, collectionData.id);
                     break;
                 case 'edit-content':
                     this.onClickEditContent(event.target.dataset.contentId);
@@ -886,7 +886,7 @@ export class AdminView {
      *
      * @param {Object} contentData The data for the given collection
      */
-    renderContentDetails(contentData)
+    renderContentDetails(contentData, collectionId)
     {
         if (!('user' in contentData)) {
             // create empty contentData object when creating a new content
@@ -909,10 +909,15 @@ export class AdminView {
             .addEventListener('click', (event) => {
                 switch (event.target.dataset.action) {
                     case 'save':
-                        this.onClickSaveContentDetails(Utils.getElement('#content-form'));
+                        this.onClickSaveContentDetails(
+                            Utils.getElement('#content-form'),
+                            collectionId
+                        );
                         break;
                     case 'cancel':
-                        this.onClickCancelContentDetails(event.target.dataset.collectionId);
+                        this.onClickCancelContentDetails(
+                            collectionId
+                        );
                         break;
                     case 'add-row':
                         this.onClickAddRowToContent();
@@ -929,6 +934,19 @@ export class AdminView {
             const tr = event.target.closest('tr');
             tr.remove();
         });
+    }
+
+    /**
+     * Render the details of a content from the collection details screen
+     *
+     * @param {Object} contentData The data for the given collection
+     */
+    renderContentDetailsForCollection(contentData)
+    {
+        // get the current collection id before rendering the new page
+        const collectionId = document.getElementById('collection-form').dataset.collectionId;
+
+        this.renderContentDetails(contentData, collectionId);
     }
 
     /**

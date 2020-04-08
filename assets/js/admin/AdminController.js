@@ -371,8 +371,14 @@ export class AdminController {
      * Handle click on the 'show-content' button
      *
      * @param {int} contentId The id of the collection to edit
+     * @param {int} collectionId The id of the collection to which content belong
      */
-    onClickShowContent = (contentId) => {
+    onClickShowContent = (contentId, collectionId) => {
+        if (collectionId) {
+            this.model.getContentData(contentId, this.onContentDataReceivedForCollection);
+            return ;
+        }
+
         this.model.getContentData(contentId, this.onContentDataReceived);
     }
 
@@ -398,8 +404,9 @@ export class AdminController {
      * Handle click on the 'save' button in content details
      *
      * @param {Element} form The form element to get data from
+     * @param {int} collectionId The id of the collection to which content belong
      */
-    onClickSaveContentDetails = (form) => {
+    onClickSaveContentDetails = (form, collectionId) => {
         // run form validation
         const formValidator = new FormValidator(form);
         formValidator.validate();
@@ -409,7 +416,8 @@ export class AdminController {
             this.model.submitContentForm(
                 form.dataset.contentId,
                 this.view.getContentFormData(form),
-                this.onContentFormSubmitted
+                this.onContentFormSubmitted,
+                collectionId
             );
 
             return ;
@@ -421,8 +429,15 @@ export class AdminController {
 
     /**
      * Handle click on the 'cancel' button in content details
+     *
+     * @param {int} collectionId The id of the collection to which content belong
      */
-    onClickCancelContentDetails = () => {
+    onClickCancelContentDetails = (collectionId) => {
+        if (collectionId) {
+            this.model.getCollectionData(collectionId, this.onCollectionDataReceivedForCollectionScreen);
+            return;
+        }
+
         this.handleClickContentHome();
     }
 
@@ -537,17 +552,34 @@ export class AdminController {
     }
 
     /**
+     * Call this from the model when the content data has been received and we
+     * need to get back to the collection details screen
+     *
+     * @param {Object} contentData The content data
+     */
+    onContentDataReceivedForCollection = (contentData) => {
+        this.view.renderContentDetailsForCollection(contentData);
+    }
+
+    /**
      * Call this method when the content form has been submitted by the Model
      *
      * @param {Response} response The response
+     * @param {int} collectionId The id of the collection to which content belong
      */
-    onContentFormSubmitted = (response) => {
+    onContentFormSubmitted = (response, collectionId) => {
         if (!response.ok) {
             // TODO handle server errors
             return ;
         }
 
         this.view.flashBag.push('The content has been updated!');
+
+        if (collectionId) {
+            this.model.getCollectionData(collectionId, this.onCollectionDataReceivedForCollectionScreen);
+            return ;
+        }
+
         this.view.renderContentHome();
         this.model.listContent(null, this.onContentListDataReceived);
     }
