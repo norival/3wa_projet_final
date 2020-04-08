@@ -15,6 +15,7 @@ class CollectionType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('title', TextType::class)
+            ->add('locale', TextType::class)
             ->add('description', TextType::class)
             ->add('created_at')
             ->add('updated_at')

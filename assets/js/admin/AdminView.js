@@ -520,6 +520,7 @@ export class AdminView {
                 id: '',
                 title: '',
                 name: '',
+                locale: '',
                 description: '',
                 user: collectionData,
                 collectionContents: []

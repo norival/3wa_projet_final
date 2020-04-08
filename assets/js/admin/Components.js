@@ -580,6 +580,25 @@ export class Components {
         li.appendChild(input);
         inputList.appendChild(li);
 
+        // collection locale field
+        li              = Utils.createElement('li');
+        label           = Utils.createElement('label');
+        input           = Utils.createElement('input', null, 'collection-locale');
+        label.innerHTML = 'Locale';
+        input.value     = collectionData.locale;
+        input.setAttribute('name', 'locale');
+        input.setAttribute('type', 'text');
+        input.setAttribute('placeholder', 'Collection locale');
+        input.setAttribute('required', true);
+        // form validation
+        input.dataset.required  = true;
+        input.dataset.type      = 'text';
+        input.dataset.form      = true;
+        input.dataset.fieldName = 'Locale';
+        li.appendChild(label);
+        li.appendChild(input);
+        inputList.appendChild(li);
+
         // collection description field
         li              = Utils.createElement('li');
         label           = Utils.createElement('label');

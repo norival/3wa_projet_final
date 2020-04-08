@@ -70,6 +70,7 @@ class Collection
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"default", "form", "list"})
      */
     private $locale;
 
