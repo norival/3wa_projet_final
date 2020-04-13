@@ -312,7 +312,6 @@ export class AdminController {
      */
     onClickRemoveContentFromCollection = (contentIds, collectionId) => {
         if (contentIds.length > 0) {
-            console.log('coucou');
             // TODO ask confirmation before removing contents
             this.model.removeContentFromCollection(contentIds, collectionId, this.onClickShowCollection);
         }
@@ -338,7 +337,6 @@ export class AdminController {
      * @param {number} collectionId The id of the collection for which content is added
      */
     onClickAddSelectedContentToCollection = (contentIds, collectionId) => {
-        // console.log(contentIds, collectionId);
         this.model.addContentToCollection(collectionId, contentIds, this.onClickShowCollection);
     }
 

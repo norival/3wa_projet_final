@@ -249,9 +249,9 @@ class CollectionController extends AbstractController
     }
 
     /**
-     * Delete content(s) from the collection
+     * Add content(s) to the collection
      *
-     * @Route("/admin/collection/{id}/content", name="collection_add_content", methods="PATCH")
+     * @Route("/admin/collection/{id}/content", name="collection_add_content", methods="PUT")
      *
      * @param  string $id The collection id
      * @param Request $request The request

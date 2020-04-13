@@ -150,7 +150,7 @@ export class AdminModel {
      */
     removeContentFromCollection(contentIds, collectionId, callback)
     {
-        fetch(`admin/collection/${collectionId}/content`, {
+        fetch(`/admin/collection/${collectionId}/content`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -173,7 +173,7 @@ export class AdminModel {
     addContentToCollection(collectionId, contentIds, callback)
     {
         fetch(`admin/collection/${collectionId}/content`, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ export class AdminModel {
             response => response.json()
         ).then(collectionId => {
             callback(collectionId);
-        });
+        }).catch(reason => console.log(reason));
     }
 
     /**
@@ -194,7 +194,7 @@ export class AdminModel {
      */
     deleteCollection(collectionId, callback)
     {
-        fetch(`admin/collection/${collectionId}`, {
+        fetch(`/admin/collection/${collectionId}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
