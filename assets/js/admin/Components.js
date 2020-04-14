@@ -62,14 +62,16 @@ export class Components {
         li.appendChild(a);
         ul.appendChild(li);
 
-        // li                   = Utils.createElement('li');
-        // a                    = Utils.createElement('a', 'button', `edit-${forTable}`);
-        // a.href               = '#';
-        // a.innerHTML          = 'Edit';
-        // a.dataset.action     = `edit-${forTable}`;
-        // a.dataset[data.name] = data.id;
-        // li.appendChild(a);
-        // ul.appendChild(li);
+        if (forTable === 'content') {
+            li                   = Utils.createElement('li');
+            a                    = Utils.createElement('a', 'button', `edit-${forTable}`);
+            a.href               = '#';
+            a.innerHTML          = 'Copy';
+            a.dataset.action     = `clone-${forTable}`;
+            a.dataset[data.name] = data.id;
+            li.appendChild(a);
+            ul.appendChild(li);
+        }
 
         li                    = Utils.createElement('li');
         a                     = Utils.createElement('a', ['button', 'delete'], `delete-${forTable}`);

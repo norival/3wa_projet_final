@@ -816,8 +816,8 @@ export class AdminView {
                 case 'show-content':
                     this.onClickShowContent(event.target.dataset.contentId);
                     break;
-                case 'edit-content':
-                    this.onClickEditContent(event.target.dataset.contentId);
+                case 'clone-content':
+                    this.onClickCloneContent(event.target.dataset.contentId);
                     break;
                 case 'delete-content':
                     this.onClickDeleteContent(event.target.dataset.contentId);
@@ -1276,6 +1276,17 @@ export class AdminView {
     bindOnClickShowContent(handler)
     {
         this.onClickShowContent = handler;
+    }
+
+    /**
+     * Bind the controller callback to use when the user clicks on
+     * 'clone-content' button
+     *
+     * @param {function} handler The callback to bind
+     */
+    bindOnClickCloneContent(handler)
+    {
+        this.onClickCloneContent = handler;
     }
 
     /**

@@ -274,7 +274,6 @@ export class AdminModel {
      */
     submitContentForm(contentId, formData, callback, collectionId)
     {
-        console.log(formData);
         let url    = '/admin/content/' + contentId;
         let method = 'PUT';
 

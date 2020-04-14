@@ -70,6 +70,7 @@ export class AdminController {
         this.view.bindOnClickNewContent(this.onClickNewContent);
         this.view.bindOnKeyUpSearchContent(this.onKeyUpSearchContent);
         this.view.bindOnClickShowContent(this.onClickShowContent);
+        this.view.bindOnClickCloneContent(this.onClickCloneContent);
         this.view.bindOnClickEditContent(this.onClickEditContent);
         this.view.bindOnClickDeleteContent(this.onClickDeleteContent);
         this.view.bindOnClickSaveContentDetails(this.onClickSaveContentDetails);
@@ -381,6 +382,16 @@ export class AdminController {
     }
 
     /**
+     * Handle click on the 'clone-content' button
+     *
+     * @param {int} contentId The id of the collection to edit
+     * @param {int} collectionId The id of the collection to which content belong
+     */
+    onClickCloneContent = (contentId) => {
+        this.model.getContentData(contentId, this.onContentDataReceivedForClone);
+    }
+
+    /**
      * Handle click on the 'edit-content' button
      *
      * @param {int} contentId The id of the collection to edit
@@ -546,6 +557,16 @@ export class AdminController {
      * @param {Object} contentData The content data
      */
     onContentDataReceived = (contentData) => {
+        this.view.renderContentDetails(contentData);
+    }
+
+    /**
+     * Call this from the model when the content data has been received for cloning
+     *
+     * @param {Object} contentData The content data
+     */
+    onContentDataReceivedForClone = (contentData) => {
+        contentData.id = '';
         this.view.renderContentDetails(contentData);
     }
 
