@@ -152,6 +152,8 @@ class ContentFixtures extends Fixture implements DependentFixtureInterface
             'name'        => 'theiaR',
             'description' => 'R library blabla',
             'year'        => '2019',
+            'link'        => 'https://cran.r-project.org/package=theiaR',
+            'link_text'   => 'theiaR',
         ]);
         $content->setUser($user);
         $manager->persist($content);
